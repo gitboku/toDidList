@@ -7,8 +7,14 @@
     tools:context="com.example.kouhei.todidlist.MainActivity">
 
     <android.support.design.widget.TabLayout
+        android:id="@+id/tabs"
         android:layout_height="wrap_content"
         android:layout_width="match_parent">
+
+        <fragment
+            android:id="@+id/fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
     </android.support.design.widget.TabLayout>
 
