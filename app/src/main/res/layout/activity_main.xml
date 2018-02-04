@@ -1,21 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v4.app.FragmentTabHost
+    xmlns:android = "http://schemas.android.com/apk/res/android"
+    xmlns:tools = "http://schemas.android.com/tools"
+    android:id="@+id/tabhost"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.kouhei.todidlist.MainActivity">
+    tools:context=".MainActivity">
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tabs"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <fragment
-            android:id="@+id/fragment"
+        <!--タブ-->
+        <TabWidget
+            android:id="@+id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"/>
 
-    </android.support.design.widget.TabLayout>
+        <!--各タブごとのコンテンツ-->
+        <FrameLayout
+            android:id="@+id/tabContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
 
-</android.support.constraint.ConstraintLayout>
+    </LinearLayout>
+</android.support.v4.app.FragmentTabHost>
