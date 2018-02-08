@@ -30,6 +30,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
+    // Failed resolution of: Landroid/support/v7/internal/widget/TintManager;というエラーが出ていたが、
+    // 競合してるらしきパッケージを消したら動いた。
     compile 'com.android.support:appcompat-v7:23.1.0'
     compile 'com.android.support:design:23.1.0' // design support library
 }
