@@ -2,10 +2,12 @@ package com.example.kouhei.todidlist
 
 import android.os.Bundle
 import android.support.design.widget.TabLayout
+//import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.FrameLayout
 
 class MainActivity :  AppCompatActivity() {
@@ -20,20 +22,24 @@ class MainActivity :  AppCompatActivity() {
         tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_calender))
         tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_stack))
 
-//        tabLayout.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener() {
-//            fun onTabSelected(tab:TabLayout.Tab) {
-//                val fragment: Fragment = null
-//
-//                when (tab.position) {
-//                    0 -> fragment = CalenderFragment()
-//                    1 -> fragment = CalenderFragment()
-//                }
-//                val fm = getSupportFragmentManager()
-//                val ft = fm.beginTransaction()
-//                ft.replace(R.id.tabContent, fragment)
-//                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-//                ft.commit()
-//            }
-//        })
+        // setOnTabSelectedListener was deprecated in API level 24.1.0.
+        // Use addOnTabSelectedListener(OnTabSelectedListener) and removeOnTabSelectedListener(OnTabSelectedListener).
+        // TabLayout.OnTabSelectedListener ← タブの選択状態が変更されたときに呼び出されるcallback interface
+        // "object:" ← 無名クラスを作るときに使う
+        tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
+            // "onTabSelected","onTabUnselected","onTabReselected"の3つを実装しないとエラー
+
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                Log.i("myTag", "onTabSelebted")
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {
+                Log.i("myTag", "onTabUnselected")
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab) {
+                Log.i("myTag", "onTabReselected")
+            }
+        })
     }
 }
