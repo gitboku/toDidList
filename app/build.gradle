@@ -35,12 +35,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.0'
     // addOnTabSelectedListenerはcom.android.support:design:27.0.0
     compile 'com.android.support:design:27.0.0'
-
-    /*
-    １：コンポーネントのZIPをGitHubからダウンロード
-    ２：中に入ってるjarファイルをlibフォルダに配置
-    ３：プロジェクト名で右クリック → Open Module Settings → Dependence → ＋ → 2 Jar Dependency
-    ４：jarファイルを追加
-     */
-    implementation files('libs/extendedcalendarview.jar')
+    // design support library
+    implementation project(':extendedCalendarView')
 }
