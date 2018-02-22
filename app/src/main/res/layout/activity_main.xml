@@ -13,9 +13,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
+    <!--CalendarViewで選択してる日の日記本文がここに映るようになっている。-->
+    <!--Edit画面へ遷移する半透明のボタンがTextViewの上にある。-->
+    <!--CalendarViewで前日or本日を選んでいるときだけボタンが反応するようにする-->
+    <FrameLayout
+        android:id="@+id/buttonAndPreviewAreaId"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="TextView" />
+
+        <!--前日or当日をカレンダー部分で選択してるときにこのボタンを押すと日記編集に移る-->
+        <!--それ以外の日を選んでいるときは日記閲覧に映る-->
+        <!--日記編集と日記閲覧は同じActivityでできそう-->
+        <!--TODO: scaleはハードコーディングしない-->
+        <ImageButton
+            android:id="@+id/editImageButtonId"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:scaleX="3"
+            android:scaleY="3"
+            android:src="@drawable/ic_mode_edit_black_24dp"
+            android:text="Button" />
+    </FrameLayout>
 
 </LinearLayout>
