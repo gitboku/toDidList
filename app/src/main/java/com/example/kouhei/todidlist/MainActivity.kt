@@ -7,9 +7,9 @@ import android.view.View
 import android.widget.CalendarView
 import java.util.*
 
-class MainActivity :  AppCompatActivity() {
+const val EXTRA_DATE = "com.example.kouhei.todidList.SELECTED_DATE"
 
-    val EXTRA_DATE = "com.example.kouhei.todidList.SELECTED_DATE"
+class MainActivity :  AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,9 +18,10 @@ class MainActivity :  AppCompatActivity() {
         var myCalendar = findViewById<CalendarView>(R.id.calendar)
     }
 
-    // 日付がタップされたときにEdit（または閲覧）画面に遷移する
+    // 日付がタップされたときにEdit（または閲覧）画面に遷移するメソッド
+    // xmlのonClick属性に対応させるには、引数にViewパラメータを含む必要がある。
     // TODO: カレンダーのインスタンスを引数に含める
-    fun moveToEdit(view: View){
+    fun moveToEditPage(view: View){
         // 一つ目のコンストラクタはContext。ActivityはContextのサブクラスなのでthisを使う
         // 二つ目はIntentが送られるアプリコンポーネントのClass（開始されるActivity）
         var intent = Intent(this, EditDiaryActivity::class.java)

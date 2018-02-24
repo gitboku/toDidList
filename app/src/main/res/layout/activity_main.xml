@@ -14,34 +14,20 @@
         android:layout_height="wrap_content" />
 
     <!--CalendarViewで選択してる日の日記本文がここに映るようになっている。-->
-    <!--Edit画面へ遷移する半透明のボタンがTextViewの上にある。-->
-    <!--CalendarViewで前日or本日を選んでいるときだけボタンが反応するようにする-->
+    <!--TextViewにonClick属性があったので、Buttonは必要ない-->
+    <!--たぶんFrameLayoutも必要ないが、一応残しておく-->
     <FrameLayout
         android:id="@+id/buttonAndPreviewAreaId"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
+        <!--HINT: 背景画像はandroid:scaleType="centerCrop"を使うとリスト表示にしたときに見た目がよさそう-->
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:onClick="moveToEditPage"
             android:text="TextView" />
-
-        <!--前日or当日をカレンダー部分で選択してるときにこのボタンを押すと日記編集に移る-->
-        <!--それ以外の日を選んでいるときは日記閲覧に映る-->
-        <!--日記編集と日記閲覧は同じActivityでできそう-->
-        <!--TODO: scaleはハードコーディングしない-->
-        <!--TODO: android:scaleType="centerCrop"を使うとリスト表示にしたときに見た目がよさそう-->
-        <ImageButton
-            android:id="@+id/editImageButtonId"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:scaleX="3"
-            android:scaleY="3"
-            android:src="@drawable/ic_mode_edit_black_24dp"
-            android:text="Button" />
     </FrameLayout>
 
 </LinearLayout>
