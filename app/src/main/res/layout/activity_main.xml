@@ -32,6 +32,7 @@
         <!--それ以外の日を選んでいるときは日記閲覧に映る-->
         <!--日記編集と日記閲覧は同じActivityでできそう-->
         <!--TODO: scaleはハードコーディングしない-->
+        <!--TODO: android:scaleType="centerCrop"を使うとリスト表示にしたときに見た目がよさそう-->
         <ImageButton
             android:id="@+id/editImageButtonId"
             android:layout_width="match_parent"
