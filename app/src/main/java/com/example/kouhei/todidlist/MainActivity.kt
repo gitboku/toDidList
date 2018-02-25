@@ -3,8 +3,10 @@ package com.example.kouhei.todidlist
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.View
 import android.widget.CalendarView
+import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
 const val EXTRA_DATE = "com.example.kouhei.todidList.SELECTED_DATE"
@@ -15,7 +17,11 @@ class MainActivity :  AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var myCalendar = findViewById<CalendarView>(R.id.calendar)
+        // CalendarView.OnDateChangeListener has only abstract onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth)
+        // よって、SAM変換によりonSelectedDayChangeを省略できる
+        calendar.setOnDateChangeListener { calendar, year, month, dayOfMonth ->
+            Log.d("myTag", "mow date is $year/$month/$dayOfMonth")
+        }
     }
 
     // 日付がタップされたときにEdit（または閲覧）画面に遷移するメソッド
