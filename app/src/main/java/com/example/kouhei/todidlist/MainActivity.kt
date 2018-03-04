@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.CalendarView
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
+import MySQLiteOpenHelper
 
 const val EXTRA_DATE = "com.example.kouhei.todidList.SELECTED_DATE"
 
@@ -17,10 +18,15 @@ class MainActivity :  AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // データベースのインスタンスを作る
+        var helper = MySQLiteOpenHelper(this)
+        var db = helper.writableDatabase
+
         // CalendarView.OnDateChangeListener has only abstract onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth)
         // よって、SAM変換によりonSelectedDayChangeを省略できる
         calendar.setOnDateChangeListener { calendar, year, month, dayOfMonth ->
-            Log.d("myTag", "mow date is $year/$month/$dayOfMonth")
+            Log.d("myTag", "now date is $year/$month/$dayOfMonth")
+            textView.text = "now date is $year/$month/$dayOfMonth"
         }
     }
 
