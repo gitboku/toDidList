@@ -28,12 +28,16 @@ class MainActivity :  AppCompatActivity() {
             Log.d("myTag", "now date is $year/$month/$dayOfMonth")
             textView.text = "now date is $year/$month/$dayOfMonth"
         }
+
+        textView.setOnClickListener {
+            moveToEditPage()
+        }
     }
 
     // 日付がタップされたときにEdit（または閲覧）画面に遷移するメソッド
-    // xmlのonClick属性に対応させるには、引数にViewパラメータを含む必要がある。
-    // TODO: カレンダーのインスタンスを引数に含める
-    fun moveToEditPage(view: View){
+    // xmlのonClick属性に対応させるには、引数にViewパラメータを含む必要があるが、今回はTextViewのListenerを使うのでいらない。
+    // TODO: カレンダーのインスタンス（日付がわかるもの）を引数に含める
+    fun moveToEditPage(){
         // 一つ目のコンストラクタはContext。ActivityはContextのサブクラスなのでthisを使う
         // 二つ目はIntentが送られるアプリコンポーネントのClass（開始されるActivity）
         var intent = Intent(this, EditDiaryActivity::class.java)
