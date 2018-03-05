@@ -1,11 +1,10 @@
 package com.example.kouhei.todidlist
 
-import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_edit_diary.*
+import MyAppCompatActivity
 
-class EditDiaryActivity : AppCompatActivity() {
+class EditDiaryActivity : MyAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

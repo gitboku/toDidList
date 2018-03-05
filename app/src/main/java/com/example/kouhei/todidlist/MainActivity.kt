@@ -2,25 +2,18 @@ package com.example.kouhei.todidlist
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.view.View
-import android.widget.CalendarView
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
-import MySQLiteOpenHelper
+import MyAppCompatActivity
 
-const val EXTRA_DATE = "com.example.kouhei.todidList.SELECTED_DATE"
+const val EXTRA_DATE = "com.example.todidList.SELECTED_DATE"
 
-class MainActivity :  AppCompatActivity() {
+class MainActivity :  MyAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        // データベースのインスタンスを作る
-        var helper = MySQLiteOpenHelper(this)
-        var db = helper.writableDatabase
 
         // CalendarView.OnDateChangeListener has only abstract onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth)
         // よって、SAM変換によりonSelectedDayChangeを省略できる
