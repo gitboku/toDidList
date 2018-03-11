@@ -7,7 +7,7 @@
     tools:context="com.example.kouhei.todidlist.EditDiaryActivity">
 
     <TextView
-        android:id="@+id/diaryText"
+        android:id="@+id/diaryPanel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"

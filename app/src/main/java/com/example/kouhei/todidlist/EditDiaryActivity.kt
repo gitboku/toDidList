@@ -2,7 +2,6 @@ package com.example.kouhei.todidlist
 
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_edit_diary.*
-import MyAppCompatActivity
 
 class EditDiaryActivity : MyAppCompatActivity() {
 
@@ -13,6 +12,6 @@ class EditDiaryActivity : MyAppCompatActivity() {
         // kotlinではgetIntent()はいらない
         var selectedDate = intent.getStringExtra(EXTRA_DATE)
 
-        diaryText.setText("hello EditDiaryActivity !")
+        diaryPanel.setText("hello EditDiaryActivity !")
     }
 }

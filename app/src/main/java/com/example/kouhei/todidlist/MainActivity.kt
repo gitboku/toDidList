@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
-import MyAppCompatActivity
 
 const val EXTRA_DATE = "com.example.todidList.SELECTED_DATE"
 

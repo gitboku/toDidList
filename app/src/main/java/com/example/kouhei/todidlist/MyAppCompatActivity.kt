@@ -1,3 +1,5 @@
+package com.example.kouhei.todidlist
+
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
@@ -11,9 +13,5 @@ open class MyAppCompatActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
-
-        // データベースのインスタンスを作る
-        var helper = MySQLiteOpenHelper(this)
-        var db = helper.writableDatabase
     }
 }
