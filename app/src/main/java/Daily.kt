@@ -26,9 +26,4 @@ class Daily {
     // 日記のイメージ画像のID
     @ColumnInfo(name = "image_id")
     var imageId: Int? = null
-
-//    @ColumnInfo(name = "last_name")
-//    var lastName: String? = null
-//
-//    var age: Int = 0
 }
