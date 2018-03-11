@@ -21,7 +21,10 @@ class Daily {
     @ColumnInfo(name = "daily_text")
     var dailyText: String? = null
 
-    // TODO: 日記の日付
+    // 日記の日付
+    //CalendarView.getDate() gets the selected date in milliseconds since January 1, 1970 00:00:00 in getDefault() time zone.
+    @ColumnInfo(name = "calendar_date")
+    var calendarDate: Int = 0
 
     // 日記のイメージ画像のID
     @ColumnInfo(name = "image_id")
