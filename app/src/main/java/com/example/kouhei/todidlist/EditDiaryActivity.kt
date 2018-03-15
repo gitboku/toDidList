@@ -9,7 +9,7 @@ class EditDiaryActivity : MyAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_diary)
 
-        // kotlinではgetIntent()はいらない
+        // kotlinではgetIntent()は"intent"でOK
         var selectedDate = intent.getStringExtra(EXTRA_DATE)
 
         diaryPanel.setText(selectedDate)
