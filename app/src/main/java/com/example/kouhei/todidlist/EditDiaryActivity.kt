@@ -12,6 +12,6 @@ class EditDiaryActivity : MyAppCompatActivity() {
         // kotlinではgetIntent()はいらない
         var selectedDate = intent.getStringExtra(EXTRA_DATE)
 
-        diaryPanel.setText("hello EditDiaryActivity !")
+        diaryPanel.setText(selectedDate)
     }
 }

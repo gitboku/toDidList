@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
+import AppDatabase
+import android.arch.persistence.room.Room
 
 const val EXTRA_DATE = "com.example.todidList.SELECTED_DATE"
 
@@ -22,20 +24,20 @@ class MainActivity :  MyAppCompatActivity() {
         }
 
         textView.setOnClickListener {
-            moveToEditPage()
+            moveToEditPage(textView.text.toString())
         }
     }
 
     // 日付がタップされたときにEdit（または閲覧）画面に遷移するメソッド
     // xmlのonClick属性に対応させるには、引数にViewパラメータを含む必要があるが、今回はTextViewのListenerを使うのでいらない。
     // TODO: カレンダーのインスタンス（日付がわかるもの）を引数に含める
-    fun moveToEditPage(){
+    fun moveToEditPage(nowDateString: String){
         // 一つ目のコンストラクタはContext。ActivityはContextのサブクラスなのでthisを使う
         // 二つ目はIntentが送られるアプリコンポーネントのClass（開始されるActivity）
         var intent = Intent(this, EditDiaryActivity::class.java)
 
         // TODO: カレンダー部分で選択してる日付を渡すようにする
-        intent.putExtra(EXTRA_DATE, Date())
+        intent.putExtra(EXTRA_DATE, nowDateString)
 
         startActivity(intent)
     }
