@@ -5,12 +5,15 @@ import android.os.Bundle
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
-import AppDatabase
-import android.arch.persistence.room.Room
 
 const val EXTRA_DATE = "com.example.todidList.SELECTED_DATE"
+const val DISP_DATE_FORMAT = "yyyy-MM-dd"
 
 class MainActivity :  MyAppCompatActivity() {
+
+    // アプリ起動時は当日のタイムスタンプで初期化
+    private var nowTimeStamp: Long = 0
+//    private var nowTimeStamp = calendar.date ← error
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,8 +23,9 @@ class MainActivity :  MyAppCompatActivity() {
         // よって、SAM変換によりonSelectedDayChangeを省略できる
         // The month that was set [0-11].
         calendar.setOnDateChangeListener { calendar, year, month, dayOfMonth ->
-            Log.d("myTag", "now date is $year/$month/$dayOfMonth")
             textView.text = "now date is $year/$month/$dayOfMonth"
+            nowTimeStamp = getNowTimeStamp(year, month, dayOfMonth)
+            Log.d("myTag", nowTimeStamp.toString())
         }
 
         textView.setOnClickListener {
@@ -36,9 +40,17 @@ class MainActivity :  MyAppCompatActivity() {
         // 二つ目はIntentが送られるアプリコンポーネントのClass（開始されるActivity）
         var intent = Intent(this, EditDiaryActivity::class.java)
 
-        // カレンダー部分で選択してる日付を渡す
-        intent.putExtra(EXTRA_DATE, calendar.date.toString())
+        // カレンダー部分で選択してる日付をTimeStampをLong型で渡す
+        intent.putExtra(EXTRA_DATE, nowTimeStamp)
 
         startActivity(intent)
+    }
+
+    // CalendarViewで選択してる日付のタイムスタンプを取得する
+    private fun getNowTimeStamp(year: Int, month: Int, dayOfMonth: Int): Long {
+        var c = Calendar.getInstance()
+        c.set(year, month, dayOfMonth)
+
+        return c.timeInMillis
     }
 }

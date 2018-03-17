@@ -10,8 +10,8 @@ class EditDiaryActivity : MyAppCompatActivity() {
         setContentView(R.layout.activity_edit_diary)
 
         // kotlinではgetIntent()は"intent"でOK
-        var selectedDate = intent.getStringExtra(EXTRA_DATE)
+        var selectedDate = intent.getLongExtra(EXTRA_DATE, 0)
 
-        diaryPanel.setText(selectedDate)
+        diaryPanel.setText(selectedDate.toString())
     }
 }
