@@ -12,7 +12,7 @@ const val DISP_DATE_FORMAT = "yyyy-MM-dd"
 class MainActivity :  MyAppCompatActivity() {
 
     // アプリ起動時は当日のタイムスタンプで初期化
-    private var nowTimeStamp: Long = 0
+    private var nowTimeStamp: Long = Calendar.getInstance().timeInMillis
 //    private var nowTimeStamp = calendar.date ← error
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +23,7 @@ class MainActivity :  MyAppCompatActivity() {
         // よって、SAM変換によりonSelectedDayChangeを省略できる
         // The month that was set [0-11].
         calendar.setOnDateChangeListener { calendar, year, month, dayOfMonth ->
-            textView.text = "now date is $year/$month/$dayOfMonth"
+            textView.text = getTextView("now date is $year/$month/$dayOfMonth")
             nowTimeStamp = getNowTimeStamp(year, month, dayOfMonth)
             Log.d("myTag", nowTimeStamp.toString())
         }
@@ -52,5 +52,13 @@ class MainActivity :  MyAppCompatActivity() {
         c.set(year, month, dayOfMonth)
 
         return c.timeInMillis
+    }
+
+    // textViewの部分に表示するための文章を返す。
+    // TODO 選択してる日付から日記の内容をselectし、それを返すようにする
+    private fun getTextView(any: Any): String {
+        var myText = "now date is ${any}"
+
+        return myText
     }
 }
