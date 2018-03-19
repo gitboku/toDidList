@@ -8,20 +8,20 @@ import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
 
 @Dao
-interface DailyDao{
+interface DiaryDao{
     // Data Access Object
     // ユーザはこのインターフェースを用いてDBの操作を行う
     // このクラスがDAOなのではなく、@DaoアノテーションをつけることでRoomが自動的にDAOを生成する
 
-    @Query("SELECT * FROM daily")
-    fun getAll(): List<Daily>
+    @Query("SELECT * FROM diary")
+    fun getAll(): List<Diary>
 
     @Insert
-    fun insert(daily: Daily)
+    fun insert(diary: Diary)
 
     @Delete
-    fun delete(daily: Daily)
+    fun delete(diary: Diary)
 
-    // TODO: 日付でDailyを検索
-    // TODO: 日付でDailyを更新
+    // TODO: 日付でDiaryを検索
+    // TODO: 日付でDiaryを更新
 }

@@ -23,7 +23,7 @@ class MainActivity :  MyAppCompatActivity() {
         // よって、SAM変換によりonSelectedDayChangeを省略できる
         // The month that was set [0-11].
         calendar.setOnDateChangeListener { calendar, year, month, dayOfMonth ->
-            textView.text = getTextView("now date is $year/$month/$dayOfMonth")
+            textView.text = getTextView("$year/$month/$dayOfMonth")
             nowTimeStamp = getNowTimeStamp(year, month, dayOfMonth)
             Log.d("myTag", nowTimeStamp.toString())
         }

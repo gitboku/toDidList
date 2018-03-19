@@ -7,7 +7,7 @@ import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 
 @Entity
-class Daily {
+class Diary {
     /**
      * ORMライブラリではテーブルに保存される各行のデータをクラスとして表現する
      * 必要なデータ構造をクラスとして表現することで、そのデータの保存に必要なテーブルが自動生成される
@@ -18,8 +18,8 @@ class Daily {
 
     // ColumnInfoアノテーションをつけることで詳細な設定ができる
     // name属性は後でSQLを書く時のカラム名として使う。デフォルトのカラム名はプロパティ名と同じ
-    @ColumnInfo(name = "daily_text")
-    var dailyText: String? = null
+    @ColumnInfo(name = "diary_text")
+    var diaryText: String? = null
 
     // 日記の日付
     //CalendarView.getDate() gets the selected date in milliseconds since January 1, 1970 00:00:00 in getDefault() time zone.
