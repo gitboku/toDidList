@@ -33,8 +33,10 @@ class MainActivity :  MyAppCompatActivity() {
         }
     }
 
-    // 日付がタップされたときにEdit（または閲覧）画面に遷移するメソッド
-    // xmlのonClick属性に対応させるには、引数にViewパラメータを含む必要があるが、今回はTextViewのListenerを使うのでいらない。
+    /**
+     * EditDairyActivityに遷移するメソッド
+     * 引数にViewパラメータを入れればxmlのonClick属性に対応するが、今回はTextViewのListenerを使うのでいらない。
+     */
     fun moveToEditPage(){
         // 一つ目のコンストラクタはContext。ActivityはContextのサブクラスなのでthisを使う
         // 二つ目はIntentが送られるアプリコンポーネントのClass（開始されるActivity）
