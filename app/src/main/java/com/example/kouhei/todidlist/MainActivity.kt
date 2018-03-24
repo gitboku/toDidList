@@ -40,7 +40,7 @@ class MainActivity :  MyAppCompatActivity() {
     fun moveToEditPage(){
         // 一つ目のコンストラクタはContext。ActivityはContextのサブクラスなのでthisを使う
         // 二つ目はIntentが送られるアプリコンポーネントのClass（開始されるActivity）
-        var intent = Intent(this, EditDiaryActivity::class.java)
+        val intent = Intent(this, EditDiaryActivity::class.java)
 
         // カレンダー部分で選択してる日付をTimeStampをLong型で渡す
         intent.putExtra(EXTRA_DATE, nowTimeStamp)
@@ -50,7 +50,7 @@ class MainActivity :  MyAppCompatActivity() {
 
     // CalendarViewで選択してる日付のタイムスタンプを取得する
     private fun getNowTimeStamp(year: Int, month: Int, dayOfMonth: Int): Long {
-        var c = Calendar.getInstance()
+        val c = Calendar.getInstance()
         c.set(year, month, dayOfMonth)
 
         return c.timeInMillis

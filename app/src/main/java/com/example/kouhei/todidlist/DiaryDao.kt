@@ -18,6 +18,9 @@ interface DiaryDao{
     @Query("SELECT * FROM diary")
     fun getAll(): List<Diary>
 
+    @Query("SELECT * FROM diary WHERE calendar_date = :selectDate")
+    fun getEntityFromDate(selectDate: Int): Diary
+
     @Insert
     fun insert(diary: Diary)
 

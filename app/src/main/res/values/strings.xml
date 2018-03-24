@@ -5,4 +5,5 @@
 
     <string name="hello_blank_fragment">This is first fragment.</string>
     <string name="title_activity_edit_diary">EditDiaryActivity</string>
+    <string name="diary_yet">日記はありません。</string>
 </resources>
