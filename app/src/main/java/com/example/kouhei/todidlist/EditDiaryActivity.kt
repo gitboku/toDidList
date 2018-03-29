@@ -5,8 +5,6 @@ import kotlinx.android.synthetic.main.activity_edit_diary.*
 import android.arch.persistence.room.Room
 import android.util.Log
 import com.example.kouhei.todidlist.R.string.diary_yet
-import kotlinx.coroutines.experimental.*
-import java.lang.Thread.sleep
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.concurrent.thread
@@ -21,12 +19,11 @@ class EditDiaryActivity : MyAppCompatActivity() {
 
         // kotlinではgetIntent()は"intent"でOK
         val selectDate = this.getSelectDate(intent.getLongExtra(EXTRA_DATE, 0))
-
-        // MainActivityで選択してる日付のEntityを取得
         val db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "applyDatabase").build()
 
         // 選択してる日付の日記Entityを取得し、日記本文を表示する
         thread {
+            // MainActivityで選択してる日付のEntityを取得
             val diary = db.diaryDao().getEntityFromDate(selectDate)
 
             // DiaryのEntityはnullである場合がある。
