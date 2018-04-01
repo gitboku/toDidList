@@ -5,6 +5,7 @@ import kotlinx.android.synthetic.main.activity_edit_diary.*
 import android.arch.persistence.room.Room
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.Menu
 import com.example.kouhei.todidlist.R.string.diary_yet
 import java.text.SimpleDateFormat
 import java.util.*
@@ -40,6 +41,14 @@ class EditDiaryActivity : AppCompatActivity() {
 
         // TODO: 完了ボタンが押された時の処理。
         // 日記をDBに書き込む
+    }
+
+    /**
+     * Toolbarにアイコンを表示する
+     */
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_edit, menu)
+        return true
     }
 
     /**
