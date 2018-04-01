@@ -6,6 +6,7 @@ import android.arch.persistence.room.Room
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import com.example.kouhei.todidlist.R.string.diary_yet
 import java.text.SimpleDateFormat
 import java.util.*
@@ -35,12 +36,27 @@ class EditDiaryActivity : AppCompatActivity() {
             if (diary != null){
                 diaryPanel.setText(diary.diaryText)
             } else {
+                // TODO MainActivityで日付をクリックすると、まれにここでエラーが出てアプリが止まる
                 diaryPanel.setText(diary_yet)
             }
         }
+    }
 
-        // TODO: 完了ボタンが押された時の処理。
-        // 日記をDBに書き込む
+    /**
+     * Toolbarのアイテムのどれかをクリックしたとき、システムがこのメソッドを呼び出す。
+     */
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.action_save -> {
+            // User chose the "Settings" item, show the app settings UI...
+            Log.d("myTag", "save is pushed.")
+            true
+        }
+
+        else -> {
+            // If we got here, the user's action was not recognized.
+            // Invoke the superclass to handle it.
+            super.onOptionsItemSelected(item)
+        }
     }
 
     /**
