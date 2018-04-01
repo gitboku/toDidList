@@ -12,6 +12,8 @@ const val DISP_DATE_FORMAT = "yyyy-MM-dd"
 
 class MainActivity :  AppCompatActivity() {
 
+    // TODO: アプリを起動したときに当日を選択するようにしないと、そのままEditPageに移動したときにエラーになる
+
     // アプリ起動時は当日のタイムスタンプで初期化
     private var nowTimeStamp: Long = Calendar.getInstance().timeInMillis
 //    private var nowTimeStamp = calendar.date ← error
@@ -19,6 +21,9 @@ class MainActivity :  AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // アプリ上部のToolbarを呼び出す
+        setSupportActionBar(main_page_toolbar)
 
         // CalendarView.OnDateChangeListener has only abstract onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth)
         // よって、SAM変換によりonSelectedDayChangeを省略できる

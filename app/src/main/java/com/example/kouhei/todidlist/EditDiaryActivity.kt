@@ -18,6 +18,9 @@ class EditDiaryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_diary)
 
+        // アプリ上部のToolbarを呼び出す
+        setSupportActionBar(edit_page_toolbar)
+
         // kotlinではgetIntent()は"intent"でOK
         val selectDate = this.getSelectDate(intent.getLongExtra(EXTRA_DATE, 0))
         val db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "applyDatabase").build()
