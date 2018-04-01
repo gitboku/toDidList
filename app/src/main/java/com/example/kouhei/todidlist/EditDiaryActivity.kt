@@ -23,6 +23,9 @@ class EditDiaryActivity : AppCompatActivity() {
         // アプリ上部のToolbarを呼び出す
         setSupportActionBar(edit_page_toolbar)
 
+        // 戻るボタンを表示
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         // kotlinではgetIntent()は"intent"でOK
         val selectDate = this.getSelectDate(intent.getLongExtra(EXTRA_DATE, 0))
         val db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "applyDatabase").build()

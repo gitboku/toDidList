@@ -4,12 +4,6 @@
 
     <!--TODO themeを作成してボタンの色を見やすくする-->
     <item
-        android:id="@+id/action_back"
-        android:icon="@drawable/ic_arrow_back_black_24dp"
-        android:title="@string/action_back_button"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/action_save"
         android:icon="@drawable/ic_save_black_24dp"
         android:title="@string/action_save_button"
