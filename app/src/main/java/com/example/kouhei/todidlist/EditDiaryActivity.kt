@@ -3,6 +3,7 @@ package com.example.kouhei.todidlist
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_edit_diary.*
 import android.arch.persistence.room.Room
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.example.kouhei.todidlist.R.string.diary_yet
 import java.text.SimpleDateFormat
@@ -11,7 +12,7 @@ import kotlin.concurrent.thread
 
 const val DATE_PATTERN_TO_DATABASE = "yyyyMMdd"
 
-class EditDiaryActivity : MyAppCompatActivity() {
+class EditDiaryActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +34,9 @@ class EditDiaryActivity : MyAppCompatActivity() {
                 diaryPanel.setText(diary_yet)
             }
         }
+
+        // TODO: 完了ボタンが押された時の処理。
+        // 日記をDBに書き込む
     }
 
     /**

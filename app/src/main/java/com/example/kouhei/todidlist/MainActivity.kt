@@ -2,6 +2,7 @@ package com.example.kouhei.todidlist
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
@@ -9,7 +10,7 @@ import java.util.*
 const val EXTRA_DATE = "com.example.todidList.SELECTED_DATE"
 const val DISP_DATE_FORMAT = "yyyy-MM-dd"
 
-class MainActivity :  MyAppCompatActivity() {
+class MainActivity :  AppCompatActivity() {
 
     // アプリ起動時は当日のタイムスタンプで初期化
     private var nowTimeStamp: Long = Calendar.getInstance().timeInMillis
