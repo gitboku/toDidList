@@ -39,7 +39,7 @@ class EditDiaryActivity : AppCompatActivity() {
             if (diary != null){
                 diaryPanel.setText(diary.diaryText)
             } else {
-                // TODO MainActivityで日付をクリックすると、まれにここでエラーが出てアプリが止まる
+                // TODO when click datePanel in MainActivity, sometimes error here.
                 diaryPanel.setText(diary_yet)
             }
         }

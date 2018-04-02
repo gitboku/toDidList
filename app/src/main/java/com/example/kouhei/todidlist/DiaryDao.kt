@@ -27,6 +27,5 @@ interface DiaryDao{
     @Delete
     fun delete(diary: Diary)
 
-    // TODO: 日付でDiaryを検索
-    // TODO: 日付でDiaryを更新
+    // TODO: update diary with timestamp
 }

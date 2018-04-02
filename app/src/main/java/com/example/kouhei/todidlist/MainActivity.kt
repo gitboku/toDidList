@@ -12,7 +12,7 @@ const val DISP_DATE_FORMAT = "yyyy-MM-dd"
 
 class MainActivity :  AppCompatActivity() {
 
-    // TODO: アプリを起動したときに当日を選択するようにしないと、そのままEditPageに移動したときにエラーになる
+    // TODO: If you do not to select a day when you start the app, an error when you move to EditPage.
 
     // アプリ起動時は当日のタイムスタンプで初期化
     private var nowTimeStamp: Long = Calendar.getInstance().timeInMillis
@@ -63,7 +63,7 @@ class MainActivity :  AppCompatActivity() {
     }
 
     // textViewの部分に表示するための文章を返す。
-    // TODO 選択してる日付から日記の内容をselectし、それを返すようにする
+    // TODO The diary text of the selected date is returned.
     private fun getTextView(any: Any): String {
         var myText = "now date is ${any}"
 
