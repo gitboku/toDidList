@@ -4,10 +4,7 @@ package com.example.kouhei.todidlist
  * Created by kouhei on 3/11/2018.
  */
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Delete
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.Query
+import android.arch.persistence.room.*
 
 @Dao
 interface DiaryDao{
@@ -21,11 +18,12 @@ interface DiaryDao{
     @Query("SELECT * FROM diary WHERE calendar_date = :selectDate")
     fun getEntityFromDate(selectDate: Int): Diary
 
+    @Update
+    fun update(diary: Diary)
+
     @Insert
     fun insert(diary: Diary)
 
     @Delete
     fun delete(diary: Diary)
-
-    // TODO: update diary with timestamp
 }
