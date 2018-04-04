@@ -16,6 +16,8 @@ const val DATE_PATTERN_TO_DATABASE = "yyyyMMdd"
 
 class EditDiaryActivity : AppCompatActivity() {
 
+    val db = Room.databaseBuilder(this, AppDatabase::class.java, "applyDatabase").build()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_diary)
@@ -28,7 +30,6 @@ class EditDiaryActivity : AppCompatActivity() {
 
         // kotlinではgetIntent()は"intent"でOK
         val selectDate = this.getSelectDate(intent.getLongExtra(EXTRA_DATE, 0))
-        val db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "applyDatabase").build()
 
         // 選択してる日付の日記Entityを取得し、日記本文を表示する
         thread {

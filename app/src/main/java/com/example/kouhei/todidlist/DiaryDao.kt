@@ -21,7 +21,7 @@ interface DiaryDao{
     @Update
     fun update(diary: Diary)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(diary: Diary)
 
     @Delete
