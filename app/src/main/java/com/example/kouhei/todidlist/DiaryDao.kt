@@ -15,6 +15,9 @@ interface DiaryDao{
     @Query("SELECT * FROM diary")
     fun getAll(): List<Diary>
 
+    /**
+     * MainActivityで選択してる日付のEntityを取得
+     */
     @Query("SELECT * FROM diary WHERE calendar_date = :selectDate")
     fun getEntityWithDate(selectDate: Int): Diary
 

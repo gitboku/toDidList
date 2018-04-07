@@ -35,7 +35,6 @@ class EditDiaryActivity : AppCompatActivity() {
 
         // 選択してる日付の日記Entityを取得し、日記本文を表示する
         thread {
-            // MainActivityで選択してる日付のEntityを取得
             val diary = db.diaryDao().getEntityWithDate(selectDate)
 
             // DiaryのEntityはnullである場合がある。
@@ -53,8 +52,7 @@ class EditDiaryActivity : AppCompatActivity() {
      */
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_save -> {
-            // User chose the "Settings" item, show the app settings UI...
-            Log.d("myTag", "selectDate = " + selectDate)
+            saveDiary()
             true
         }
 
@@ -62,6 +60,26 @@ class EditDiaryActivity : AppCompatActivity() {
             // If we got here, the user's action was not recognized.
             // Invoke the superclass to handle it.
             super.onOptionsItemSelected(item)
+        }
+    }
+
+    /**
+     * 日記をsaveする
+     * UpdateかInsertかはDiaryのEntityがnullかどうかで判断
+     */
+    fun saveDiary() {
+        val diaryDao = db.diaryDao()
+        thread {
+            val diary = diaryDao.getEntityWithDate(selectDate)
+
+            if (diary != null){
+                diaryDao.updateDiaryWithDate(diaryPanel.text.toString(), selectDate)
+            } else {
+                val diary = Diary()
+                diary.diaryText = diaryPanel.text.toString()
+                diary.calendarDate = selectDate
+                diaryDao.insert(diary)
+            }
         }
     }
 
