@@ -16,7 +16,9 @@ const val DATE_PATTERN_TO_DATABASE = "yyyyMMdd"
 
 class EditDiaryActivity : AppCompatActivity() {
 
-    val db = Room.databaseBuilder(this, AppDatabase::class.java, "applyDatabase").build()
+    private val db = Room.databaseBuilder(this, AppDatabase::class.java, "applyDatabase").build()
+
+    private var selectDate: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +31,7 @@ class EditDiaryActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // kotlinではgetIntent()は"intent"でOK
-        val selectDate = this.getSelectDate(intent.getLongExtra(EXTRA_DATE, 0))
+        selectDate = this.getSelectDate(intent.getLongExtra(EXTRA_DATE, 0))
 
         // 選択してる日付の日記Entityを取得し、日記本文を表示する
         thread {
@@ -52,7 +54,7 @@ class EditDiaryActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_save -> {
             // User chose the "Settings" item, show the app settings UI...
-            Log.d("myTag", "save is pushed.")
+            Log.d("myTag", "selectDate = " + selectDate)
             true
         }
 
