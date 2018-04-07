@@ -34,7 +34,7 @@ class EditDiaryActivity : AppCompatActivity() {
         // 選択してる日付の日記Entityを取得し、日記本文を表示する
         thread {
             // MainActivityで選択してる日付のEntityを取得
-            val diary = db.diaryDao().getEntityFromDate(selectDate)
+            val diary = db.diaryDao().getEntityWithDate(selectDate)
 
             // DiaryのEntityはnullである場合がある。
             if (diary != null){
