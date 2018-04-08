@@ -94,7 +94,7 @@ class EditDiaryActivity : AppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java)
 
         // カレンダー部分で選択してる日付をInt型で、DATE_PATTERN_TO_DATABASEのフォーマットで渡す
-        intent.putExtra(EXTRA_DATE, selectDate)
+        intent.putExtra(EXTRA_DATE, intent.getLongExtra(EXTRA_DATE, 0))
 
         startActivity(intent)
     }
