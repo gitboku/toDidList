@@ -3,6 +3,7 @@ package com.example.kouhei.todidlist
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_edit_diary.*
 import android.arch.persistence.room.Room
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
@@ -53,6 +54,7 @@ class EditDiaryActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_save -> {
             saveDiary()
+            moveToMainPage()
             true
         }
 
@@ -81,6 +83,20 @@ class EditDiaryActivity : AppCompatActivity() {
                 diaryDao.insert(diary)
             }
         }
+    }
+
+    /**
+     * MainActivityに遷移するメソッド
+     */
+    fun moveToMainPage(){
+        // 一つ目のコンストラクタはContext。ActivityはContextのサブクラスなのでthisを使う
+        // 二つ目はIntentが送られるアプリコンポーネントのClass（開始されるActivity）
+        val intent = Intent(this, MainActivity::class.java)
+
+        // カレンダー部分で選択してる日付をInt型で、DATE_PATTERN_TO_DATABASEのフォーマットで渡す
+        intent.putExtra(EXTRA_DATE, selectDate)
+
+        startActivity(intent)
     }
 
     /**
