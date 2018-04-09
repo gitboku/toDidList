@@ -13,8 +13,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.concurrent.thread
 
-const val DATE_PATTERN_TO_DATABASE = "yyyyMMdd"
-
 class EditDiaryActivity : AppCompatActivity() {
 
     private val db = Room.databaseBuilder(this, AppDatabase::class.java, "applyDatabase").build()

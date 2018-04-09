@@ -4,6 +4,7 @@ import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.*
 
+const val DATE_PATTERN_TO_DATABASE = "yyyyMMdd"
 
 /**
  * 選択している日付をInt型で、DATE_PATTERN_TO_DATABASEのフォーマットで返す。
