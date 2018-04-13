@@ -5,12 +5,9 @@ import kotlinx.android.synthetic.main.activity_edit_diary.*
 import android.arch.persistence.room.Room
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.example.kouhei.todidlist.R.string.diary_yet
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.concurrent.thread
 
 class EditDiaryActivity : AppCompatActivity() {
@@ -30,7 +27,7 @@ class EditDiaryActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // kotlinではgetIntent()は"intent"でOK
-        selectDate = getSelectDate(intent.getLongExtra(EXTRA_DATE, 0))
+        selectDate = intent.getIntExtra(EXTRA_DATE, 0)
 
         // 選択してる日付の日記Entityを取得し、日記本文を表示する
         thread {

@@ -20,8 +20,9 @@ fun getSelectDate(timestamp: Long): Int {
         if (selectDate != null) {
             return selectDate
         }
+        Log.e("myTag", "selectDate is null")
     }catch (e: Exception) {
-        Log.e("cast error", "String? cast to int error: " + e.toString())
+        Log.e("myTag", "String? cast to int error: " + e.toString())
     }
 
     return 0
@@ -37,7 +38,16 @@ private fun getDateTimeString(timestamp: Long): String? {
 
         return sdf.format(netDate)
     } catch (e: Exception) {
-
+        Log.e("myTag", "Long to date error: " + e.toString())
         return e.toString()
     }
+}
+
+/**
+ * 現在日時をDATE_PATTERN_TO_DATABASE形式で取得する.<br></br>
+ */
+fun getNowDate(): Int {
+    val df = SimpleDateFormat(DATE_PATTERN_TO_DATABASE)
+    val date = Date(System.currentTimeMillis())
+    return df.format(date).toInt()
 }
