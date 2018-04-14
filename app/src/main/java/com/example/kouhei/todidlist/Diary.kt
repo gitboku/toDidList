@@ -1,9 +1,5 @@
 package com.example.kouhei.todidlist
 
-/**
- * Created by kouhei on 3/11/2018.
- */
-
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey

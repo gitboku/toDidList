@@ -1,9 +1,5 @@
 package com.example.kouhei.todidlist
 
-/**
- * Created by kouhei on 3/11/2018.
- */
-
 import android.arch.persistence.room.*
 import com.example.kouhei.todidlist.Diary
 import com.example.kouhei.todidlist.DiaryDao
