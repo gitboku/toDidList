@@ -2,23 +2,22 @@ package com.example.kouhei.todidlist
 
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_edit_diary.*
-import android.arch.persistence.room.Room
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import com.example.kouhei.todidlist.R.string.diary_yet
 import kotlin.concurrent.thread
 
 class EditDiaryActivity : AppCompatActivity() {
 
-    private val db = Room.databaseBuilder(this, AppDatabase::class.java, "applyDatabase").build()
-
+    private var db: AppDatabase? = null
     private var selectDate: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_diary)
+
+        db = AppDatabase.getInstance(this)
 
         // アプリ上部のToolbarを呼び出す
         setSupportActionBar(edit_page_toolbar)
@@ -31,14 +30,14 @@ class EditDiaryActivity : AppCompatActivity() {
 
         // 選択してる日付の日記Entityを取得し、日記本文を表示する
         thread {
-            val diary = db.diaryDao().getEntityWithDate(selectDate)
+            val diary = db?.diaryDao()?.getEntityWithDate(selectDate)
 
             // DiaryのEntityはnullである場合がある。
             if (diary != null){
                 diaryPanel.setText(diary.diaryText)
             } else {
                 // TODO when click datePanel in MainActivity, sometimes error here.
-                diaryPanel.setText(diary_yet)
+                diaryPanel.setText(R.string.diary_yet)
             }
         }
     }
@@ -65,9 +64,9 @@ class EditDiaryActivity : AppCompatActivity() {
      * UpdateかInsertかはDiaryのEntityがnullかどうかで判断
      */
     fun saveDiary() {
-        val diaryDao = db.diaryDao()
+        val diaryDao = db?.diaryDao()
         thread {
-            val diary = diaryDao.getEntityWithDate(selectDate)
+            val diary = diaryDao?.getEntityWithDate(selectDate)
 
             if (diary != null){
                 diaryDao.updateDiaryWithDate(diaryPanel.text.toString(), selectDate)
@@ -75,7 +74,7 @@ class EditDiaryActivity : AppCompatActivity() {
                 val diary = Diary()
                 diary.diaryText = diaryPanel.text.toString()
                 diary.calendarDate = selectDate
-                diaryDao.insert(diary)
+                diaryDao?.insert(diary)
             }
         }
     }
