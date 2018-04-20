@@ -26,7 +26,7 @@ class EditDiaryActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // kotlinではgetIntent()は"intent"でOK
-        selectDate = intent.getIntExtra(EXTRA_DATE, 0)
+        selectDate = getSelectDate(intent.getLongExtra(EXTRA_DATE, 0))
 
         // 選択してる日付の日記Entityを取得し、日記本文を表示する
         thread {
@@ -87,7 +87,7 @@ class EditDiaryActivity : AppCompatActivity() {
         // 二つ目はIntentが送られるアプリコンポーネントのClass（開始されるActivity）
         val intent = Intent(this, MainActivity::class.java)
 
-        // カレンダー部分で選択してる日付をInt型で、DATE_PATTERN_TO_DATABASEのフォーマットで渡す
+        // MainPageから来たintentをそのまま返す
         intent.putExtra(EXTRA_DATE, intent.getLongExtra(EXTRA_DATE, 0))
 
         startActivity(intent)

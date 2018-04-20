@@ -3,7 +3,6 @@ package com.example.kouhei.todidlist
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
@@ -11,28 +10,32 @@ const val EXTRA_DATE = "com.example.todidList.SELECTED_DATE"
 
 class MainActivity :  AppCompatActivity() {
 
-    private var selectDate: Int = 0
-
-    init {
-        selectDate = getNowDate()
-    }
+    private var nowTimeStamp: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        var selectDate: Int
+
         // アプリ上部のToolbarを呼び出す
         setSupportActionBar(main_page_toolbar)
 
         // EditPageからのselectDateがなければ、defaultとしてinitのselectDateを渡す
-        selectDate = intent.getIntExtra(EXTRA_DATE, selectDate)
+//        selectDate = intent.getIntExtra(EXTRA_DATE, selectDate)
+        if (intent.getLongExtra(EXTRA_DATE, 0) > 0) {
+            nowTimeStamp = 0
+        } else {
+            // EditPageから遷移してきたらこっち
+            nowTimeStamp = intent.getLongExtra(EXTRA_DATE, 0)
+        }
 
         // CalendarView.OnDateChangeListener has only abstract onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth)
         // よって、SAM変換によりonSelectedDayChangeを省略できる
         // The month that was set [0-11].
         calendar.setOnDateChangeListener { calendar, year, month, dayOfMonth ->
             textView.text = getTextView("$year/$month/$dayOfMonth")
-            val nowTimeStamp = getNowTimeStamp(year, month, dayOfMonth)
+            nowTimeStamp = getNowTimeStamp(year, month, dayOfMonth)
             selectDate = getSelectDate(nowTimeStamp)
         }
 
@@ -51,7 +54,7 @@ class MainActivity :  AppCompatActivity() {
         val intent = Intent(this, EditDiaryActivity::class.java)
 
         // カレンダー部分で選択してる日付をTimeStampをLong型で渡す
-        intent.putExtra(EXTRA_DATE, selectDate)
+        intent.putExtra(EXTRA_DATE, nowTimeStamp)
 
         startActivity(intent)
     }
