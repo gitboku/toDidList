@@ -7,6 +7,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
 const val EXTRA_DATE = "com.example.todidList.SELECTED_DATE"
+const val FROM_CLASS = "com.example.todidList.FROM_CLASS"
 
 class MainActivity :  AppCompatActivity() {
 
@@ -23,11 +24,11 @@ class MainActivity :  AppCompatActivity() {
 
         // EditPageからのselectDateがなければ、defaultとしてinitのselectDateを渡す
 //        selectDate = intent.getIntExtra(EXTRA_DATE, selectDate)
-        if (intent.getLongExtra(EXTRA_DATE, 0) > 0) {
-            nowTimeStamp = 0
-        } else {
-            // EditPageから遷移してきたらこっち
+        if (intent.getStringExtra(FROM_CLASS) == "EditDiaryActivity") {
             nowTimeStamp = intent.getLongExtra(EXTRA_DATE, 0)
+            calendar.setDate(nowTimeStamp)
+        } else {
+            nowTimeStamp = 0
         }
 
         // CalendarView.OnDateChangeListener has only abstract onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth)

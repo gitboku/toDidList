@@ -11,6 +11,7 @@ import kotlin.concurrent.thread
 class EditDiaryActivity : AppCompatActivity() {
 
     private var db: AppDatabase? = null
+    private var nowTimeStamp: Long = 0
     private var selectDate: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +27,8 @@ class EditDiaryActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // kotlinではgetIntent()は"intent"でOK
-        selectDate = getSelectDate(intent.getLongExtra(EXTRA_DATE, 0))
+        nowTimeStamp = intent.getLongExtra(EXTRA_DATE, 0)
+        selectDate = getSelectDate(nowTimeStamp)
 
         // 選択してる日付の日記Entityを取得し、日記本文を表示する
         thread {
@@ -88,7 +90,8 @@ class EditDiaryActivity : AppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java)
 
         // MainPageから来たintentをそのまま返す
-        intent.putExtra(EXTRA_DATE, intent.getLongExtra(EXTRA_DATE, 0))
+        intent.putExtra(EXTRA_DATE, nowTimeStamp)
+        intent.putExtra(FROM_CLASS, this.localClassName)
 
         startActivity(intent)
     }
