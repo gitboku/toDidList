@@ -54,6 +54,13 @@ class EditDiaryActivity : AppCompatActivity() {
             true
         }
 
+        // 戻るボタン
+        // ※R.id.homeは自分が作ったものなので反応しない。android.R.id.homeはAndroid SDKのもの
+        android.R.id.home -> {
+            moveToMainPage()
+            true
+        }
+
         else -> {
             // If we got here, the user's action was not recognized.
             // Invoke the superclass to handle it.
