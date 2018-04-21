@@ -9,6 +9,7 @@ import java.util.*
 const val EXTRA_DATE = "com.example.todidList.SELECTED_DATE"
 const val FROM_CLASS = "com.example.todidList.FROM_CLASS"
 
+@Suppress("UsePropertyAccessSyntax")
 class MainActivity :  AppCompatActivity() {
 
     private var nowTimeStamp: Long = 0
@@ -23,12 +24,12 @@ class MainActivity :  AppCompatActivity() {
         setSupportActionBar(main_page_toolbar)
 
         // EditPageからのselectDateがなければ、defaultとしてinitのselectDateを渡す
-//        selectDate = intent.getIntExtra(EXTRA_DATE, selectDate)
-        if (intent.getStringExtra(FROM_CLASS) == "EditDiaryActivity") {
-            nowTimeStamp = intent.getLongExtra(EXTRA_DATE, 0)
-            calendar.setDate(nowTimeStamp)
-        } else {
-            nowTimeStamp = 0
+        when (intent.getStringExtra(FROM_CLASS)) {
+            "EditDiaryActivity" -> {
+                nowTimeStamp = intent.getLongExtra(EXTRA_DATE, 0)
+                calendar.setDate(nowTimeStamp)
+            }
+            else -> nowTimeStamp = 0
         }
 
         // CalendarView.OnDateChangeListener has only abstract onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth)
