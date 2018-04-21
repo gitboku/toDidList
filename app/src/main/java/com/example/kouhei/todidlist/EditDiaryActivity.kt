@@ -88,6 +88,7 @@ class EditDiaryActivity : AppCompatActivity() {
         }
     }
 
+    // TODO: moveToAnotherPage()を共通クラスに抜き出す
     /**
      * MainActivityに遷移するメソッド
      */
