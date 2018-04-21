@@ -12,13 +12,12 @@ const val FROM_CLASS = "com.example.todidList.FROM_CLASS"
 @Suppress("UsePropertyAccessSyntax")
 class MainActivity :  AppCompatActivity() {
 
-    private var nowTimeStamp: Long = 0
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var selectDate: Int
+        var nowTimeStamp: Long = 0
+        var selectDate: Int = getNowDate()
 
         // アプリ上部のToolbarを呼び出す
         setSupportActionBar(main_page_toolbar)
@@ -43,7 +42,7 @@ class MainActivity :  AppCompatActivity() {
         }
 
         textView.setOnClickListener {
-            moveToEditPage()
+            moveToEditPage(nowTimeStamp)
         }
     }
 
@@ -51,7 +50,7 @@ class MainActivity :  AppCompatActivity() {
      * EditDairyActivityに遷移するメソッド
      * 引数にViewパラメータを入れればxmlのonClick属性に対応するが、今回はTextViewのListenerを使うのでいらない。
      */
-    fun moveToEditPage(){
+    fun moveToEditPage(nowTimeStamp: Long){
         // 一つ目のコンストラクタはContext。ActivityはContextのサブクラスなのでthisを使う
         // 二つ目はIntentが送られるアプリコンポーネントのClass（開始されるActivity）
         val intent = Intent(this, EditDiaryActivity::class.java)
