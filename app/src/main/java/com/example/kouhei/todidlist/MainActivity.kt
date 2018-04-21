@@ -23,7 +23,7 @@ class MainActivity :  AppCompatActivity() {
         setSupportActionBar(main_page_toolbar)
 
         // EditPageからのselectDateがなければ、defaultとしてinitのselectDateを渡す
-        // TODO: not use magic word "EditDiaryActivity"
+        // TODO: should not use magic word "EditDiaryActivity"
         when (intent.getStringExtra(FROM_CLASS)) {
             "EditDiaryActivity" -> {
                 nowTimeStamp = intent.getLongExtra(EXTRA_DATE, 0)
