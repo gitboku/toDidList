@@ -27,10 +27,14 @@ class MainActivity :  AppCompatActivity() {
         when (intent.getStringExtra(FROM_CLASS)) {
             "EditDiaryActivity" -> {
                 nowTimeStamp = intent.getLongExtra(EXTRA_DATE, 0)
-                calendar.setDate(nowTimeStamp)
             }
-            else -> nowTimeStamp = 0
+            else -> {
+                nowTimeStamp = System.currentTimeMillis()
+            }
         }
+
+        calendar.setDate(nowTimeStamp)
+        textView.text = getTextView(nowTimeStamp.toString())
 
         // CalendarView.OnDateChangeListener has only abstract onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth)
         // よって、SAM変換によりonSelectedDayChangeを省略できる
