@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.experimental.launch
 import java.util.*
 
 const val EXTRA_DATE = "com.example.todidList.SELECTED_DATE"
@@ -35,14 +36,14 @@ class MainActivity :  AppCompatActivity() {
         }
 
         calendar.setDate(nowTimeStamp)
-        textView.text = getTextView(nowTimeStamp.toString())
+        updateTextView(db, getSelectDate(nowTimeStamp))
 
         // CalendarView.OnDateChangeListener has only abstract onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth)
         // よって、SAM変換によりonSelectedDayChangeを省略できる
         // The month that was set [0-11].
         calendar.setOnDateChangeListener { calendar, year, month, dayOfMonth ->
-            textView.text = getTextView("$year/$month/$dayOfMonth")
             nowTimeStamp = getNowTimeStamp(year, month, dayOfMonth)
+            updateTextView(db, getSelectDate(nowTimeStamp))
             selectDate = getSelectDate(nowTimeStamp)
         }
 
@@ -74,11 +75,17 @@ class MainActivity :  AppCompatActivity() {
         return c.timeInMillis
     }
 
-    // textViewの部分に表示するための文章を返す。
-    // TODO The diary text of the selected date is returned.
-    private fun getTextView(any: Any): String {
-        var myText = "now date is ${any}"
+    /**
+     * textViewの文章を更新する
+     */
+    private fun updateTextView(db: AppDatabase?, selectDate: Int) {
+        var diaryText = getString(R.string.diary_yet)
+        if (db == null) textView.text = diaryText
 
-        return myText
+        val thread = launch {
+            val diary = db?.diaryDao()?.getEntityWithDate(selectDate)
+            textView.text = diary?.diaryText ?: getText(R.string.diary_yet)
+        }
+        thread.start()
     }
 }
