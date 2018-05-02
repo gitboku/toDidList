@@ -1,9 +1,6 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
-
 apply plugin: 'kotlin-kapt'
 
 android {
@@ -32,17 +29,14 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    // Failed resolution of: Landroid/support/v7/internal/widget/TintManager;というエラーが出ていたが、
-    // 競合してるらしきパッケージを消したら動いた。
-    compile 'com.android.support:appcompat-v7:27.1.1'
-    // addOnTabSelectedListenerはcom.android.support:design:27.0.0
-    compile 'com.android.support:design:27.1.1'
-    // design support library
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
 
     implementation "android.arch.persistence.room:runtime:1.0.0"
     kapt "android.arch.persistence.room:compiler:1.0.0"
 
-    compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.21"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.21"
+    implementation 'com.android.support:recyclerview-v7:26.1.0'
 }
 kotlin {
     experimental {
