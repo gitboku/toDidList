@@ -3,6 +3,10 @@ package com.example.kouhei.todidlist
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import kotlinx.android.synthetic.main.activity_edit_diary.*
 import kotlinx.android.synthetic.main.activity_main_stack.*
 
 class MainStackActivity : AppCompatActivity() {
@@ -11,6 +15,9 @@ class MainStackActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_stack)
+
+        // アプリ上部のToolbarを呼び出す
+        setSupportActionBar(main_stack_page_toolbar)
 
         addDiary()
 
@@ -38,5 +45,29 @@ class MainStackActivity : AppCompatActivity() {
         diaryTextList.add("diary11")
         diaryTextList.add("diary12")
         diaryTextList.add("diary13")
+    }
+
+    /**
+     * Toolbarのアイテムのどれかをクリックしたとき、システムがこのメソッドを呼び出す。
+     */
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.action_move_to_calendar_page -> {
+            Log.d("myTag", "move_to_calendar_page pushed")
+            true
+        }
+
+        else -> {
+            // If we got here, the user's action was not recognized.
+            // Invoke the superclass to handle it.
+            super.onOptionsItemSelected(item)
+        }
+    }
+
+    /**
+     * Toolbarにアイコンを表示する
+     */
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main_stack, menu)
+        return true
     }
 }
