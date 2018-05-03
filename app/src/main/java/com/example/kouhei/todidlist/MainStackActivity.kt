@@ -1,5 +1,6 @@
 package com.example.kouhei.todidlist
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -9,7 +10,7 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_edit_diary.*
 import kotlinx.android.synthetic.main.activity_main_stack.*
 
-class MainStackActivity : AppCompatActivity() {
+class MainStackActivity : MyAppCompatActivity() {
     var diaryTextList: ArrayList<String> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +53,8 @@ class MainStackActivity : AppCompatActivity() {
      */
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_move_to_calendar_page -> {
-            Log.d("myTag", "move_to_calendar_page pushed")
+            val intent = Intent(this, MainActivity::class.java)
+            moveToAnotherPage(intent)
             true
         }
 

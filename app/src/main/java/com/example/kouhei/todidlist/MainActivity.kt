@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
+import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.experimental.launch
 import java.util.*
@@ -12,7 +13,7 @@ const val EXTRA_DATE = "com.example.todidList.SELECTED_DATE"
 const val FROM_CLASS = "com.example.todidList.FROM_CLASS"
 
 @Suppress("UsePropertyAccessSyntax")
-class MainActivity :  AppCompatActivity() {
+class MainActivity :  MyAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +51,23 @@ class MainActivity :  AppCompatActivity() {
 
         textView.setOnClickListener {
             moveToEditPage(nowTimeStamp)
+        }
+    }
+
+    /**
+     * Toolbarのアイテムのどれかをクリックしたとき、システムがこのメソッドを呼び出す。
+     */
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.action_move_to_stack_page -> {
+            val intent = Intent(this, MainStackActivity::class.java)
+            moveToAnotherPage(intent)
+            true
+        }
+
+        else -> {
+            // If we got here, the user's action was not recognized.
+            // Invoke the superclass to handle it.
+            super.onOptionsItemSelected(item)
         }
     }
 
