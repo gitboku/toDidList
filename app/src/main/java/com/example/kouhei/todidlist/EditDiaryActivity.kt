@@ -8,7 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import kotlin.concurrent.thread
 
-class EditDiaryActivity : AppCompatActivity() {
+class EditDiaryActivity : MyAppCompatActivity() {
 
     private var db: AppDatabase? = null
     private var nowTimeStamp: Long = 0
@@ -50,14 +50,22 @@ class EditDiaryActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_save -> {
             saveDiary()
-            moveToMainPage()
+
+            // todo: Intentを作成する部分はどうにかして共通化したい
+            val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra(EXTRA_DATE, nowTimeStamp) // MainPageから来たintentをそのまま返す
+            intent.putExtra(FROM_CLASS, this.localClassName)
+            moveToAnotherPage(intent)
             true
         }
 
         // 戻るボタン
         // ※R.id.homeは自分が作ったものなので反応しない。android.R.id.homeはAndroid SDKのもの
         android.R.id.home -> {
-            moveToMainPage()
+            val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra(EXTRA_DATE, nowTimeStamp) // MainPageから来たintentをそのまま返す
+            intent.putExtra(FROM_CLASS, this.localClassName)
+            moveToAnotherPage(intent)
             true
         }
 
@@ -86,22 +94,6 @@ class EditDiaryActivity : AppCompatActivity() {
                 diaryDao?.insert(diary)
             }
         }
-    }
-
-    // TODO: moveToAnotherPage()を共通クラスに抜き出す
-    /**
-     * MainActivityに遷移するメソッド
-     */
-    fun moveToMainPage(){
-        // 一つ目のコンストラクタはContext。ActivityはContextのサブクラスなのでthisを使う
-        // 二つ目はIntentが送られるアプリコンポーネントのClass（開始されるActivity）
-        val intent = Intent(this, MainActivity::class.java)
-
-        // MainPageから来たintentをそのまま返す
-        intent.putExtra(EXTRA_DATE, nowTimeStamp)
-        intent.putExtra(FROM_CLASS, this.localClassName)
-
-        startActivity(intent)
     }
 
     /**
