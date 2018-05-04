@@ -50,7 +50,10 @@ class MainActivity :  MyAppCompatActivity() {
         }
 
         textView.setOnClickListener {
-            moveToEditPage(nowTimeStamp)
+            val intent = Intent(this, EditDiaryActivity::class.java)
+            // カレンダー部分で選択してる日付をTimeStampをLong型で渡す
+            intent.putExtra(EXTRA_DATE, nowTimeStamp)
+            moveToAnotherPage(intent)
         }
     }
 
@@ -69,21 +72,6 @@ class MainActivity :  MyAppCompatActivity() {
             // Invoke the superclass to handle it.
             super.onOptionsItemSelected(item)
         }
-    }
-
-    /**
-     * EditDairyActivityに遷移するメソッド
-     * 引数にViewパラメータを入れればxmlのonClick属性に対応するが、今回はTextViewのListenerを使うのでいらない。
-     */
-    fun moveToEditPage(nowTimeStamp: Long){
-        // 一つ目のコンストラクタはContext。ActivityはContextのサブクラスなのでthisを使う
-        // 二つ目はIntentが送られるアプリコンポーネントのClass（開始されるActivity）
-        val intent = Intent(this, EditDiaryActivity::class.java)
-
-        // カレンダー部分で選択してる日付をTimeStampをLong型で渡す
-        intent.putExtra(EXTRA_DATE, nowTimeStamp)
-
-        startActivity(intent)
     }
 
     // CalendarViewで選択してる日付のタイムスタンプを取得する
