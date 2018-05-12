@@ -22,8 +22,11 @@ class DiaryAdapter(private val myDataset: ArrayList<String>) :
         }
         /**
          * １OK：ViewHolderをクリックしたとき実行されるリスナーをセットする
-         * ２：ViewHolderに日付情報を持たせる
-         * ３：Intentを作成する
+         * ２OK：ViewHolderにLiveDataを表示する
+         * 　　　１OK：LiveData<>のインスタンスをViewModelに作る
+         * 　　　２OK：MainStackActivityにonChanged()を定義してObserverオブジェクトにする
+         * 　　　３OK：observe()を使用してObserverオブジェクトをLiveDataオブジェクトにアタッチする
+         * ３：日付情報をViewHolderに持たせる
          * ４：IntentをmoveToAnotherPage()に渡す
          */
         return viewHolder

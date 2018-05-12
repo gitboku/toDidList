@@ -37,6 +37,9 @@ dependencies {
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.21"
     implementation 'com.android.support:recyclerview-v7:26.1.0'
+
+    implementation "android.arch.lifecycle:extensions:1.1.1"
+    annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
 }
 kotlin {
     experimental {

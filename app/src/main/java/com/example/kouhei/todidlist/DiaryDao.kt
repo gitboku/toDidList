@@ -1,5 +1,6 @@
 package com.example.kouhei.todidlist
 
+import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.*
 
 @Dao
@@ -8,8 +9,9 @@ interface DiaryDao{
     // ユーザはこのインターフェースを用いてDBの操作を行う
     // このクラスがDAOなのではなく、@DaoアノテーションをつけることでRoomが自動的にDAOを生成する
 
+    // List<T>を返すこともできるが、LiveData<>でラップすることにより通知を得ることができる
     @Query("SELECT * FROM diary")
-    fun getAll(): List<Diary>
+    fun getAllDiaries(): LiveData<List<Diary>>
 
     /**
      * MainActivityで選択してる日付のEntityを取得
