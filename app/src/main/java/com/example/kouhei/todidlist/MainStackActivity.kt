@@ -3,6 +3,7 @@ package com.example.kouhei.todidlist
 import android.arch.lifecycle.*
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
@@ -23,6 +24,11 @@ class MainStackActivity : MyAppCompatActivity() {
         diary_recycler_view.layoutManager = LinearLayoutManager(this)
         // Adapterを登録
         diary_recycler_view.adapter = DiaryAdapter(diaryTextList)
+
+        // abstract ItemDecorationを継承したクラス(この場合はDividerItemDecoration)で、Decoratorを作成する
+        // TODO: Decoratorを操作する責務は別クラスに分けるべきな気がする
+        val divider = DividerItemDecoration(diary_recycler_view.context, LinearLayoutManager(this).orientation)
+        diary_recycler_view.addItemDecoration(divider)
 
         // UIコントローラーにデータの扱いを書くと設計としてよくないので、データを管理する専門のクラスにデータ管理を任せる
         val mModel = ViewModelProviders.of(this).get(AllDiaryViewModel::class.java)
