@@ -1,7 +1,6 @@
 package com.example.kouhei.todidlist
 
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
@@ -18,7 +17,7 @@ class DiaryAdapter(private val myDataset: ArrayList<String>) :
 
         textView.setOnClickListener {
             val position = viewHolder.adapterPosition
-            Log.d("myTag", "this position is " + position)
+            myLogging("this position is " + position)
         }
         /**
          * １OK：ViewHolderをクリックしたとき実行されるリスナーをセットする

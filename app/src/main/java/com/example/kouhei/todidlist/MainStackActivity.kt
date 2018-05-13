@@ -4,7 +4,6 @@ import android.arch.lifecycle.*
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main_stack.*
@@ -44,7 +43,7 @@ class MainStackActivity : MyAppCompatActivity() {
      */
     private fun addDiary(diaryList: List<Diary>?) {
         diaryList?.forEach { diary ->
-            Log.d("myTag", diary.diaryText.toString())
+            myLogging(diary.diaryText.toString())
             diaryTextList.add(diary.diaryText.toString())
         }
     }

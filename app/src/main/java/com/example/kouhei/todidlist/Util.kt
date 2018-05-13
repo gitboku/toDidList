@@ -51,3 +51,11 @@ fun getNowDate(): Int {
     val date = Date(System.currentTimeMillis())
     return df.format(date).toInt()
 }
+
+/**
+ * 主にデバッグに使用する、ログをLogcatに出力する関数
+ * tagを指定しなければmyTagになる
+ */
+fun myLogging(msg: String, tag: String = "myTag") {
+    Log.d("myTag", msg)
+}
