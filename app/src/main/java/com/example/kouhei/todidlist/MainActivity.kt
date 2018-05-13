@@ -21,7 +21,7 @@ class MainActivity :  MyAppCompatActivity() {
 
         var nowTimeStamp: Long = 0
         var selectDate: Int = getNowDate()
-        var db = AppDatabase.getInstance(this)
+        val db = AppDatabase.getInstance(this)
 
         // アプリ上部のToolbarを呼び出す
         setSupportActionBar(main_page_toolbar)

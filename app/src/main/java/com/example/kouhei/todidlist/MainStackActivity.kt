@@ -30,9 +30,8 @@ class MainStackActivity : MyAppCompatActivity() {
 
         // Create the observer which updates the UI.
         // ObserverにはonChange一つしかインターフェースがないので、SAM変換によりコードを省略できる。
-        mModel.getAllDiaries(db!!.diaryDao()).observe(this, Observer<List<Diary>> { mDiaryLiveData ->
-            // update UI
-            addDiary(mDiaryLiveData)
+        mModel.getAllDiaries(db!!.diaryDao()).observe(this, Observer<List<Diary>> {
+            mDiaryLiveData -> addDiary(mDiaryLiveData)
         })
 
     }
