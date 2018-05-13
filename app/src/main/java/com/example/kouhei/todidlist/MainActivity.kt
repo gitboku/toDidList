@@ -15,6 +15,10 @@ const val FROM_CLASS = "com.example.todidList.FROM_CLASS"
 @Suppress("UsePropertyAccessSyntax")
 class MainActivity :  MyAppCompatActivity() {
 
+    companion object {
+        val CLASS_NAME_EDIT_DIARY: String = EditDiaryActivity::class.java.simpleName
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -27,13 +31,13 @@ class MainActivity :  MyAppCompatActivity() {
         setSupportActionBar(main_page_toolbar)
 
         // EditPageからのselectDateがなければ、defaultとしてinitのselectDateを渡す
-        // TODO: should not use magic word "EditDiaryActivity"
-        when (intent.getStringExtra(FROM_CLASS)) {
-            "EditDiaryActivity" -> {
-                nowTimeStamp = intent.getLongExtra(EXTRA_DATE, 0)
+        // 各caseでの最後の文がnowTimeStampに代入される
+        nowTimeStamp = when (intent.getStringExtra(FROM_CLASS)) {
+            CLASS_NAME_EDIT_DIARY -> {
+                intent.getLongExtra(EXTRA_DATE, 0)
             }
             else -> {
-                nowTimeStamp = System.currentTimeMillis()
+                System.currentTimeMillis()
             }
         }
 
