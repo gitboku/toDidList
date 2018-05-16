@@ -48,7 +48,6 @@ class MainStackActivity : MyAppCompatActivity() {
      */
     private fun addDiary(diaryList: List<Diary>?) {
         diaryList?.forEach { diary ->
-            myLogging(diary.diaryText.toString())
             diaryTextList.add(diary.diaryText.toString())
         }
     }
