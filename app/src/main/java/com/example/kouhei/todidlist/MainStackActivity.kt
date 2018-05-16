@@ -44,8 +44,7 @@ class MainStackActivity : MyAppCompatActivity() {
     /**
      * RecyclerViewに表示するべき要素をdiaryTextListに追加する
      *
-     * TODO: 新しい日記を保存すると古い日記が消去される
-     * TODO: ”Apply Changes"を押してアプリを更新しないと日記本文がリストに表示されない
+     * TODO: 日記本文がリストに表示されない場合がある
      */
     private fun addDiary(diaryList: List<Diary>?) {
         diaryList?.forEach { diary ->

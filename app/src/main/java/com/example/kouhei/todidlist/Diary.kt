@@ -11,7 +11,7 @@ class Diary {
      * 必要なデータ構造をクラスとして表現することで、そのデータの保存に必要なテーブルが自動生成される
      * PrimaryKey is Non-null
      */
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     var did: Int = 0
 
     // ColumnInfoアノテーションをつけることで詳細な設定ができる
