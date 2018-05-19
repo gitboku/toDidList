@@ -26,9 +26,7 @@ class MainStackActivity : MyAppCompatActivity() {
         diary_recycler_view.adapter = DiaryAdapter(diaryTextList)
 
         // abstract ItemDecorationを継承したクラス(この場合はDividerItemDecoration)で、Decoratorを作成する
-        // TODO: Decoratorを操作する責務は別クラスに分けるべきな気がする
-        val divider = DividerItemDecoration(diary_recycler_view.context, LinearLayoutManager(this).orientation)
-        diary_recycler_view.addItemDecoration(divider)
+        diary_recycler_view.addItemDecoration(DividerItemDecoration(diary_recycler_view.context, LinearLayoutManager(this).orientation))
 
         // UIコントローラーにデータの扱いを書くと設計としてよくないので、データを管理する専門のクラスにデータ管理を任せる
         val mModel = ViewModelProviders.of(this).get(AllDiaryViewModel::class.java)
