@@ -28,8 +28,9 @@ class DiaryAdapter(private val myDataset: ArrayList<String>) :
          * 　　　１OK：LiveData<>のインスタンスをViewModelに作る
          * 　　　２OK：MainStackActivityにonChanged()を定義してObserverオブジェクトにする
          * 　　　３OK：observe()を使用してObserverオブジェクトをLiveDataオブジェクトにアタッチする
-         * ３：日付情報をViewHolderに持たせる
-         * ４：IntentをmoveToAnotherPage()に渡す
+         * ３：MainStackActivityからEditDiaryActivityに遷移できるようにする。
+         * 　　１：日付情報をViewHolderに持たせる
+         * 　　２：IntentをmoveToAnotherPage()に渡す
          */
         return viewHolder
     }
