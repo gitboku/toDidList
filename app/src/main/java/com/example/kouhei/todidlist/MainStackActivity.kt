@@ -15,37 +15,34 @@ class MainStackActivity : MyAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_stack)
+        setSupportActionBar(main_stack_page_toolbar) // アプリ上部のToolbarを呼び出す
 
-        // アプリ上部のToolbarを呼び出す
-        setSupportActionBar(main_stack_page_toolbar)
-        val db = AppDatabase.getInstance(this)
-
-        // layoutManagerを登録
+        val adapter = DiaryAdapter(diaryTextList)
         diary_recycler_view.layoutManager = LinearLayoutManager(this)
-        // Adapterを登録
-        diary_recycler_view.adapter = DiaryAdapter(diaryTextList)
+        diary_recycler_view.adapter = adapter
 
         // abstract ItemDecorationを継承したクラス(この場合はDividerItemDecoration)で、Decoratorを作成する
         diary_recycler_view.addItemDecoration(DividerItemDecoration(diary_recycler_view.context, LinearLayoutManager(this).orientation))
 
-        // UIコントローラーにデータの扱いを書くと設計としてよくないので、データを管理する専門のクラスにデータ管理を任せる
-        val mModel = ViewModelProviders.of(this).get(AllDiaryViewModel::class.java)
+        // たとえActivityがdestroyされても、ViewModelは保持される
+        val mDiaryViewModel = ViewModelProviders.of(this).get(DiaryViewModel::class.java)
 
-        // Create the observer which updates the UI.
-        // ObserverにはonChange一つしかインターフェースがないので、SAM変換によりコードを省略できる。
-        mModel.getAllDiaries(db!!.diaryDao()).observe(this, Observer<List<Diary>> {
-            mDiaryLiveData -> addDiary(mDiaryLiveData)
+        // RecyclerViewにDiaryデータを表示する
+        // ObserverにはonChanged一つしかインターフェースがないので、SAM変換によりコードを省略できる。
+        val db = AppDatabase.getInstance(this)
+        mDiaryViewModel.getAllDiaries(db!!.diaryDao()).observe(this, Observer<List<Diary>> { mDiaryLiveData ->
+            if (mDiaryLiveData != null) {
+                adapter.setDiaries(mDiaryLiveData)
+                addDiary(adapter.mDiaries)
+            }
         })
-
     }
 
     /**
      * RecyclerViewに表示するべき要素をdiaryTextListに追加する
-     *
-     * TODO: 日記本文がリストに表示されない場合がある
      */
-    private fun addDiary(diaryList: List<Diary>?) {
-        diaryList?.forEach { diary ->
+    private fun addDiary(diaryList: List<Diary>) {
+        diaryList.forEach { diary ->
             diaryTextList.add(diary.diaryText.toString())
         }
     }

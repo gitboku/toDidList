@@ -8,6 +8,9 @@ import android.widget.TextView
 class DiaryAdapter(private val myDataset: ArrayList<String>) :
         RecyclerView.Adapter<DiaryAdapter.ViewHolder>() {
 
+    // Cached copy of Diaries
+    lateinit var mDiaries: List<Diary>
+
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiaryAdapter.ViewHolder {
         val textView = LayoutInflater.from(parent.context)
@@ -29,6 +32,11 @@ class DiaryAdapter(private val myDataset: ArrayList<String>) :
          * ４：IntentをmoveToAnotherPage()に渡す
          */
         return viewHolder
+    }
+
+    fun setDiaries(diaryList: List<Diary>) {
+        mDiaries = diaryList
+        notifyDataSetChanged()
     }
 
     // Replace the contents of a view (invoked by the layout manager)
