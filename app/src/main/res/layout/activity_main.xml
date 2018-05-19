@@ -21,11 +21,6 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"/>
 
-    <CalendarView
-        android:id="@+id/calendar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
     <!--CalendarViewで選択してる日の日記本文がここに映るようになっている。-->
     <!--TextViewにonClick属性があったので、Buttonは必要ない-->
     <!--たぶんFrameLayoutも必要ないが、一応残しておく-->
@@ -40,6 +35,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="TextView" />
+
+        <CalendarView
+            android:id="@+id/calendar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"/>
     </FrameLayout>
 
 </LinearLayout>
