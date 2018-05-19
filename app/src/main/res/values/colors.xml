@@ -4,4 +4,17 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorToolbarBottun">#FFFFFF</color>
+
+    <color name="colorOfJan">#CF3E51</color>
+    <color name="colorOfFeb">#3EBD4A</color>
+    <color name="colorOfMar">#F2C145</color>
+    <color name="colorOfApr">#E0829D</color>
+    <color name="colorOfMay">#2CAD73</color>
+    <color name="colorOfJun">#A25EB1</color>
+    <color name="colorOfJul">#329AC6</color>
+    <color name="colorOfAug">#BC1C5F</color>
+    <color name="colorOfSep">#694A9A</color>
+    <color name="colorOfOct">#E88F4B</color>
+    <color name="colorOfNov">#D4391D</color>
+    <color name="colorOfDec">#694A9A</color>
 </resources>
