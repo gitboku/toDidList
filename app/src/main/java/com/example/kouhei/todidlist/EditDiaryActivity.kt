@@ -30,6 +30,9 @@ class EditDiaryActivity : MyAppCompatActivity() {
         nowTimeStamp = intent.getLongExtra(EXTRA_DATE, 0)
         selectDate = getSelectDate(nowTimeStamp)
 
+        // Toolbarの色を、選択された月のテーマカラーに変更
+        edit_page_toolbar.setBackgroundColor(getMonthColor(this, selectDate.toString().substring(4, 6)))
+
         // 選択してる日付の日記Entityを取得し、日記本文を表示する
         thread {
             val diary = db?.diaryDao()?.getEntityWithDate(selectDate)
