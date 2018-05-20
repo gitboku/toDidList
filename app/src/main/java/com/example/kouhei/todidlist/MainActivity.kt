@@ -17,18 +17,19 @@ class MainActivity :  MyAppCompatActivity() {
     companion object {
         val EDIT_DIARY: String = EditDiaryActivity::class.java.simpleName
         val STACK_PAGE: String = MainStackActivity::class.java.simpleName
-        var nowTimeStamp: Long = 0
+        var nowTimeStamp: Long = System.currentTimeMillis()
+        var selectDate = getDateTimeString()!!.toInt()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var selectDate: Int = getNowDate()
         val db = AppDatabase.getInstance(this)
 
         // アプリ上部のToolbarを呼び出す
         setSupportActionBar(main_page_toolbar)
+        main_page_toolbar.setBackgroundColor(getMonthColor(this, getSelectDate(nowTimeStamp).toString().substring(4, 6)))
 
         // EditPageからのselectDateがなければ、defaultとしてinitのselectDateを渡す
         // 各caseでの最後の文がnowTimeStampに代入される
@@ -49,6 +50,7 @@ class MainActivity :  MyAppCompatActivity() {
         // The month that was set [0-11].
         calendar.setOnDateChangeListener { calendar, year, month, dayOfMonth ->
             nowTimeStamp = getCalendarTimeStamp(year, month, dayOfMonth)
+            main_page_toolbar.setBackgroundColor(getMonthColor(this, getSelectDate(nowTimeStamp).toString().substring(4, 6)))
             updateTextView(db, getSelectDate(nowTimeStamp))
             selectDate = getSelectDate(nowTimeStamp)
         }
