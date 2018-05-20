@@ -17,6 +17,9 @@ class MainStackActivity : MyAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_stack)
         setSupportActionBar(main_stack_page_toolbar) // アプリ上部のToolbarを呼び出す
+        // Toolbarの色を、選択された月のテーマカラーに変更
+        nowTimeStamp = intent.getLongExtra(EXTRA_DATE, nowTimeStamp)
+        main_stack_page_toolbar.setBackgroundColor(getMonthColor(this, getSelectDate(nowTimeStamp).toString().substring(4, 6)))
 
         val adapter = DiaryAdapter(diaryTextList)
         diary_recycler_view.layoutManager = LinearLayoutManager(this)
@@ -53,7 +56,6 @@ class MainStackActivity : MyAppCompatActivity() {
      */
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_move_to_calendar_page -> {
-            nowTimeStamp = intent.getLongExtra(EXTRA_DATE, nowTimeStamp)
             // MainActivityに戻るときは、MainPageから来たintentをそのまま返す
             val intent = Intent(this, MainActivity::class.java)
             intent.putExtra(EXTRA_DATE, nowTimeStamp)
