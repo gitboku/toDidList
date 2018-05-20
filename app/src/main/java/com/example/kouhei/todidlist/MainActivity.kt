@@ -48,7 +48,7 @@ class MainActivity :  MyAppCompatActivity() {
         // よって、SAM変換によりonSelectedDayChangeを省略できる
         // The month that was set [0-11].
         calendar.setOnDateChangeListener { calendar, year, month, dayOfMonth ->
-            nowTimeStamp = getNowTimeStamp(year, month, dayOfMonth)
+            nowTimeStamp = getCalendarTimeStamp(year, month, dayOfMonth)
             updateTextView(db, getSelectDate(nowTimeStamp))
             selectDate = getSelectDate(nowTimeStamp)
         }
@@ -80,7 +80,7 @@ class MainActivity :  MyAppCompatActivity() {
     }
 
     // CalendarViewで選択してる日付のタイムスタンプを取得する
-    private fun getNowTimeStamp(year: Int, month: Int, dayOfMonth: Int): Long {
+    private fun getCalendarTimeStamp(year: Int, month: Int, dayOfMonth: Int): Long {
         val c = Calendar.getInstance()
         c.set(year, month, dayOfMonth)
 
@@ -91,7 +91,7 @@ class MainActivity :  MyAppCompatActivity() {
      * textViewの文章を更新する
      */
     private fun updateTextView(db: AppDatabase?, selectDate: Int) {
-        var diaryText = getString(R.string.diary_yet)
+        val diaryText = getString(R.string.diary_yet)
         if (db == null) textView.text = diaryText
 
         val thread = launch {
