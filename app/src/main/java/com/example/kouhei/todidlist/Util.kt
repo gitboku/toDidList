@@ -1,10 +1,36 @@
 package com.example.kouhei.todidlist
 
+import android.content.Context
+import android.graphics.Color
 import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.*
 
 const val DATE_PATTERN_TO_DATABASE = "yyyyMMdd"
+
+/**
+ * R.colorで設定した月のテーマカラーIDを取得する。
+ * 引数の例："01", "12"
+ * 返り値　：set**Color()の引数に使用する。
+ */
+fun getMonthColor(context: Context, month: String): Int {
+    val colorId = when(month) {
+        "01" -> R.color.colorOfJan
+        "02" -> R.color.colorOfFeb
+        "03" -> R.color.colorOfMar
+        "04" -> R.color.colorOfApr
+        "05" -> R.color.colorOfMay
+        "06" -> R.color.colorOfJun
+        "07" -> R.color.colorOfJul
+        "08" -> R.color.colorOfAug
+        "09" -> R.color.colorOfSep
+        "10" -> R.color.colorOfOct
+        "11" -> R.color.colorOfNov
+        "12" -> R.color.colorOfDec
+        else -> R.color.colorPrimary
+    }
+    return context.getColor(colorId)
+}
 
 /**
  * 選択している日付をInt型で、DATE_PATTERN_TO_DATABASEのフォーマットで返す。
