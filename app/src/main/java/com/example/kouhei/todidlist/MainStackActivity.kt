@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.activity_main_stack.*
 
 class MainStackActivity : MyAppCompatActivity() {
     private var diaryTextList: ArrayList<String> = ArrayList()
+    var nowTimeStamp = System.currentTimeMillis()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +53,11 @@ class MainStackActivity : MyAppCompatActivity() {
      */
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_move_to_calendar_page -> {
+            nowTimeStamp = intent.getLongExtra(EXTRA_DATE, nowTimeStamp)
+            // MainActivityに戻るときは、MainPageから来たintentをそのまま返す
             val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra(EXTRA_DATE, nowTimeStamp)
+            intent.putExtra(FROM_CLASS, this.localClassName)
             moveToAnotherPage(intent)
             true
         }

@@ -2,7 +2,6 @@ package com.example.kouhei.todidlist
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
@@ -16,14 +15,15 @@ const val FROM_CLASS = "com.example.todidList.FROM_CLASS"
 class MainActivity :  MyAppCompatActivity() {
 
     companion object {
-        val CLASS_NAME_EDIT_DIARY: String = EditDiaryActivity::class.java.simpleName
+        val EDIT_DIARY: String = EditDiaryActivity::class.java.simpleName
+        val STACK_PAGE: String = MainStackActivity::class.java.simpleName
+        var nowTimeStamp: Long = 0
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var nowTimeStamp: Long = 0
         var selectDate: Int = getNowDate()
         val db = AppDatabase.getInstance(this)
 
@@ -33,7 +33,7 @@ class MainActivity :  MyAppCompatActivity() {
         // EditPageからのselectDateがなければ、defaultとしてinitのselectDateを渡す
         // 各caseでの最後の文がnowTimeStampに代入される
         nowTimeStamp = when (intent.getStringExtra(FROM_CLASS)) {
-            CLASS_NAME_EDIT_DIARY -> {
+            EDIT_DIARY, STACK_PAGE -> {
                 intent.getLongExtra(EXTRA_DATE, 0)
             }
             else -> {
@@ -67,6 +67,7 @@ class MainActivity :  MyAppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_move_to_stack_page -> {
             val intent = Intent(this, MainStackActivity::class.java)
+            intent.putExtra(EXTRA_DATE, nowTimeStamp)
             moveToAnotherPage(intent)
             true
         }
