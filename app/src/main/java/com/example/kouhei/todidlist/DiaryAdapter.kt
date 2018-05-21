@@ -10,6 +10,7 @@ class DiaryAdapter(private val myDataset: ArrayList<String>) :
 
     // Cached copy of Diaries
     lateinit var mDiaries: List<Diary>
+    var nowTimeStamp: Int = 0
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiaryAdapter.ViewHolder {
@@ -19,8 +20,7 @@ class DiaryAdapter(private val myDataset: ArrayList<String>) :
         val viewHolder = ViewHolder(textView)
 
         textView.setOnClickListener {
-            val position = viewHolder.adapterPosition
-            myLogging("this position is " + position)
+            nowTimeStamp = mDiaries[viewHolder.adapterPosition].calendarDate
         }
         /**
          * ３：MainStackActivityからEditDiaryActivityに遷移できるようにする。
