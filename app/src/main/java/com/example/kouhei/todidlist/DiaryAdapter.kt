@@ -12,6 +12,11 @@ class DiaryAdapter(private val myDataset: ArrayList<String>) :
     lateinit var mDiaries: List<Diary>
     var nowTimeStamp: Int = 0
 
+    fun setDiaries(diaryList: List<Diary>) {
+        mDiaries = diaryList
+        notifyDataSetChanged()
+    }
+
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiaryAdapter.ViewHolder {
         val textView = LayoutInflater.from(parent.context)
@@ -30,11 +35,6 @@ class DiaryAdapter(private val myDataset: ArrayList<String>) :
          * ５：MainActivityで画像を表示してる時だけstatus barとToolbarを透明にする
          */
         return viewHolder
-    }
-
-    fun setDiaries(diaryList: List<Diary>) {
-        mDiaries = diaryList
-        notifyDataSetChanged()
     }
 
     // Replace the contents of a view (invoked by the layout manager)
