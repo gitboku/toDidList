@@ -7,7 +7,11 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import kotlinx.android.synthetic.main.activity_main_stack.*
+import android.widget.Toast
+
+
 
 class MainStackActivity : MyAppCompatActivity() {
     private var diaryTextList: ArrayList<String> = ArrayList()
@@ -24,6 +28,15 @@ class MainStackActivity : MyAppCompatActivity() {
         val adapter = DiaryAdapter(diaryTextList)
         diary_recycler_view.layoutManager = LinearLayoutManager(this)
         diary_recycler_view.adapter = adapter
+
+        // 参考：https://qiita.com/so-ma1221/items/d1b84bf764bf82fe1ac3
+        // MainStackActivityで定義したsetOnItemClickListener()を
+        adapter.setOnItemClickListener(View.OnClickListener {
+            val intent = Intent(applicationContext, EditDiaryActivity::class.java)
+            // カレンダー部分で選択してる日付をTimeStampをLong型で渡す
+            intent.putExtra(EXTRA_DATE, adapter.nowTimeStamp)
+            moveToAnotherPage(intent)
+        })
 
         // abstract ItemDecorationを継承したクラス(この場合はDividerItemDecoration)で、Decoratorを作成する
         diary_recycler_view.addItemDecoration(DividerItemDecoration(diary_recycler_view.context, LinearLayoutManager(this).orientation))

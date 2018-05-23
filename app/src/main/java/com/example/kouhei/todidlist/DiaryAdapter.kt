@@ -2,15 +2,18 @@ package com.example.kouhei.todidlist
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 
-class DiaryAdapter(private val myDataset: ArrayList<String>) :
+open class DiaryAdapter(private val myDataset: ArrayList<String>) :
         RecyclerView.Adapter<DiaryAdapter.ViewHolder>() {
 
     // Cached copy of Diaries
     lateinit var mDiaries: List<Diary>
     var nowTimeStamp: Int = 0
+
+    lateinit var listener: View.OnClickListener
 
     fun setDiaries(diaryList: List<Diary>) {
         mDiaries = diaryList
@@ -26,6 +29,7 @@ class DiaryAdapter(private val myDataset: ArrayList<String>) :
 
         textView.setOnClickListener {
             nowTimeStamp = mDiaries[viewHolder.adapterPosition].calendarDate
+            listener.onClick(textView)
         }
 
         return viewHolder
@@ -35,6 +39,12 @@ class DiaryAdapter(private val myDataset: ArrayList<String>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // myDataset[position]をRecyclerViewの一要素に入れる
         holder.textView.text = myDataset[position]
+    }
+
+    // 参考：https://qiita.com/so-ma1221/items/d1b84bf764bf82fe1ac3
+    // このメソッドをMainStackActivityでオーバーライドする
+    fun setOnItemClickListener(listener: View.OnClickListener) {
+        this.listener = listener
     }
 
     override fun getItemCount() = myDataset.size
