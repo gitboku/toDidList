@@ -27,13 +27,7 @@ class DiaryAdapter(private val myDataset: ArrayList<String>) :
         textView.setOnClickListener {
             nowTimeStamp = mDiaries[viewHolder.adapterPosition].calendarDate
         }
-        /**
-         * ３：MainStackActivityからEditDiaryActivityに遷移できるようにする。
-         * 　　１：日付情報をViewHolderに持たせる
-         * 　　２：IntentをmoveToAnotherPage()に渡す
-         * ４：画像を保存できるようにする
-         * ５：MainActivityで画像を表示してる時だけstatus barとToolbarを透明にする
-         */
+
         return viewHolder
     }
 
