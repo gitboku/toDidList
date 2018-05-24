@@ -28,10 +28,9 @@ class MainStackActivity : MyAppCompatActivity() {
         diary_recycler_view.adapter = adapter
 
         // 参考：https://qiita.com/so-ma1221/items/d1b84bf764bf82fe1ac3
-        // MainStackActivityで定義したsetOnItemClickListener()を
+        // MainStackActivityで定義したsetOnItemClickListener()を呼ぶ
         adapter.setOnItemClickListener(View.OnClickListener {
             val intent = Intent(applicationContext, EditDiaryActivity::class.java)
-            // カレンダー部分で選択してる日付をTimeStampをLong型で渡す
             intent.putExtra(EXTRA_DATE, adapter.nowTimeStamp)
             moveToAnotherPage(intent)
         })

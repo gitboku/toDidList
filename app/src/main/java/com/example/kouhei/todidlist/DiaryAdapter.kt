@@ -20,6 +20,12 @@ open class DiaryAdapter(private val myDataset: ArrayList<String>) :
         notifyDataSetChanged()
     }
 
+    // 参考：https://qiita.com/so-ma1221/items/d1b84bf764bf82fe1ac3
+    // このメソッドがMainStackActivityから呼ばれる
+    fun setOnItemClickListener(listener: View.OnClickListener) {
+        this.listener = listener
+    }
+
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiaryAdapter.ViewHolder {
         val textView = LayoutInflater.from(parent.context)
@@ -39,12 +45,6 @@ open class DiaryAdapter(private val myDataset: ArrayList<String>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // myDataset[position]をRecyclerViewの一要素に入れる
         holder.textView.text = myDataset[position]
-    }
-
-    // 参考：https://qiita.com/so-ma1221/items/d1b84bf764bf82fe1ac3
-    // このメソッドをMainStackActivityでオーバーライドする
-    fun setOnItemClickListener(listener: View.OnClickListener) {
-        this.listener = listener
     }
 
     override fun getItemCount() = myDataset.size
