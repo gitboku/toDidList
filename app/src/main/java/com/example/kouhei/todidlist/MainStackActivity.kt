@@ -9,8 +9,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main_stack.*
-import android.widget.Toast
-
 
 
 class MainStackActivity : MyAppCompatActivity() {
