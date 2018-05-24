@@ -47,7 +47,6 @@ class MainActivity :  MyAppCompatActivity() {
 
         // CalendarView.OnDateChangeListener has only abstract onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth)
         // よって、SAM変換によりonSelectedDayChangeを省略できる
-        // The month that was set [0-11].
         calendar.setOnDateChangeListener { calendar, year, month, dayOfMonth ->
             nowTimeStamp = getCalendarTimeStamp(year, month, dayOfMonth)
             main_page_toolbar.setBackgroundColor(getMonthColor(this, getSelectDate(nowTimeStamp).toString().substring(4, 6)))
@@ -79,14 +78,6 @@ class MainActivity :  MyAppCompatActivity() {
             // Invoke the superclass to handle it.
             super.onOptionsItemSelected(item)
         }
-    }
-
-    // CalendarViewで選択してる日付のタイムスタンプを取得する
-    private fun getCalendarTimeStamp(year: Int, month: Int, dayOfMonth: Int): Long {
-        val c = Calendar.getInstance()
-        c.set(year, month, dayOfMonth)
-
-        return c.timeInMillis
     }
 
     /**

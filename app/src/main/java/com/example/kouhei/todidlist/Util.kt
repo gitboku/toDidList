@@ -1,7 +1,6 @@
 package com.example.kouhei.todidlist
 
 import android.content.Context
-import android.graphics.Color
 import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.*
@@ -69,6 +68,17 @@ fun getDateTimeString(timestamp: Long = System.currentTimeMillis(),
         Log.e("myTag", "Long to date error: " + e.toString())
         return e.toString()
     }
+}
+
+/**
+ * 年と月と日付を渡すと、日付のタイムスタンプを取得する
+ * 月はなぜか[1-12]ではなく[0-11]なので注意。
+ */
+fun getCalendarTimeStamp(year: Int, month: Int, dayOfMonth: Int): Long {
+    val c = Calendar.getInstance()
+    c.set(year, month, dayOfMonth)
+
+    return c.timeInMillis
 }
 
 /**
