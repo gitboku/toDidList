@@ -31,7 +31,10 @@ class MainStackActivity : MyAppCompatActivity() {
         // MainStackActivityで定義したsetOnItemClickListener()を呼ぶ
         adapter.setOnItemClickListener(View.OnClickListener {
             val intent = Intent(applicationContext, EditDiaryActivity::class.java)
-            intent.putExtra(EXTRA_DATE, adapter.nowTimeStamp)
+            val year  = adapter.selectedDate.toString().substring(0, 4).toInt()
+            val month = adapter.selectedDate.toString().substring(4, 6).toInt() - 1 // monthはなぜか[0-11]
+            val day   = adapter.selectedDate.toString().substring(6, 8).toInt()
+            intent.putExtra(EXTRA_DATE, getCalendarTimeStamp(year, month, day))
             moveToAnotherPage(intent)
         })
 

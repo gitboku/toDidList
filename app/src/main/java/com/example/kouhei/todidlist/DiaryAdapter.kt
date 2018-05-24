@@ -11,7 +11,7 @@ open class DiaryAdapter(private val myDataset: ArrayList<String>) :
 
     // Cached copy of Diaries
     lateinit var mDiaries: List<Diary>
-    var nowTimeStamp: Int = 0
+    var selectedDate: Int = 0
 
     lateinit var listener: View.OnClickListener
 
@@ -34,7 +34,7 @@ open class DiaryAdapter(private val myDataset: ArrayList<String>) :
         val viewHolder = ViewHolder(textView)
 
         textView.setOnClickListener {
-            nowTimeStamp = mDiaries[viewHolder.adapterPosition].calendarDate
+            selectedDate = mDiaries[viewHolder.adapterPosition].calendarDate
             listener.onClick(textView)
         }
 
