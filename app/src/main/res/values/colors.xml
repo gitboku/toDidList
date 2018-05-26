@@ -5,16 +5,17 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorToolbarBottun">#FFFFFF</color>
 
-    <color name="colorOfJan">#CF3E51</color>
-    <color name="colorOfFeb">#3EBD4A</color>
-    <color name="colorOfMar">#F2C145</color>
-    <color name="colorOfApr">#E0829D</color>
-    <color name="colorOfMay">#2CAD73</color>
-    <color name="colorOfJun">#A25EB1</color>
-    <color name="colorOfJul">#329AC6</color>
-    <color name="colorOfAug">#BC1C5F</color>
-    <color name="colorOfSep">#694A9A</color>
-    <color name="colorOfOct">#E88F4B</color>
-    <color name="colorOfNov">#D4391D</color>
-    <color name="colorOfDec">#694A9A</color>
+    <!--https://www.thecovernippon.jp/category/column/iro/-->
+    <color name="colorOf01">#AB3B3A</color>
+    <color name="colorOf02">#83823F</color>
+    <color name="colorOf03">#D995AC</color>
+    <color name="colorOf04">#B0D391</color>
+    <color name="colorOf05">#ADB0D1</color>
+    <color name="colorOf06">#5DA5B1</color>
+    <color name="colorOf07">#2892C2</color>
+    <color name="colorOf08">#211E55</color>
+    <color name="colorOf09">#8A74A5</color>
+    <color name="colorOf10">#A06A48</color>
+    <color name="colorOf11">#A89DAD</color>
+    <color name="colorOf12">#1D2F5D</color>
 </resources>

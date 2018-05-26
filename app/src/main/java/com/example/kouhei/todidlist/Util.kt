@@ -14,18 +14,18 @@ const val DATE_PATTERN_TO_DATABASE = "yyyyMMdd"
  */
 fun getMonthColor(context: Context, month: String): Int {
     val colorId = when(month) {
-        "01" -> R.color.colorOfJan
-        "02" -> R.color.colorOfFeb
-        "03" -> R.color.colorOfMar
-        "04" -> R.color.colorOfApr
-        "05" -> R.color.colorOfMay
-        "06" -> R.color.colorOfJun
-        "07" -> R.color.colorOfJul
-        "08" -> R.color.colorOfAug
-        "09" -> R.color.colorOfSep
-        "10" -> R.color.colorOfOct
-        "11" -> R.color.colorOfNov
-        "12" -> R.color.colorOfDec
+        "01" -> R.color.colorOf01
+        "02" -> R.color.colorOf02
+        "03" -> R.color.colorOf03
+        "04" -> R.color.colorOf04
+        "05" -> R.color.colorOf05
+        "06" -> R.color.colorOf06
+        "07" -> R.color.colorOf07
+        "08" -> R.color.colorOf08
+        "09" -> R.color.colorOf09
+        "10" -> R.color.colorOf10
+        "11" -> R.color.colorOf11
+        "12" -> R.color.colorOf12
         else -> R.color.colorPrimary
     }
     return context.getColor(colorId)
