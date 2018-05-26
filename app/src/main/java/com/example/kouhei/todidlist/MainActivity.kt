@@ -58,6 +58,7 @@ class MainActivity :  MyAppCompatActivity() {
             val intent = Intent(this, EditDiaryActivity::class.java)
             // カレンダー部分で選択してる日付をTimeStampをLong型で渡す
             intent.putExtra(EXTRA_DATE, nowTimeStamp)
+            intent.putExtra(FROM_CLASS, this.localClassName)
             moveToAnotherPage(intent)
         }
     }

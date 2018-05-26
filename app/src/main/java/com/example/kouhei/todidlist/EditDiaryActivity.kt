@@ -14,6 +14,11 @@ class EditDiaryActivity : MyAppCompatActivity() {
     private var nowTimeStamp: Long = 0
     private var selectDate: Int = 0
 
+    companion object {
+        val MAIN_PAGE: String = MainActivity::class.java.simpleName
+        val STACK_PAGE: String = MainStackActivity::class.java.simpleName
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_diary)
@@ -54,21 +59,16 @@ class EditDiaryActivity : MyAppCompatActivity() {
         R.id.action_save -> {
             saveDiary()
 
-            // todo: Intentを作成する部分はどうにかして共通化したい
-            val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra(EXTRA_DATE, nowTimeStamp) // MainPageから来たintentをそのまま返す
-            intent.putExtra(FROM_CLASS, this.localClassName)
-            moveToAnotherPage(intent)
+            val mIntent = getMyIntent()
+            moveToAnotherPage(mIntent)
             true
         }
 
         // 戻るボタン
         // ※R.id.homeは自分が作ったものなので反応しない。android.R.id.homeはAndroid SDKのもの
         android.R.id.home -> {
-            val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra(EXTRA_DATE, nowTimeStamp) // MainPageから来たintentをそのまま返す
-            intent.putExtra(FROM_CLASS, this.localClassName)
-            moveToAnotherPage(intent)
+            val mIntent = getMyIntent()
+            moveToAnotherPage(mIntent)
             true
         }
 
@@ -77,6 +77,19 @@ class EditDiaryActivity : MyAppCompatActivity() {
             // Invoke the superclass to handle it.
             super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun getMyIntent(): Intent {
+        // 遷移元に戻るように、Intentの第二引数(Class<?> cls)を動的に生成
+        val cls = when(intent.getStringExtra(FROM_CLASS)) {
+            STACK_PAGE -> MainStackActivity::class.java
+            else -> MainActivity::class.java
+        }
+        val intent = Intent(this, cls)
+        intent.putExtra(EXTRA_DATE, nowTimeStamp) // MainPageから来たintentをそのまま返す
+        intent.putExtra(FROM_CLASS, this.localClassName)
+
+        return intent
     }
 
     /**
