@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.kouhei.todidlist">
 
+    <!--外部ストレージを使うため、以下二つのパーミッションチェックを追加する
+    これは"dangerous permission"なので、permission checkの実装が必要となる。
+    https://akira-watson.com/android/external-storage-image.html-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
