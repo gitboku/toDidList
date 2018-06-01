@@ -28,7 +28,7 @@ class MainStackActivity : MyAppCompatActivity() {
         diary_recycler_view.adapter = adapter
 
         // 参考：https://qiita.com/so-ma1221/items/d1b84bf764bf82fe1ac3
-        // MainStackActivityで定義したsetOnItemClickListener()を呼ぶ
+        // DiaryAdapterで定義したsetOnItemClickListener()を呼ぶ
         adapter.setOnItemClickListener(View.OnClickListener {
             val intent = Intent(applicationContext, EditDiaryActivity::class.java)
             intent.putExtra(FROM_CLASS, this.localClassName)
