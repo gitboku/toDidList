@@ -10,4 +10,5 @@
     <string name="action_save_button">save</string>
     <string name="search_button">search</string>
     <string name="neko_jpg_for_develop">neko2.jpg</string>
+    <string name="add_image">add image</string>
 </resources>
