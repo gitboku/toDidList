@@ -10,6 +10,7 @@ open class MyAppCompatActivity: AppCompatActivity() {
     // 画像を置く外部ストレージのパスを設定
     var filePath = Environment.getExternalStorageDirectory().path + "DCIM/Camera/" + R.string.neko_jpg_for_develop
 
+    // onActivityResultで受け取った結果がどこから来たものか判別するのに使う。
     val GALLERY = 1
 
     /**
