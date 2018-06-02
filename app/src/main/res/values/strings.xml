@@ -16,4 +16,6 @@
     <string name="activity_canceled">ActivityがCancelされました</string>
     <string name="image_not_saved_yet">まだ写真の変更はsaveされていません</string>
     <string name="failed_get_image">写真データの取得に失敗しました</string>
+    <string name="choose_image_from_gallery">Gallaryから</string>
+    <string name="where_image">どこから写真を取得しますか？</string>
 </resources>
