@@ -4,7 +4,6 @@ import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_edit_diary.*
 import android.content.Intent
 import android.os.Build
-import android.support.v4.app.ActivityCompat
 import android.view.Menu
 import android.view.MenuItem
 import android.Manifest
@@ -15,7 +14,6 @@ import android.provider.MediaStore
 import android.support.v4.content.ContextCompat
 import android.widget.Toast
 import java.io.IOException
-import java.nio.channels.GatheringByteChannel
 import kotlin.concurrent.thread
 
 class EditDiaryActivity : MyAppCompatActivity() {
