@@ -52,9 +52,7 @@ open class MyAppCompatActivity: AppCompatActivity() {
                     arrayOf(Manifest.permission.READ_CONTACTS),
                     READ_PERMISSION_REQUEST_CODE)
         } else {
-            val toast = Toast.makeText(this, getString(R.string.request_permission_msg), Toast.LENGTH_SHORT)
-            toast.show()
-
+            Toast.makeText(this, getString(R.string.request_permission_msg), Toast.LENGTH_SHORT).show()
             ActivityCompat.requestPermissions(
                     this,
                     arrayOf(Manifest.permission.READ_CONTACTS),
@@ -73,8 +71,7 @@ open class MyAppCompatActivity: AppCompatActivity() {
                 Toast.makeText(this, "Photosから読み込む許可を取得しました", Toast.LENGTH_SHORT).show()
             } else {
                 // リクエストが拒否された
-                val toast = Toast.makeText(this, getString(R.string.permission_denied_msg), Toast.LENGTH_SHORT)
-                toast.show()
+                Toast.makeText(this, getString(R.string.permission_denied_msg), Toast.LENGTH_SHORT).show()
             }
         }
     }
