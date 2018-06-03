@@ -80,10 +80,11 @@ class EditDiaryActivity : MyAppCompatActivity() {
             true
         }
 
-        // 画像保存ボタン（このボタンを押しただけでは画像はsaveされない）
+        // 画像を外部ストレージから選ぶボタン
+        // EditPanelに画像が表示されるが、saveはまだされない
         // 画像をsaveするのはR.id.action_saveが押されたとき。
         R.id.action_image -> {
-            showPicturesFromExternalStorage()
+            selectPicturesFromExternalStorage()
             true
         }
 
@@ -100,7 +101,7 @@ class EditDiaryActivity : MyAppCompatActivity() {
      * 外部ストレージにアクセスする許可がなければ、許可を求める。
      * ユーザーが拒否すれば、このアプリで画像は扱えない。
      */
-    private fun showPicturesFromExternalStorage() {
+    private fun selectPicturesFromExternalStorage() {
         // Android 6, API 23以上でパーミッションの確認が必要
         // https://akira-watson.com/android/external-storage-image.html
         if (Build.VERSION.SDK_INT >= 23) {
