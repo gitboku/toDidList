@@ -1,9 +1,13 @@
 package com.example.kouhei.todidlist
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Environment
+import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.app.AlertDialog
+import android.widget.Toast
 
 open class MyAppCompatActivity: AppCompatActivity() {
 
@@ -12,6 +16,10 @@ open class MyAppCompatActivity: AppCompatActivity() {
 
     // onActivityResultで受け取った結果がどこから来たものか判別するのに使う。
     val GALLERY = 1
+
+    // パーミッションを求めるダイアログにユーザーが応答したとき、
+    // requestLocationPermission()が渡してonRequestPermissionsResult()が受け取る合言葉
+    private val READ_PERMISSION_REQUEST_CODE = 1000
 
     /**
      * https://demonuts.com/pick-image-gallery-camera-android/
@@ -29,6 +37,46 @@ open class MyAppCompatActivity: AppCompatActivity() {
                     choosePhotoFromGallery()
                 })
         pictureDialog.show()
+    }
+
+    /**
+     * ユーザーに対しパーミッションを求める
+     */
+    fun requestLocationPermission() {
+        // shouldShowRequestPermissionRationale():
+        // アプリがパーミッションを既にリクエストしていて、ユーザーがそのパーミッションを拒否した場合、このメソッドは true を返します。
+        // https://developer.android.com/training/permissions/requesting
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.READ_CONTACTS),
+                    READ_PERMISSION_REQUEST_CODE)
+        } else {
+            val toast = Toast.makeText(this, getString(R.string.request_permission_msg), Toast.LENGTH_SHORT)
+            toast.show()
+
+            ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.READ_CONTACTS),
+                    READ_PERMISSION_REQUEST_CODE)
+        }
+    }
+
+    /**
+     * パーミッションを求めるダイアログにユーザーが応答すると、システムがこのメソッドを呼び出す。
+     * コールバックにはrequestPermission()に渡されたものと同じリクエストコードが渡される。
+     */
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        when (requestCode) {
+            READ_PERMISSION_REQUEST_CODE -> if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // リクエストが許可された
+                Toast.makeText(this, "Photosから読み込む許可を取得しました", Toast.LENGTH_SHORT).show()
+            } else {
+                // リクエストが拒否された
+                val toast = Toast.makeText(this, getString(R.string.permission_denied_msg), Toast.LENGTH_SHORT)
+                toast.show()
+            }
+        }
     }
 
     private fun choosePhotoFromGallery() {

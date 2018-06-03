@@ -24,10 +24,6 @@ class EditDiaryActivity : MyAppCompatActivity() {
     private var nowTimeStamp: Long = 0
     private var selectDate: Int = 0
 
-    // パーミッションを求めるダイアログにユーザーが応答したとき、
-    // requestLocationPermission()が渡してonRequestPermissionsResult()が受け取る合言葉
-    private val READ_PERMISSION_REQUEST_CODE = 1000
-
     companion object {
         val MAIN_PAGE: String = MainActivity::class.java.simpleName
         val STACK_PAGE: String = MainStackActivity::class.java.simpleName
@@ -147,46 +143,6 @@ class EditDiaryActivity : MyAppCompatActivity() {
             } catch (e: IOException) {
                 e.printStackTrace()
                 Toast.makeText(this, getString(R.string.failed_get_image), Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    // 許可を求める
-    fun requestLocationPermission() {
-        // shouldShowRequestPermissionRationale():
-        // アプリがパーミッションを既にリクエストしていて、ユーザーがそのパーミッションを拒否した場合、このメソッドは true を返します。
-        // https://developer.android.com/training/permissions/requesting
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.READ_CONTACTS),
-                    READ_PERMISSION_REQUEST_CODE)
-        } else {
-            val toast = Toast.makeText(this, getString(R.string.request_permission_msg), Toast.LENGTH_SHORT)
-            toast.show()
-
-            ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.READ_CONTACTS),
-                    READ_PERMISSION_REQUEST_CODE)
-        }
-    }
-
-    /**
-     * パーミッションを求めるダイアログにユーザーが応答すると、システムがこのメソッドを呼び出す。
-     * コールバックにはrequestPermission()に渡されたものと同じリクエストコードが渡される。
-     */
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        when (requestCode) {
-            READ_PERMISSION_REQUEST_CODE -> if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // リクエストが許可された
-                // TODO: EditDiaryActivity::readImageFromExternalStorage()とすれば、
-                // requestLocationPermission()とonRequestPermissionsResult()はMyAppCompatActivityに移せる？
-                showPictureDialog()
-            } else {
-                // リクエストが拒否された
-                val toast = Toast.makeText(this, getString(R.string.permission_denied_msg), Toast.LENGTH_SHORT)
-                toast.show()
             }
         }
     }
