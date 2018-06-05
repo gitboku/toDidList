@@ -3,16 +3,12 @@ package com.example.kouhei.todidlist
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Environment
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.app.AlertDialog
 import android.widget.Toast
 
 open class MyAppCompatActivity: AppCompatActivity() {
-
-    // 画像を置く外部ストレージのパスを設定
-    var filePath = Environment.getExternalStorageDirectory().path + "DCIM/Camera/" + R.string.neko_jpg_for_develop
 
     // onActivityResultで受け取った結果がどこから来たものか判別するのに使う。
     val GALLERY = 1
