@@ -21,7 +21,7 @@ class Diary {
 
     // 日記の日付
     //CalendarView.getDate() gets the selected date in milliseconds since January 1, 1970 00:00:00 in getDefault() time zone.
-    // EditDiaryActivity.DATE_PATTERN_TO_DATABASE
+    // DATE_PATTERN_TO_DATABASEのフォーマットで保存されている
     @ColumnInfo(name = "calendar_date")
     var calendarDate: Int = 0
 
