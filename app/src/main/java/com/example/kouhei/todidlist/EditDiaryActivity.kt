@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.provider.MediaStore
 import android.support.v4.content.ContextCompat
@@ -21,6 +22,7 @@ class EditDiaryActivity : MyAppCompatActivity() {
     private var db: AppDatabase? = null
     private var nowTimeStamp: Long = 0
     private var selectDate: Int = 0
+    private lateinit var bitmap: Bitmap
 
     companion object {
         val MAIN_PAGE: String = MainActivity::class.java.simpleName
@@ -135,10 +137,11 @@ class EditDiaryActivity : MyAppCompatActivity() {
         if (data != null && requestCode == GALLERY) {
             val contentURI = data.data
             try {
-                val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, contentURI)
-                val bitmapDrawable = BitmapDrawable(resources, bitmap)
+                // Photosから画像を取得する。
+                bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, contentURI)
                 Toast.makeText(this, getString(R.string.image_not_saved_yet), Toast.LENGTH_SHORT).show()
-                edit_page_layout.background = bitmapDrawable
+                // bitmapDrawableに変換してEditPanelの背景に表示
+                edit_page_layout.background = BitmapDrawable(resources, bitmap)
 
             } catch (e: IOException) {
                 e.printStackTrace()
