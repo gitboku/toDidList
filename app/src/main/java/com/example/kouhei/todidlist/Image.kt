@@ -22,8 +22,7 @@ class Image {
     var imageName: String? = null
 
     /**
-     * 画像が日も付いている日記の日付
-     * 外部キー。
+     * 画像が紐づいてる日記の日付
      * DATE_PATTERN_TO_DATABASEのフォーマットで保存されている
      */
     @ColumnInfo(name = "calendar_date")
