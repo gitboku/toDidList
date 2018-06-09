@@ -18,4 +18,5 @@
     <string name="failed_get_image">写真データの取得に失敗しました</string>
     <string name="choose_image_from_gallery">Gallaryから</string>
     <string name="where_image">どこから写真を取得しますか？</string>
+    <string name="failed_to_make_imageDao">画像オブジェクトの作成に失敗したので、画像は保存されませんでした。</string>
 </resources>
