@@ -8,6 +8,7 @@ abstract class AppDatabase : RoomDatabase() {
     // DAOを取得する。
     // この抽象クラスの実装はRoomライブラリのアノテーション処理で自動生成される
     abstract fun diaryDao(): DiaryDao
+    abstract fun imageDao(): ImageDao
 
 
     companion object {
