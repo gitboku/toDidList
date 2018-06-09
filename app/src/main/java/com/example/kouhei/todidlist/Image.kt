@@ -16,7 +16,7 @@ class Image {
     /**
      * 画像の名前。
      * 内部ストレージに保存するときもこの名前を使用する。
-     * {calendarDate}_{imageId}.pngという名前になる。
+     * {calendarDate}_{incrementNumber}.pngという名前になる。
      */
     @ColumnInfo(name = "image_name")
     var imageName: String? = null
