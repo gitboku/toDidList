@@ -17,7 +17,7 @@ interface DiaryDao{
      * MainActivityで選択してる日付のEntityを取得
      */
     @Query("SELECT * FROM diary WHERE calendar_date = :selectDate")
-    fun getEntityWithDate(selectDate: Int): Diary
+    fun getEntityWithDate(selectDate: Int): Diary?
 
     @Query("UPDATE diary SET diary_text = :diaryText WHERE calendar_date = :calendarDate")
     fun updateDiaryWithDate(diaryText: String, calendarDate: Int)
