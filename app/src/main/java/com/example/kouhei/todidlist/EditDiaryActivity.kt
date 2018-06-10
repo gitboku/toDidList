@@ -129,6 +129,7 @@ class EditDiaryActivity : MyAppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         // RESULT_OK = -1, RESULT_CANCELED = 0
+        // Galleryに行っても写真を選ばずに戻ってきた。
         if (resultCode == Activity.RESULT_CANCELED) {
             Toast.makeText(this, getString(R.string.activity_canceled), Toast.LENGTH_SHORT).show()
             return
