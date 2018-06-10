@@ -11,12 +11,13 @@ class Image {
      * 主キー。
      */
     @PrimaryKey(autoGenerate = true)
-    var imageId: Int = 0
+    var id: Int = 0
 
     /**
      * 画像の名前。
      * 内部ストレージに保存するときもこの名前を使用する。
      * {calendarDate}_{incrementNumber}.pngという名前になる。
+     * 実際の運用ではNot-Nullだが、初期値が""になってしまうのでNullableにした
      */
     @ColumnInfo(name = "image_name")
     var imageName: String? = null
