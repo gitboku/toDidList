@@ -14,17 +14,43 @@ import android.graphics.drawable.BitmapDrawable
 import android.provider.MediaStore
 import android.support.v4.content.ContextCompat
 import android.widget.Toast
+import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.runBlocking
 import java.io.IOException
 import kotlin.concurrent.thread
 
 class EditDiaryActivity : MyAppCompatActivity() {
 
-    private var db: AppDatabase? = null
+    private lateinit var db: AppDatabase
     private var nowTimeStamp: Long = 0
     private var selectDate: Int = 0
-    private lateinit var bitmap: Bitmap
+    private lateinit var newBitmap: Bitmap
+
+    /**
+     * 日記の画像が変更されたかどうかを示す。
+     * falseなら、saveImage()の画像更新部分は飛ばす。
+     */
+    private var isImageChanged = false
+
+    /**
+     * 現在日記に紐づいた画像の名前。
+     * 内部ストレージから画像を読み込んだり、新しい画像の名前を決めるときに使用する。
+     */
+    private var oldImageName: String? = null
+
+    init {
+        try {
+            db = AppDatabase.getInstance(this)!!
+        } catch (e: Exception) {
+            // もしDBを取得する段階でエラーを出したら前のページに戻る
+            Toast.makeText(this, getString(R.string.failed_to_get_DB), Toast.LENGTH_SHORT).show()
+            val mIntent = getMyIntent()
+            moveToAnotherPage(mIntent)
+        }
+    }
 
     companion object {
+        // 将来的に何かで使うかもしれないので一応置いておく。
         val MAIN_PAGE: String = MainActivity::class.java.simpleName
         val STACK_PAGE: String = MainStackActivity::class.java.simpleName
     }
@@ -33,7 +59,6 @@ class EditDiaryActivity : MyAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_diary)
 
-        db = AppDatabase.getInstance(this)
 
         // アプリ上部のToolbarを呼び出す
         setSupportActionBar(edit_page_toolbar)
@@ -48,18 +73,38 @@ class EditDiaryActivity : MyAppCompatActivity() {
         // Toolbarの色を、選択された月のテーマカラーに変更
         edit_page_toolbar.setBackgroundColor(getMonthColor(this, selectDate.toString().substring(4, 6)))
 
-        // 選択してる日付の日記Entityを取得し、日記本文を表示する
-        thread {
-            val diary = db?.diaryDao()?.getEntityWithDate(selectDate)
+        // 選択してる日付の日記Entityと内部ストレージの画像を取得し、日記本文を表示する
+        runBlocking { awaitLoadDiaryAndImage() }
+    }
 
-            // DiaryのEntityはnullである場合がある。
+    /**
+     * EditDiaryActivityを開始したとき、日記の本文と背景画像を取得して表示する。
+     */
+    private suspend fun awaitLoadDiaryAndImage() {
+        async {
+            // 日記の法文を取得して、diaryPanelにセットする。
+            val diary = db.diaryDao().getEntityWithDate(selectDate)
+            // Diary.diaryTextはnullである場合がある。
             if (diary != null){
                 diaryPanel.setText(diary.diaryText)
             } else {
-                // TODO when click datePanel in MainActivity, sometimes error here.
                 diaryPanel.setText(R.string.diary_yet)
             }
-        }
+        }.await() // 何も返す必要はないので、ここで実行する
+
+        // coroutineは軽量スレッドとして考えることができるので、thread{}で囲む必要はない。
+        val loadedImageName = async {
+            // 日記の画像を内部ストレージから取得して、diaryPanelの背景にセットする。
+            // 現状(2018/06/07)では日記と画像は１対１なので、画像配列の最初を取り出す。
+            val imageList = db.imageDao().getImagesWithCalendarDate(selectDate)
+            if (imageList.isNotEmpty()){
+                val image = imageList.first()
+                // EditDiaryActivityの背景に画像を設定する。画像Entityがなければ何もしない。
+                oldImageName = image.imageName
+            }
+            return@async oldImageName
+        }.await()
+        edit_page_layout.background = BitmapDrawable(resources, getImageFromInternalStorage(this, loadedImageName))
     }
 
     /**
@@ -139,10 +184,11 @@ class EditDiaryActivity : MyAppCompatActivity() {
             val contentURI = data.data
             try {
                 // Photosから画像を取得する。
-                bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, contentURI)
+                newBitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, contentURI)
                 Toast.makeText(this, getString(R.string.image_not_saved_yet), Toast.LENGTH_SHORT).show()
                 // bitmapDrawableに変換してEditPanelの背景に表示
-                edit_page_layout.background = BitmapDrawable(resources, bitmap)
+                edit_page_layout.background = BitmapDrawable(resources, newBitmap)
+                isImageChanged = true
 
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -169,18 +215,27 @@ class EditDiaryActivity : MyAppCompatActivity() {
      * 画像もここでsaveする
      * UpdateかInsertかはDiaryのEntityがnullかどうかで判断
      */
-    fun saveDiary() {
-        val diaryDao = db?.diaryDao()
-        thread {
-            val diary = diaryDao?.getEntityWithDate(selectDate)
+    private fun saveDiary() {
+        // TODO: このif文内部を実行して抜けるのに１０秒近くかかる。もはやバグの領域。。。
+        if (isImageChanged) {
+            // 画像を内部ストレージに保存する
+            val imageDao = db.imageDao()
+            val newImageName = generateImageName(selectDate, oldImageName)
+            saveImage(this, newImageName, newBitmap, imageDao)
+        }
 
-            if (diary != null){
+        val diaryDao = db.diaryDao()
+        thread {
+            val diaryEntity = diaryDao.getEntityWithDate(selectDate)
+
+            // 初めて日記を保存するときは、DBにDiaryレコードはないのでnullが返ってきている。
+            if (diaryEntity != null){
                 diaryDao.updateDiaryWithDate(diaryPanel.text.toString(), selectDate)
             } else {
-                val diary = Diary()
-                diary.diaryText = diaryPanel.text.toString()
-                diary.calendarDate = selectDate
-                diaryDao?.insert(diary)
+                val newDiary = Diary()
+                newDiary.diaryText = diaryPanel.text.toString()
+                newDiary.calendarDate = selectDate
+                diaryDao.insert(newDiary)
             }
         }
     }
