@@ -23,8 +23,15 @@ interface ImageDao {
     fun getImagesWithCalendarDate(calendarDate: Int): List<Image>
 
     /**
+     * 画像ファイルの名前を指定して、対象の画像ファイル名と日記の関係をDBからdeleteする。
+     */
+    @Query("DELETE FROM image WHERE image_name = :imageName")
+    fun deleteImageWithImageName(imageName: String)
+
+    /**
      * 画像を一つ削除する。
      * 日記の画像を変更するときに使う。
+     * 現状、これは使ってない。
      */
     @Delete
     fun delete(image: Image)
