@@ -92,10 +92,16 @@ private fun saveImageNameToDb(newImageName: String, imageDao: ImageDao) {
  * 参考：https://developer.android.com/training/data-storage/files
  */
 private fun saveImageToInternalStorage(context: Context, imageName: String, bitmap: Bitmap) {
-    // use: ブロック実行後に自動でclose()してくれる。
-    context.openFileOutput(imageName, Context.MODE_PRIVATE).use {
-        // it: Kotlinのラムダ式で、引数を指定しなかったときのデフォルト引数名
-        it.write(convertBitmapToByteArray(bitmap))
+    try {
+        // use: ブロック実行後に自動でclose()してくれる。
+        context.openFileOutput(imageName, Context.MODE_PRIVATE).use {
+            // it: Kotlinのラムダ式で、引数を指定しなかったときのデフォルト引数名
+            it.write(convertBitmapToByteArray(bitmap))
+        }
+    } catch (e: FileNotFoundException) {
+        Log.e("myError", "ファイルが見つかりませんでした。\n" + e.toString())
+    } catch (e: IOException) {
+        Log.e("myError", "write()でエラーが発生しました。\n" + e.toString())
     }
 }
 
