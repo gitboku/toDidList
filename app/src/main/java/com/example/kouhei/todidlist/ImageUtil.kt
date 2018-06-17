@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
+import android.widget.Toast
 import java.io.ByteArrayOutputStream
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -51,8 +52,29 @@ fun convertCompressedByteArrayToBitmap(src: ByteArray): Bitmap
  * 画像を削除する。
  * imageNameの削除と、ByteArrayの削除を両方やる。
  */
-fun deleteImage() {
-    myLogging("deleteImage pushed.")
+fun deleteImage(context: Context, imageName: String?, imageDao: ImageDao) {
+    if (imageName != null) {
+        deleteImageFromInternalStorage(context, imageName)
+        deleteImageNameFromDb(imageName, imageDao)
+    } else {
+        Toast.makeText(context, context.getString(R.string.no_image_deleted), Toast.LENGTH_SHORT).show()
+    }
+}
+
+/**
+ * 内部ストレージから画像ファイルを削除する
+ */
+private fun deleteImageFromInternalStorage(context: Context, imageName: String) {
+    context.deleteFile(imageName)
+}
+
+/**
+ * 画像ファイルの名前を指定して、対象の画像ファイル名と日記の関係をDBからdeleteする。
+ */
+private fun deleteImageNameFromDb(imageName: String, imageDao: ImageDao) {
+    thread {
+        imageDao.deleteImageWithImageName(imageName)
+    }
 }
 
 /**

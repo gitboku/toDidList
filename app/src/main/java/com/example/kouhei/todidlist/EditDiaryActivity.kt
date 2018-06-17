@@ -13,6 +13,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.provider.MediaStore
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AlertDialog
 import android.widget.Toast
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.runBlocking
@@ -165,6 +166,31 @@ class EditDiaryActivity : MyAppCompatActivity() {
             // 23より下のAPIならパーミッションチェックしないでExternalStorageから画像を選ばせる
             showPictureDialog()
         }
+    }
+
+    /**
+     * https://demonuts.com/pick-image-gallery-camera-android/
+     */
+    private fun showPictureDialog() {
+        val pictureDialog = AlertDialog.Builder(this)
+        pictureDialog.setTitle(getString(R.string.where_image))
+        // pictureDialogItemsの中から一つ選ぶToastが表示される
+        // 写真を選ぶ選択肢を追加できる。
+        val pictureDialogItems = arrayOf(
+                getString(R.string.choose_image_from_gallery),
+                getString(R.string.delete_image))
+        pictureDialog.setItems(pictureDialogItems) { dialog, which ->
+            when (which) {
+                0 -> choosePhotoFromGallery()
+                1 -> {
+                    deleteImage(this, oldImageName, db.imageDao())
+                    // 背景も消す。
+                    edit_page_layout.background = null
+                    Toast.makeText(this, getString(R.string.image_deleted), Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+        pictureDialog.show()
     }
 
     /**

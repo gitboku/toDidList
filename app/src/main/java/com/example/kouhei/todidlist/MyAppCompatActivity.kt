@@ -18,26 +18,6 @@ open class MyAppCompatActivity: AppCompatActivity() {
     private val READ_PERMISSION_REQUEST_CODE = 1000
 
     /**
-     * https://demonuts.com/pick-image-gallery-camera-android/
-     */
-    fun showPictureDialog() {
-        val pictureDialog = AlertDialog.Builder(this)
-        pictureDialog.setTitle(getString(R.string.where_image))
-        // pictureDialogItemsの中から一つ選ぶToastが表示される
-        // 写真を選ぶ選択肢を追加できる。
-        val pictureDialogItems = arrayOf(
-                getString(R.string.choose_image_from_gallery),
-                getString(R.string.delete_image))
-        pictureDialog.setItems(pictureDialogItems) { dialog, which ->
-            when (which) {
-                0 -> choosePhotoFromGallery()
-                1 -> deleteImage()
-            }
-        }
-        pictureDialog.show()
-    }
-
-    /**
      * ユーザーに対しパーミッションを求める
      */
     fun requestLocationPermission() {
@@ -74,7 +54,7 @@ open class MyAppCompatActivity: AppCompatActivity() {
         }
     }
 
-    private fun choosePhotoFromGallery() {
+    fun choosePhotoFromGallery() {
         // ACTION_PICK: データから項目を選択し、選択した項目を返す。
         // https://developer.android.com/reference/android/content/Intent.html#ACTION_PICK
         val galleryIntent = Intent(Intent.ACTION_PICK,
