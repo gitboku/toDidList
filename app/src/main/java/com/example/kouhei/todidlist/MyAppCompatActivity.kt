@@ -26,12 +26,13 @@ open class MyAppCompatActivity: AppCompatActivity() {
         // pictureDialogItemsの中から一つ選ぶToastが表示される
         // 配列の二つ目に"use camera"を乗せて、takeCamera()を作り、setItems()でwhen 1 -> takeCamera()みたいにすれば、
         // 写真を選ぶ選択肢を追加できる。
-        val pictureDialogItems = arrayOf(getString(R.string.choose_image_from_gallery))
-        pictureDialog.setItems(pictureDialogItems,
-                // 使用してない変数は"_"にrenameできるが、後で何なのかわからなくなるのでそのままにする。
-                { dialog, which ->
-                    choosePhotoFromGallery()
-                })
+        val pictureDialogItems = arrayOf(getString(R.string.choose_image_from_gallery), getString(R.string.delete_image))
+        pictureDialog.setItems(pictureDialogItems) { dialog, which ->
+            when (which) {
+                0 -> choosePhotoFromGallery()
+                1 -> deleteImage()
+            }
+        }
         pictureDialog.show()
     }
 

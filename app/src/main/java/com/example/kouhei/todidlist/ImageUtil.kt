@@ -48,8 +48,16 @@ fun convertCompressedByteArrayToBitmap(src: ByteArray): Bitmap
 }
 
 /**
- * 日記を保存する。
- * imageNameをDBに保存するのと、Bitmapを内部ストレージに保存するのを両方やる。
+ * 画像を削除する。
+ * imageNameの削除と、ByteArrayの削除を両方やる。
+ */
+fun deleteImage() {
+    myLogging("deleteImage pushed.")
+}
+
+/**
+ * 画像を保存する。
+ * imageNameをDBに保存するのと、BitmapをByteArrayにして内部ストレージに保存するのを両方やる。
  */
 fun saveImage(context: Context, newImageName: String, newBitmap: Bitmap, imageDao: ImageDao) {
     saveImageToInternalStorage(context, newImageName, newBitmap)
