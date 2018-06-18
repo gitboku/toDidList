@@ -2,17 +2,20 @@ package com.example.kouhei.todidlist
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.experimental.launch
-import java.util.*
+import kotlin.system.exitProcess
 
 const val EXTRA_DATE = "com.example.todidList.SELECTED_DATE"
 const val FROM_CLASS = "com.example.todidList.FROM_CLASS"
 
 @Suppress("UsePropertyAccessSyntax")
 class MainActivity :  MyAppCompatActivity() {
+
+    private var db: AppDatabase
 
     companion object {
         val EDIT_DIARY: String = EditDiaryActivity::class.java.simpleName
@@ -21,11 +24,19 @@ class MainActivity :  MyAppCompatActivity() {
         var selectDate = getDateTimeString()!!.toInt()
     }
 
+    init {
+        try {
+            db = AppDatabase.getInstance(this)!!
+        } catch (e: NullPointerException) {
+            Log.e("myError", "db is null in MainActivity.")
+            exitProcess(0)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val db = AppDatabase.getInstance(this)
 
         // アプリ上部のToolbarを呼び出す
         setSupportActionBar(main_page_toolbar)
@@ -84,12 +95,9 @@ class MainActivity :  MyAppCompatActivity() {
     /**
      * textViewの文章を更新する
      */
-    private fun updateTextView(db: AppDatabase?, selectDate: Int) {
-        val diaryText = getString(R.string.diary_yet)
-        if (db == null) textView.text = diaryText
-
+    private fun updateTextView(db: AppDatabase, selectDate: Int) {
         val thread = launch {
-            val diary = db?.diaryDao()?.getEntityWithDate(selectDate)
+            val diary = db.diaryDao().getEntityWithDate(selectDate)
             textView.text = diary?.diaryText ?: getText(R.string.diary_yet)
         }
         thread.start()
