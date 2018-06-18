@@ -91,7 +91,7 @@ class EditDiaryActivity : MyAppCompatActivity() {
             } else {
                 diaryPanel.setText(R.string.diary_yet)
             }
-        }.await() // 何も返す必要はないので、ここで実行する
+        }.await() // タスクを作ると同時に実行する
 
         // coroutineは軽量スレッドとして考えることができるので、thread{}で囲む必要はない。
         val loadedImageName = async {
