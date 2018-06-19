@@ -118,6 +118,7 @@ class MainActivity :  MyAppCompatActivity() {
 
     /**
      * textViewの背景画像を更新する。
+     * 背景画像がない場所を押下したら背景画像を消す。
      * 画像の読み込みには時間がかかる可能性があり、suspend functionにしてある。
      * よって、runBlocking{ updateDiaryImage() }のようにして使う。
      */
@@ -136,6 +137,8 @@ class MainActivity :  MyAppCompatActivity() {
         }.await()
         if (loadedImageName != null) {
             textView.background = BitmapDrawable(resources, getImageFromInternalStorage(this, loadedImageName))
+        } else {
+            textView.background = null
         }
     }
 
