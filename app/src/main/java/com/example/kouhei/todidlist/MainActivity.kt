@@ -95,7 +95,7 @@ class MainActivity :  MyAppCompatActivity() {
     /**
      * textViewの文章を更新する
      */
-    private fun updateTextView(db: AppDatabase, selectDate: Int) {
+    private fun updateDiaryText(db: AppDatabase, selectDate: Int) {
         val thread = launch {
             val diary = db.diaryDao().getEntityWithDate(selectDate)
             textView.text = diary?.diaryText ?: getText(R.string.diary_yet)
