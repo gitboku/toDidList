@@ -1,12 +1,15 @@
 package com.example.kouhei.todidlist
 
 import android.content.Intent
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.runBlocking
 import kotlin.system.exitProcess
 
 const val EXTRA_DATE = "com.example.todidList.SELECTED_DATE"
@@ -54,15 +57,16 @@ class MainActivity :  MyAppCompatActivity() {
         }
 
         calendar.setDate(nowTimeStamp)
-        updateTextView(db, getSelectDate(nowTimeStamp))
+        updateDiaryText(db, getSelectDate(nowTimeStamp))
 
         // CalendarView.OnDateChangeListener has only abstract onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth)
         // よって、SAM変換によりonSelectedDayChangeを省略できる
         calendar.setOnDateChangeListener { calendar, year, month, dayOfMonth ->
             nowTimeStamp = getCalendarTimeStamp(year, month, dayOfMonth)
-            main_page_toolbar.setBackgroundColor(getMonthColor(this, getSelectDate(nowTimeStamp).toString().substring(4, 6)))
-            updateTextView(db, getSelectDate(nowTimeStamp))
             selectDate = getSelectDate(nowTimeStamp)
+
+            main_page_toolbar.setBackgroundColor(getMonthColor(this, getSelectDate(nowTimeStamp).toString().substring(4, 6)))
+            textViewUpdate(db, selectDate)
         }
 
         textView.setOnClickListener {
@@ -72,6 +76,15 @@ class MainActivity :  MyAppCompatActivity() {
             intent.putExtra(FROM_CLASS, this.localClassName)
             moveToAnotherPage(intent)
         }
+    }
+
+    /**
+     * textViewの日記本文と背景画像を読み込んで表示する。
+     * calendarがクリックされたときに呼びだす。
+     */
+    private fun textViewUpdate(db: AppDatabase, targetDate: Int) {
+        updateDiaryText(db, targetDate)
+        runBlocking { updateDiaryImage(db, targetDate) }
     }
 
     /**
@@ -95,12 +108,35 @@ class MainActivity :  MyAppCompatActivity() {
     /**
      * textViewの文章を更新する
      */
-    private fun updateDiaryText(db: AppDatabase, selectDate: Int) {
+    private fun updateDiaryText(db: AppDatabase, targetDate: Int) {
         val thread = launch {
-            val diary = db.diaryDao().getEntityWithDate(selectDate)
+            val diary = db.diaryDao().getEntityWithDate(targetDate)
             textView.text = diary?.diaryText ?: getText(R.string.diary_yet)
         }
         thread.start()
+    }
+
+    /**
+     * textViewの背景画像を更新する。
+     * 画像の読み込みには時間がかかる可能性があり、suspend functionにしてある。
+     * よって、runBlocking{ updateDiaryImage() }のようにして使う。
+     */
+    private suspend fun updateDiaryImage(db: AppDatabase, targetDate: Int) {
+        val loadedImageName = async {
+            var nowImageName: String? = null
+            // 日記の画像を内部ストレージから取得して、diaryPanelの背景にセットする。
+            // 現状(2018/06/07)では日記と画像は１対１なので、画像配列の最初を取り出す。
+            val imageList = db.imageDao().getImagesWithCalendarDate(targetDate)
+            if (imageList.isNotEmpty()){
+                val image = imageList.first()
+                // EditDiaryActivityの背景に画像を設定する。画像Entityがなければ何もしない。
+                nowImageName = image.imageName
+            }
+            return@async nowImageName
+        }.await()
+        if (loadedImageName != null) {
+            textView.background = BitmapDrawable(resources, getImageFromInternalStorage(this, loadedImageName))
+        }
     }
 
     /**
