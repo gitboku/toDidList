@@ -139,7 +139,7 @@ class MainActivity :  MyAppCompatActivity() {
             main_page_toolbar.background.alpha = 0
         } else {
             tabLayout.background = null
-            main_page_toolbar.background.alpha = 100
+            main_page_toolbar.background.alpha = 255
         }
     }
 
