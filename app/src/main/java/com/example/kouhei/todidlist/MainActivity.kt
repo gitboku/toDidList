@@ -135,9 +135,11 @@ class MainActivity :  MyAppCompatActivity() {
             return@async nowImageName
         }.await()
         if (loadedImageName != null) {
-            textView.background = BitmapDrawable(resources, getImageFromInternalStorage(this, loadedImageName))
+            tabLayout.background = BitmapDrawable(resources, getImageFromInternalStorage(this, loadedImageName))
+            main_page_toolbar.background.alpha = 0
         } else {
-            textView.background = null
+            tabLayout.background = null
+            main_page_toolbar.background.alpha = 100
         }
     }
 
