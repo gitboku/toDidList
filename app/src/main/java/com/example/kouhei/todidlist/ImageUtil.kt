@@ -56,8 +56,6 @@ fun deleteImage(context: Context, imageName: String?, imageDao: ImageDao) {
     if (imageName != null) {
         deleteImageFromInternalStorage(context, imageName)
         deleteImageNameFromDb(imageName, imageDao)
-    } else {
-        Toast.makeText(context, context.getString(R.string.no_image_deleted), Toast.LENGTH_SHORT).show()
     }
 }
 
