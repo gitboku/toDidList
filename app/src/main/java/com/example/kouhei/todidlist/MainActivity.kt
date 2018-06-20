@@ -130,7 +130,6 @@ class MainActivity :  MyAppCompatActivity() {
             val imageList = db.imageDao().getImagesWithCalendarDate(targetDate)
             if (imageList.isNotEmpty()){
                 val image = imageList.first()
-                // EditDiaryActivityの背景に画像を設定する。画像Entityがなければ何もしない。
                 nowImageName = image.imageName
             }
             return@async nowImageName
