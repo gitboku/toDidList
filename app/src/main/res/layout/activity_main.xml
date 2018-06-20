@@ -9,7 +9,8 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <android.support.v7.widget.Toolbar android:id="@+id/main_page_toolbar"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/main_page_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:elevation="4dp"
@@ -28,7 +29,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!--HINT: 背景画像はandroid:scaleType="centerCrop"を使うとリスト表示にしたときに見た目がよさそう-->
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
