@@ -17,18 +17,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:replace="android:icon">
-        <activity android:name=".MainActivity">
+
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
         </activity>
+
         <activity
             android:name=".EditDiaryActivity"
-            android:label="@string/title_activity_edit_diary">
+            android:label="@string/title_activity_edit_diary"
+            android:screenOrientation="portrait">
 
             <!-- 親ActivityにMainActivityを指定することで、戻るボタンがアプリバーに追加される -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity android:name=".MainStackActivity">
+
+        <activity
+            android:name=".MainStackActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
