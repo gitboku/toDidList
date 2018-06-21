@@ -59,6 +59,7 @@ class MainActivity :  MyAppCompatActivity() {
         calendar.setDate(nowTimeStamp)
         updateDiaryText(db, getSelectDate(nowTimeStamp))
 
+        // カレンダーの日付を押下したときのリスナー
         // CalendarView.OnDateChangeListener has only abstract onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth)
         // よって、SAM変換によりonSelectedDayChangeを省略できる
         calendar.setOnDateChangeListener { calendar, year, month, dayOfMonth ->
@@ -69,6 +70,7 @@ class MainActivity :  MyAppCompatActivity() {
             textViewUpdate(db, selectDate)
         }
 
+        // 日記ページをクリックしたときのリスナー
         textView.setOnClickListener {
             val intent = Intent(this, EditDiaryActivity::class.java)
             // カレンダー部分で選択してる日付をTimeStampをLong型で渡す
