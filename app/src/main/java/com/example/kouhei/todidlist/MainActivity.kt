@@ -12,9 +12,6 @@ import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.runBlocking
 import kotlin.system.exitProcess
-import android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
-
-
 
 const val EXTRA_DATE = "com.example.todidList.SELECTED_DATE"
 const val FROM_CLASS = "com.example.todidList.FROM_CLASS"
