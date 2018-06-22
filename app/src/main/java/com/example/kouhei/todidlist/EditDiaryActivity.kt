@@ -14,7 +14,6 @@ import android.graphics.drawable.BitmapDrawable
 import android.provider.MediaStore
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
-import android.view.View
 import android.widget.Toast
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.runBlocking
@@ -27,12 +26,6 @@ class EditDiaryActivity : MyAppCompatActivity() {
     private var nowTimeStamp: Long = 0
     private var selectDate: Int = 0
     private lateinit var newBitmap: Bitmap
-
-    /**
-     * status bar を操作する時に使用する。
-     * decorView.systemUiVisibility = SYSTEM_UI_FLAG_FULLSCREEN | SYSTEM_UI_FLAG_VISIBLE
-     */
-    private lateinit var decorView: View
 
     /**
      * 日記の画像が変更されたかどうかを示す。
@@ -67,7 +60,6 @@ class EditDiaryActivity : MyAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_diary)
 
-        decorView = window.decorView
 
         // アプリ上部のToolbarを呼び出す
         setSupportActionBar(edit_page_toolbar)
@@ -114,14 +106,8 @@ class EditDiaryActivity : MyAppCompatActivity() {
             return@async oldImageName
         }.await()
         edit_page_layout.background = BitmapDrawable(resources, getImageFromInternalStorage(this, loadedImageName))
-        // 背景画像がなければ（oldImageNameがnullなら）、Toolbarのalphaを255（不透明）にして、status bar も表示する。
-        if (oldImageName.isNullOrEmpty()) {
-            edit_page_toolbar.background.alpha = 255
-            decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
-        } else {
-            edit_page_toolbar.background.alpha = 0
-            decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
-        }
+        // 背景画像がなければ（oldImageNameがnullなら）、Toolbarのalphaを0（透明）にする。
+        edit_page_toolbar.background.alpha = if (oldImageName.isNullOrEmpty()) 255 else 0
     }
 
     /**
@@ -207,8 +193,6 @@ class EditDiaryActivity : MyAppCompatActivity() {
                     edit_page_layout.background = null
                     Toast.makeText(this, getString(R.string.image_deleted), Toast.LENGTH_SHORT).show()
                     edit_page_toolbar.background.alpha = 255
-                    // status bar を不透明にする
-                    decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
                 }
             }
         }
@@ -237,8 +221,6 @@ class EditDiaryActivity : MyAppCompatActivity() {
                 // bitmapDrawableに変換してEditPanelの背景に表示
                 edit_page_layout.background = BitmapDrawable(resources, newBitmap)
                 isImageChanged = true
-                // status bar を透明にする
-                decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
 
             } catch (e: IOException) {
                 e.printStackTrace()
