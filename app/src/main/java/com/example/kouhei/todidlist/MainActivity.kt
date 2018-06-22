@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
@@ -40,6 +39,7 @@ class MainActivity :  MyAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
 
         // アプリ上部のToolbarを呼び出す
         setSupportActionBar(main_page_toolbar)
@@ -125,8 +125,6 @@ class MainActivity :  MyAppCompatActivity() {
      * よって、runBlocking{ updateDiaryImage() }のようにして使う。
      */
     private suspend fun updateDiaryImage(db: AppDatabase, targetDate: Int) {
-        val decorView = window.decorView
-
         val loadedImageName = async {
             var nowImageName: String? = null
             // 日記の画像を内部ストレージから取得して、diaryPanelの背景にセットする。
@@ -140,17 +138,10 @@ class MainActivity :  MyAppCompatActivity() {
         }.await()
         if (loadedImageName != null) {
             tabLayout.background = BitmapDrawable(resources, getImageFromInternalStorage(this, loadedImageName))
-            // Toolbar を透明にする
             main_page_toolbar.background.alpha = 0
-            // status bar を透明にする
-            decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
-
         } else {
             tabLayout.background = null
-            // Toolbar を不透明にする
             main_page_toolbar.background.alpha = 255
-            // status bar を不透明にする
-            decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
         }
     }
 
