@@ -36,7 +36,7 @@ fun getMonthColor(context: Context, month: String): Int {
  * 何らかの理由で失敗したら0を返す
  */
 fun getSelectDate(timestamp: Long): Int {
-    val selectDateString = getDateTimeString(timestamp)
+    val selectDateString = getShapedTimeStamp(timestamp)
     try {
         // selectDateStringがnullならselectDateはnullになる
         val selectDate: Int? = selectDateString?.toInt()
@@ -57,8 +57,8 @@ fun getSelectDate(timestamp: Long): Int {
  * Long型で受け取ったtimestampをフォーマット formatString の形の日付に変更する
  * 引数に何も指定しなければ現在時刻で返す
  */
-fun getDateTimeString(timestamp: Long = System.currentTimeMillis(),
-                              formatString: String = DATE_PATTERN_TO_DATABASE): String? {
+fun getShapedTimeStamp(timestamp: Long = System.currentTimeMillis(),
+                       formatString: String = DATE_PATTERN_TO_DATABASE): String? {
     try {
         val sdf = SimpleDateFormat(formatString)
         val netDate = Date(timestamp)

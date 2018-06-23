@@ -24,7 +24,7 @@ class MainActivity :  MyAppCompatActivity() {
         val EDIT_DIARY: String = EditDiaryActivity::class.java.simpleName
         val STACK_PAGE: String = MainStackActivity::class.java.simpleName
         var nowTimeStamp: Long = System.currentTimeMillis()
-        var selectDate = getDateTimeString()!!.toInt()
+        var selectDate = getShapedTimeStamp()!!.toInt()
     }
 
     init {
