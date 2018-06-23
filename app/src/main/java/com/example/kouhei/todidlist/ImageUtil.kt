@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
-import android.widget.Toast
 import java.io.ByteArrayOutputStream
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -32,7 +31,7 @@ fun getImageFromInternalStorage(context: Context, imageName: String?): Bitmap? {
     }
 
     try {
-        return convertCompressedByteArrayToBitmap(context.openFileInput(imageName).readBytes())
+        return convertByteArrayToBitmap(context.openFileInput(imageName).readBytes())
     } catch (e: FileNotFoundException) {
         Log.e("myError", "Image File not found: " + e.toString())
     }
@@ -43,7 +42,7 @@ fun getImageFromInternalStorage(context: Context, imageName: String?): Bitmap? {
  * ByteArray画像をBitmap画像にデコードする。
  * 参考：https://gist.github.com/vvkirillov/6e0475a56b9b2b14cd97
  */
-fun convertCompressedByteArrayToBitmap(src: ByteArray): Bitmap
+fun convertByteArrayToBitmap(src: ByteArray): Bitmap
 {
     return BitmapFactory.decodeByteArray(src, 0, src.size)
 }
