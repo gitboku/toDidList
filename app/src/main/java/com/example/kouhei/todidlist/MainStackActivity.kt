@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.activity_main_stack.*
 
 
 class MainStackActivity : MyAppCompatActivity() {
-    private var diaryTextList: ArrayList<String> = ArrayList()
+    private var diaryList: ArrayList<Diary> = ArrayList()
     var nowTimeStamp = System.currentTimeMillis()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +23,7 @@ class MainStackActivity : MyAppCompatActivity() {
         nowTimeStamp = intent.getLongExtra(EXTRA_DATE, nowTimeStamp)
         main_stack_page_toolbar.setBackgroundColor(getMonthColor(this, getSelectDate(nowTimeStamp).toString().substring(4, 6)))
 
-        val adapter = DiaryAdapter(diaryTextList)
+        val adapter = DiaryAdapter(diaryList)
         diary_recycler_view.layoutManager = LinearLayoutManager(this)
         diary_recycler_view.adapter = adapter
 
@@ -61,7 +61,7 @@ class MainStackActivity : MyAppCompatActivity() {
      */
     private fun addDiary(diaryList: List<Diary>) {
         diaryList.forEach { diary ->
-            diaryTextList.add(diary.diaryText.toString())
+            this.diaryList.add(diary)
         }
     }
 

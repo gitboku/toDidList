@@ -5,8 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import kotlinx.android.synthetic.main.diary_list_item.view.*
 
-open class DiaryAdapter(private val myDataset: ArrayList<String>) :
+open class DiaryAdapter(private val myDataset: ArrayList<Diary>) :
         RecyclerView.Adapter<DiaryAdapter.ViewHolder>() {
 
     // Cached copy of Diaries
@@ -28,28 +29,32 @@ open class DiaryAdapter(private val myDataset: ArrayList<String>) :
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiaryAdapter.ViewHolder {
-        val textView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.diary_list_item, parent, false) as TextView
+        val diaryRow = LayoutInflater.from(parent.context)
+                .inflate(R.layout.diary_list_item, parent, false)
 
-        val viewHolder = ViewHolder(textView)
+        val viewHolder = ViewHolder(diaryRow)
 
-        textView.setOnClickListener {
+        diaryRow.setOnClickListener {
             selectedDate = mDiaries[viewHolder.adapterPosition].calendarDate
-            listener.onClick(textView)
+            listener.onClick(diaryRow)
         }
 
         return viewHolder
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
+    // Called by RecyclerView to display the data at the specified position.
+    // onCreateViewHolder で作成したリストアイテムにデータを紐づける
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // myDataset[position]をRecyclerViewの一要素に入れる
-        holder.textView.text = myDataset[position]
+        holder.diaryDate.text = myDataset[position].calendarDate.toString()
+        holder.diaryText.text = myDataset[position].diaryText.toString()
     }
 
     override fun getItemCount() = myDataset.size
 
-    // RecyclerViewの一要素となるXML要素の型を引数に指定する
-    // この場合はdiary_list_item.xmlのTextView
-    class ViewHolder(val textView: TextView) : RecyclerView.ViewHolder(textView)
+    // データを紐づけるのは onBindViewHolder() がやる
+    class ViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
+        var diaryDate = itemView?.diary_date as TextView
+        var diaryText = itemView?.diary_text as TextView
+    }
 }

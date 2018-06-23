@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--このTextViewがRecyclerViewの一要素として表示される-->
-<TextView
+<!--このクラスがRecyclerViewの一要素として表示される-->
+
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/diary_card"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:textSize="20sp"
-    android:padding="20dp"/>
+    >
+
+    <!-- 日付を表示する場所 -->
+    <TextView
+        android:id="@+id/diary_date"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+    <!-- 日記本文を表示する場所 -->
+    <TextView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/diary_text"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:padding="20dp"/>
+
+    <!-- 画像を表示する場所 -->
+</LinearLayout>
