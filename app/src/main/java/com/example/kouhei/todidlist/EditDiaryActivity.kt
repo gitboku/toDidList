@@ -89,7 +89,10 @@ class EditDiaryActivity : MyAppCompatActivity() {
             if (diary != null){
                 diaryPanel.setText(diary.diaryText)
             } else {
-                diaryPanel.setText(R.string.diary_yet)
+                // デフォルトメッセージをTextView.textに入れると、ユーザが何も書かずに保存したとき
+                // 「日記はありません。」という日記ができてしまうので、プレースホルダーにいれる。
+                // が、よく考えたらEditDiaryActivityにプレースホルダーは必要ない。
+                // diaryPanel.hint = getString(R.string.diary_yet)
             }
         }.await() // タスクを作ると同時に実行する
 
