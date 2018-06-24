@@ -23,8 +23,11 @@ class MainStackActivity : MyAppCompatActivity() {
         nowTimeStamp = intent.getLongExtra(EXTRA_DATE, nowTimeStamp)
         main_stack_page_toolbar.setBackgroundColor(getMonthColor(this, getSelectDate(nowTimeStamp).toString().substring(4, 6)))
 
+        val manager = LinearLayoutManager(this)
+        manager.reverseLayout = true // 日記リストを、新しいものが上にくるようにする
+        diary_recycler_view.layoutManager = manager
+
         val adapter = DiaryAdapter(diaryList)
-        diary_recycler_view.layoutManager = LinearLayoutManager(this)
         diary_recycler_view.adapter = adapter
 
         // 参考：https://qiita.com/so-ma1221/items/d1b84bf764bf82fe1ac3
