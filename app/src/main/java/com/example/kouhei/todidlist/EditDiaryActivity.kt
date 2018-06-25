@@ -60,16 +60,18 @@ class EditDiaryActivity : MyAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_diary)
 
+        // kotlinではgetIntent()は"intent"でOK
+        nowTimeStamp = intent.getLongExtra(EXTRA_DATE, 0)
+        selectDate = getSelectDate(nowTimeStamp)
+
+        // Toolbarのタイトルを日付にする
+        edit_page_toolbar.title  = selectDate.toString().shapeForEditUi()
 
         // アプリ上部のToolbarを呼び出す
         setSupportActionBar(edit_page_toolbar)
 
         // 戻るボタンを表示
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        // kotlinではgetIntent()は"intent"でOK
-        nowTimeStamp = intent.getLongExtra(EXTRA_DATE, 0)
-        selectDate = getSelectDate(nowTimeStamp)
 
         // Toolbarの色を、選択された月のテーマカラーに変更
         edit_page_toolbar.setBackgroundColor(getMonthColor(this, selectDate.toString().substring(4, 6)))

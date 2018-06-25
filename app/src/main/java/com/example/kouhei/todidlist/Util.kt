@@ -10,7 +10,7 @@ const val DATE_PATTERN_TO_DATABASE = "yyyyMMdd"
 val week_name = arrayOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
 
 /**
- * UIに表示する用の日付フォーマット変換
+ * MainStackActivityのUIに表示する用の日付フォーマット変換
  * 拡張関数なので${string}.shapeForStackUi() のように使う。
  */
 fun String.shapeForStackUi(): String {
@@ -23,6 +23,21 @@ fun String.shapeForStackUi(): String {
     val dayOfWeek = week_name[calendar.get(Calendar.DAY_OF_WEEK) - 1]
 
     return month.toString() + "/" + day.toString() + "\n" + year.toString() + "\n(" + dayOfWeek + ")"
+}
+
+/**
+ * EditDiaryActivityに表示する用の日付フォーマット変換機（拡張関数）
+ */
+fun String.shapeForEditUi(): String {
+    val year  = this.substring(0, 4).toInt()
+    val month = this.substring(4, 6).toInt()
+    val day   = this.substring(6, 8).toInt()
+
+    val calendar = Calendar.getInstance()
+    calendar.set(year, month - 1, day)
+    val dayOfWeek = week_name[calendar.get(Calendar.DAY_OF_WEEK) - 1]
+
+    return year.toString() + " " + month.toString() + "/" + day.toString() + " (" + dayOfWeek + ")"
 }
 
 /**
