@@ -41,30 +41,6 @@ fun String.shapeForEditUi(): String {
 }
 
 /**
- * R.colorで設定した月のテーマカラーIDを取得する。
- * 引数の例："01", "12"
- * 返り値　：set**Color()の引数に使用する。
- */
-fun getMonthColor(context: Context, month: String): Int {
-    val colorId = when(month) {
-        "01" -> R.color.colorOf01
-        "02" -> R.color.colorOf02
-        "03" -> R.color.colorOf03
-        "04" -> R.color.colorOf04
-        "05" -> R.color.colorOf05
-        "06" -> R.color.colorOf06
-        "07" -> R.color.colorOf07
-        "08" -> R.color.colorOf08
-        "09" -> R.color.colorOf09
-        "10" -> R.color.colorOf10
-        "11" -> R.color.colorOf11
-        "12" -> R.color.colorOf12
-        else -> R.color.colorPrimary
-    }
-    return context.getColor(colorId)
-}
-
-/**
  * 選択している日付をInt型で、DATE_PATTERN_TO_DATABASEのフォーマットで返す。
  * 何らかの理由で失敗したら0を返す
  */
