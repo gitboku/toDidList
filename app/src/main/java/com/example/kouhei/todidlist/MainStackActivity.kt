@@ -19,9 +19,7 @@ class MainStackActivity : MyAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_stack)
         setSupportActionBar(main_stack_page_toolbar) // アプリ上部のToolbarを呼び出す
-        // Toolbarの色を、選択された月のテーマカラーに変更
         nowTimeStamp = intent.getLongExtra(EXTRA_DATE, nowTimeStamp)
-        main_stack_page_toolbar.setBackgroundColor(getMonthColor(this, getSelectDate(nowTimeStamp).toString().substring(4, 6)))
 
         val manager = LinearLayoutManager(this)
         manager.reverseLayout = true // 日記リストを、新しいものが上にくるようにする
