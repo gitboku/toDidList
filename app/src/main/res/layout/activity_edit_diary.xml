@@ -16,7 +16,7 @@
         android:background="@color/colorPrimary"
         android:elevation="4dp"
         app:titleTextColor="@color/colorToolbarBottun"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:theme="@style/MyAppTheme"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
 
         xmlns:android="http://schemas.android.com/apk/res/android"
