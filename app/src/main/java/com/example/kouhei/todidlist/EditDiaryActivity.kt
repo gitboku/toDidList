@@ -73,9 +73,6 @@ class EditDiaryActivity : MyAppCompatActivity() {
         // 戻るボタンを表示
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        // Toolbarの色を、選択された月のテーマカラーに変更
-        edit_page_toolbar.setBackgroundColor(getMonthColor(this, selectDate.toString().substring(4, 6)))
-
         // 選択してる日付の日記Entityと内部ストレージの画像を取得し、日記本文を表示する
         runBlocking { awaitLoadDiaryAndImage() }
     }
@@ -111,8 +108,6 @@ class EditDiaryActivity : MyAppCompatActivity() {
             return@async oldImageName
         }.await()
         edit_page_layout.background = BitmapDrawable(resources, getImageFromInternalStorage(this, loadedImageName))
-        // 背景画像がなければ（oldImageNameがnullなら）、Toolbarのalphaを0（透明）にする。
-        edit_page_toolbar.background.alpha = if (oldImageName.isNullOrEmpty()) 255 else 0
     }
 
     /**
@@ -190,14 +185,14 @@ class EditDiaryActivity : MyAppCompatActivity() {
             when (which) {
                 0 -> {
                     choosePhotoFromGallery()
-                    edit_page_toolbar.background.alpha = 0
+                    edit_page_toolbar.alpha = 0.0F
                 }
                 1 -> {
                     deleteImage(this, oldImageName, db.imageDao())
                     // 背景も消す。
                     edit_page_layout.background = null
                     Toast.makeText(this, getString(R.string.image_deleted), Toast.LENGTH_SHORT).show()
-                    edit_page_toolbar.background.alpha = 255
+                    edit_page_toolbar.alpha = 1.0F
                 }
             }
         }

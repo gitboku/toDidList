@@ -40,10 +40,8 @@ class MainActivity :  MyAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         // アプリ上部のToolbarを呼び出す
         setSupportActionBar(main_page_toolbar)
-        main_page_toolbar.setBackgroundColor(getMonthColor(this, getSelectDate(nowTimeStamp).toString().substring(4, 6)))
 
         // EditPageからのselectDateがなければ、defaultとしてinitのselectDateを渡す
         // 各caseでの最後の文がnowTimeStampに代入される
@@ -57,7 +55,7 @@ class MainActivity :  MyAppCompatActivity() {
         }
 
         calendar.setDate(nowTimeStamp)
-        updateDiaryText(db, getSelectDate(nowTimeStamp))
+        textViewUpdate(db, getSelectDate(nowTimeStamp))
 
         // カレンダーの日付を押下したときのリスナー
         // CalendarView.OnDateChangeListener has only abstract onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth)
@@ -66,7 +64,6 @@ class MainActivity :  MyAppCompatActivity() {
             nowTimeStamp = getCalendarTimeStamp(year, month, dayOfMonth)
             selectDate = getSelectDate(nowTimeStamp)
 
-            main_page_toolbar.setBackgroundColor(getMonthColor(this, getSelectDate(nowTimeStamp).toString().substring(4, 6)))
             textViewUpdate(db, selectDate)
         }
 
@@ -138,10 +135,8 @@ class MainActivity :  MyAppCompatActivity() {
         }.await()
         if (loadedImageName != null) {
             tabLayout.background = BitmapDrawable(resources, getImageFromInternalStorage(this, loadedImageName))
-            main_page_toolbar.background.alpha = 0
         } else {
             tabLayout.background = null
-            main_page_toolbar.background.alpha = 255
         }
     }
 
