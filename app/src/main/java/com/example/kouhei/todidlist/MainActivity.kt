@@ -40,6 +40,8 @@ class MainActivity :  MyAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Toolbar のタイトルを選択した日付に変更(EditPage と同じフォーマットでOK）
+        main_page_toolbar.title  = selectDate.toString().shapeForEditUi()
         // アプリ上部のToolbarを呼び出す
         setSupportActionBar(main_page_toolbar)
 
@@ -63,6 +65,9 @@ class MainActivity :  MyAppCompatActivity() {
         calendar.setOnDateChangeListener { calendar, year, month, dayOfMonth ->
             nowTimeStamp = getCalendarTimeStamp(year, month, dayOfMonth)
             selectDate = getSelectDate(nowTimeStamp)
+
+            // Toolbar のタイトルを選択した日付に変更(EditPage と同じフォーマットでOK）
+            main_page_toolbar.title  = selectDate.toString().shapeForEditUi()
 
             textViewUpdate(db, selectDate)
         }
