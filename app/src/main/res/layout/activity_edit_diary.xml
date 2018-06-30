@@ -6,8 +6,8 @@
     android:id="@+id/edit_page_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.kouhei.todidlist.EditDiaryActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.example.kouhei.todidlist.EditDiaryActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/edit_page_toolbar"
