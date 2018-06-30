@@ -53,6 +53,9 @@ class MainStackActivity : MyAppCompatActivity() {
             if (mDiaryLiveData != null) {
                 adapter.setDiaries(mDiaryLiveData)
                 addDiary(adapter.mDiaries)
+
+                // MainStackActivityを表示したとき、RecyclerViewが一番上に移動しているようにする
+                manager.scrollToPosition(adapter.itemCount - 1)
             }
         })
     }
