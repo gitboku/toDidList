@@ -5,7 +5,7 @@
     <!--TODO Create a theme to change color and make the button easier to see-->
     <item
         android:id="@+id/action_move_to_stack_page"
-        android:icon="@drawable/ic_reorder_white_24px"
+        android:icon="@drawable/ic_list_white_24dp"
         android:title="@string/action_save_button"
         app:showAsAction="always" />
 
