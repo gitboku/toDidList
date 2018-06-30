@@ -134,9 +134,9 @@ class MainActivity :  MyAppCompatActivity() {
             return@async nowImageName
         }.await()
         if (loadedImageName != null) {
-            tabLayout.background = BitmapDrawable(resources, getImageFromInternalStorage(this, loadedImageName))
+            main_page_layout.background = BitmapDrawable(resources, getImageFromInternalStorage(this, loadedImageName))
         } else {
-            tabLayout.background = null
+            main_page_layout.background = null
         }
     }
 
