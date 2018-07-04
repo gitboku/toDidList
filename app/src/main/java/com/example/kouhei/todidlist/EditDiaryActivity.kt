@@ -152,21 +152,16 @@ class EditDiaryActivity : MyAppCompatActivity() {
      * ユーザーが拒否すれば、このアプリで画像は扱えない。
      */
     private fun selectPicturesFromExternalStorage() {
-        // Android 6, API 23以上でパーミッションの確認が必要
+        // Android 6, API 23以上でパーミッションの確認が必要だが、そもそもAPI 22 以下はターゲットにしていない。
         // https://akira-watson.com/android/external-storage-image.html
-        if (Build.VERSION.SDK_INT >= 23) {
-            val permission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            if (permission == PackageManager.PERMISSION_GRANTED) {
-                // すでに許可されているなら、ExternalStorageから画像を選ばせる
-                showPictureDialog()
-            } else {
-                // 許可されていなければ、許可を求める
-                // TODO: パーミッションの設定ができるアプリに自動遷移する。
-                requestLocationPermission()
-            }
-        } else {
-            // 23より下のAPIならパーミッションチェックしないでExternalStorageから画像を選ばせる
+        val permission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (permission == PackageManager.PERMISSION_GRANTED) {
+            // すでに許可されているなら、ExternalStorageから画像を選ばせる
             showPictureDialog()
+        } else {
+            // 許可されていなければ、許可を求める
+            // TODO: パーミッションの設定ができるアプリに自動遷移する。
+            requestLocationPermission()
         }
     }
 
