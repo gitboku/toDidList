@@ -180,14 +180,12 @@ class EditDiaryActivity : MyAppCompatActivity() {
             when (which) {
                 0 -> {
                     choosePhotoFromGallery()
-                    edit_page_toolbar.alpha = 0.0F
                 }
                 1 -> {
                     deleteImage(this, oldImageName, db.imageDao())
                     // 背景も消す。
                     edit_page_layout.background = null
                     Toast.makeText(this, getString(R.string.image_deleted), Toast.LENGTH_SHORT).show()
-                    edit_page_toolbar.alpha = 1.0F
                 }
             }
         }
