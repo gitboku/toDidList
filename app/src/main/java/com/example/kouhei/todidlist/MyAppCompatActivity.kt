@@ -27,14 +27,10 @@ open class MyAppCompatActivity: AppCompatActivity() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             ActivityCompat.requestPermissions(
                     this,
-                    arrayOf(Manifest.permission.READ_CONTACTS),
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
                     READ_PERMISSION_REQUEST_CODE)
         } else {
             Toast.makeText(this, getString(R.string.request_permission_msg), Toast.LENGTH_SHORT).show()
-            ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.READ_CONTACTS),
-                    READ_PERMISSION_REQUEST_CODE)
         }
     }
 

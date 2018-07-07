@@ -160,7 +160,6 @@ class EditDiaryActivity : MyAppCompatActivity() {
             showPictureDialog()
         } else {
             // 許可されていなければ、許可を求める
-            // TODO: パーミッションの設定ができるアプリに自動遷移する。
             requestLocationPermission()
         }
     }
