@@ -2,13 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <!--Android Studio で見ると、"icon" の行に鍵マークが表示されないが、アプリでは表示される。-->
+    <item
+        android:id="@+id/set_passcode"
+        android:icon="@drawable/ic_key_white_24dp"
+        android:title="@string/set_key"
+        app:showAsAction="always"/>
+
     <item
         android:id="@+id/search_button"
         android:icon="@drawable/ic_search_white_24dp"
         app:showAsAction="always"
         android:title="@string/search_button" />
 
-    <!--TODO Create a theme to change color and make the button easier to see-->
     <item
         android:id="@+id/action_move_to_calendar_page"
         android:icon="@drawable/ic_date_range_white_24dp"
