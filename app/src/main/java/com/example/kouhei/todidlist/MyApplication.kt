@@ -14,11 +14,9 @@ open class MyApplication : Application(), Application.ActivityLifecycleCallbacks
 
     private var isAppHidden = true
 
-    /**
-     * onCreate() が無いとonActivityStarted() が働かない。
-     */
     override fun onCreate() {
         super.onCreate()
+        // 登録しないとonActivityStarted() が働かない。
         registerActivityLifecycleCallbacks(this)
     }
 
