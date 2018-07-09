@@ -82,6 +82,12 @@ class MainStackActivity : MyAppCompatActivity() {
             true
         }
 
+        R.id.set_passcode -> {
+            val intent = Intent(this, PassCodeSetActivity::class.java)
+            moveToAnotherPage(intent)
+            true
+        }
+
         else -> {
             // If we got here, the user's action was not recognized.
             // Invoke the superclass to handle it.
