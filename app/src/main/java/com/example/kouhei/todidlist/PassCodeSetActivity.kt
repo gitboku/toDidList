@@ -10,6 +10,7 @@ class PassCodeSetActivity : MyAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pass_code_set)
 
+        // 「キャンセル」ボタン。MainStackActivityにもどる。
         cancel_button.setOnClickListener {
             val intent = Intent(this, MainStackActivity::class.java)
             moveToAnotherPage(intent)
