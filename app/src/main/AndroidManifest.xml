@@ -32,7 +32,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".EditDiaryActivity"
             android:label="@string/title_activity_edit_diary"
@@ -52,7 +52,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PassCodeSetActivity"></activity>
+        <activity android:name=".PassCodeSetActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainStackActivity" />
+        </activity>
     </application>
 
 </manifest>
