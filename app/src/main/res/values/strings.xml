@@ -24,4 +24,5 @@
     <string name="no_image_deleted">画像ファイル名が存在しないので、削除処理は行われませんでした。</string>
     <string name="image_deleted">写真が削除されました。\nこの処理はsaveされています。</string>
     <string name="set_key">set_key</string>
+    <string name="preference_file_name">UserData</string>
 </resources>

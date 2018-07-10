@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.content.ComponentCallbacks2
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 
 /**
  * グローバルアプリケーション状態を維持するための基本クラス。
@@ -11,6 +12,13 @@ import android.os.Bundle
  * 独自の実装を提供できる。
  */
 open class MyApplication : Application(), Application.ActivityLifecycleCallbacks {
+
+    companion object {
+        /**
+         * アプリ上でパスコードを要求するかどうかのPreferenceのキー
+         */
+        var APP_NEED_PASSCODE = "app_needs_passcode"
+    }
 
     private var isAppHidden = true
 
@@ -40,7 +48,10 @@ open class MyApplication : Application(), Application.ActivityLifecycleCallbacks
      * パスコードを要求するActivity に遷移する
      */
     override fun onActivityStarted(activity: Activity?) {
-        if (isAppHidden && ApplicationUtil.APP_NEES_PASSCODE) {
+        val data = getSharedPreferences(getString(R.string.preference_file_name), AppCompatActivity.MODE_PRIVATE)
+
+        // ActivityをStartした時、アプリがHiddenかつパスコードを使うように設定されていれば、PassCodeConfirmActivityに移動する。
+        if (isAppHidden && data.getBoolean(APP_NEED_PASSCODE, false)) {
 //            activity?.startActivity()
         }
         isAppHidden = false
