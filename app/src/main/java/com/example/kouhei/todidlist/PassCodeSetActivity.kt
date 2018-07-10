@@ -5,12 +5,14 @@ import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_pass_code_set.*
 import android.support.v7.app.AppCompatActivity
 import com.example.kouhei.todidlist.MyApplication.Companion.APP_NEED_PASSCODE
+import kotlinx.android.synthetic.main.activity_main_stack.*
 
 class PassCodeSetActivity : MyAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pass_code_set)
+        setSupportActionBar(pass_code_set_toolbar) // アプリ上部のToolbarを呼び出す
 
         // パスコードを使うかどうかのトグルを初期化する。
         // init{}に配置したらretResource()でエラーが出る。
