@@ -22,12 +22,6 @@ class PassCodeSetActivity : MyAppCompatActivity() {
         val initData = getSharedPreferences(getString(R.string.preference_file_name), AppCompatActivity.MODE_PRIVATE)
         lock_switch.isChecked = initData.getBoolean(APP_NEED_PASSCODE, false)
 
-        // 「キャンセル」ボタン。MainStackActivityにもどる。
-        cancel_button.setOnClickListener {
-            val intent = Intent(this, MainStackActivity::class.java)
-            moveToAnotherPage(intent)
-        }
-
         // トグルが押下された（パスコードを使うかどうかを変更した）ら、その情報をPreferenceに保存する。
         lock_switch.setOnCheckedChangeListener { buttonView, isChecked ->
             val data = getSharedPreferences(getString(R.string.preference_file_name), AppCompatActivity.MODE_PRIVATE)
