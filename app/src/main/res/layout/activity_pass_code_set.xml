@@ -25,7 +25,7 @@
         android:layout_height="34dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:text="@string/use_passcode"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.521"
@@ -33,24 +33,45 @@
         app:layout_constraintTop_toBottomOf="@+id/pass_code_set_toolbar" />
 
     <EditText
-        android:id="@+id/passcode_panel"
-        android:layout_width="361dp"
-        android:layout_height="65dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:autoSizeMaxTextSize="36px"
+        android:id="@+id/navigate_message"
+        android:layout_width="324dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:clickable="false"
         android:ems="10"
-        android:inputType="numberPassword"
-        android:maxLength="4"
-        android:textAlignment="center"
-        android:textSize="36sp"
+        android:inputType="textPersonName"
+        android:text="@string/put_4_passcode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lock_switch" />
+
+    <Button
+        android:id="@+id/decide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="268dp"
+        android:text="@string/passcode_decide"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.571"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/passcode_panel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="numberPassword"
+        android:maxLength="@string/passcode_digits"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:letterSpacing="1.5"
+        app:layout_constraintBottom_toTopOf="@+id/decide"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lock_switch"
-        app:layout_constraintVertical_bias="0.337" />
+        app:layout_constraintTop_toBottomOf="@+id/navigate_message"
+        app:layout_constraintVertical_bias="0.046" />
 
 </android.support.constraint.ConstraintLayout>

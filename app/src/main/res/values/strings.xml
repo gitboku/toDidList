@@ -26,4 +26,7 @@
     <string name="set_key">set_key</string>
     <string name="preference_file_name">UserData</string>
     <string name="use_passcode">パスコードロック</string>
+    <string name="put_4_passcode">４桁のパスコードを入力してください</string>
+    <string name="passcode_decide">決定</string>
+    <string name="passcode_digits">4</string>
 </resources>
