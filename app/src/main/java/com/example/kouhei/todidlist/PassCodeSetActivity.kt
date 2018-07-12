@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_pass_code_set.*
 import android.support.v7.app.AppCompatActivity
-import android.view.Menu
 import android.view.MenuItem
 import com.example.kouhei.todidlist.MyApplication.Companion.APP_NEED_PASSCODE
 
