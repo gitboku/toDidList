@@ -5,6 +5,7 @@ import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_pass_code_set.*
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import android.view.inputmethod.EditorInfo
 import com.example.kouhei.todidlist.MyApplication.Companion.APP_NEED_PASSCODE
 
 class PassCodeSetActivity : MyAppCompatActivity() {
@@ -27,6 +28,18 @@ class PassCodeSetActivity : MyAppCompatActivity() {
             val editor = data.edit()
             editor.putBoolean(APP_NEED_PASSCODE, isChecked)
             editor.apply()
+        }
+
+        // パスコードを入力パネルのソフトウェアキーボードの「決定」ボタンを押したときの操作。
+        // 入力されたのが４桁ならパスコードを設定する。
+        // 参考：https://developer.android.com/training/keyboard-input/style#Action
+        passcode_panel.setOnEditorActionListener { textView, actionId, event ->
+            var handled = false
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                handled = true
+                myLogging("textView.text = "+ textView.text)
+            }
+            handled
         }
     }
 
