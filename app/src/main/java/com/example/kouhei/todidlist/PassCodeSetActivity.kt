@@ -68,7 +68,7 @@ class PassCodeSetActivity : MyAppCompatActivity() {
     /**
      * Viewの要素が見えるかどうか(visibility)をセットする。
      */
-    fun setVisibility(isChecked: Boolean) {
+    private fun setVisibility(isChecked: Boolean) {
         val visibility = if (isChecked) View.VISIBLE else View.INVISIBLE
         navigate_message.visibility = visibility
         passcode_panel.visibility = visibility
