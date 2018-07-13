@@ -7,7 +7,9 @@ import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import com.example.kouhei.todidlist.MyApplication.Companion.APP_NEED_PASSCODE
+import com.example.kouhei.todidlist.MyApplication.Companion.PASSCODE
 
 class PassCodeSetActivity : MyAppCompatActivity() {
 
@@ -42,10 +44,25 @@ class PassCodeSetActivity : MyAppCompatActivity() {
             var handled = false
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 handled = true
-                myLogging("textView.text = "+ textView.text)
+                if(textView.text.length == 4) {
+                    savePassCode(textView.text.toString())
+                } else {
+                    Toast.makeText(this, getString(R.string.passcode_set_error_message), Toast.LENGTH_SHORT).show()
+                }
             }
             handled
         }
+    }
+
+    /**
+     * パスコードをセットする。
+     * パスコードは４桁の数字だが、Intにすると"0000"が"0"に変換されてしまうので、内部的にはStringで扱う。
+     */
+    private fun savePassCode(passcode: String) {
+        val data = getSharedPreferences(getString(R.string.preference_file_name), AppCompatActivity.MODE_PRIVATE)
+        val editor = data.edit()
+        editor.putString(PASSCODE, passcode)
+        editor.apply()
     }
 
     /**

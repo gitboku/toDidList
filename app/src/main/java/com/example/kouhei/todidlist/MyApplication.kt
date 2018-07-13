@@ -14,10 +14,11 @@ import android.support.v7.app.AppCompatActivity
 open class MyApplication : Application(), Application.ActivityLifecycleCallbacks {
 
     companion object {
-        /**
-         * アプリ上でパスコードを要求するかどうかのPreferenceのキー
-         */
+        // アプリ上でパスコードを要求するかどうかのPreferenceのキー
         var APP_NEED_PASSCODE = "app_needs_passcode"
+
+        // パスコードのPreferenceのキー
+        var PASSCODE = "passcode"
     }
 
     private var isAppHidden = true
