@@ -47,7 +47,9 @@ class PassCodeSetActivity : MyAppCompatActivity() {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 handled = true
                 if(textView.text.length == 4) {
-                    savePassCode(textView.text.toString())
+                    val passcodeString = textView.text.toString()
+                    savePassCode(passcodeString)
+                    goToMainStackActivity(passcodeString)
                 } else {
                     Toast.makeText(this, getString(R.string.passcode_set_error_message), Toast.LENGTH_SHORT).show()
                 }
@@ -56,8 +58,7 @@ class PassCodeSetActivity : MyAppCompatActivity() {
         }
 
         cancel_button.setOnClickListener {
-            val mIntent = Intent(this, MainStackActivity::class.java)
-            moveToAnotherPage(mIntent)
+            goToMainStackActivity()
         }
     }
 
@@ -76,7 +77,24 @@ class PassCodeSetActivity : MyAppCompatActivity() {
      * Viewの要素が見えるかどうか(visibility)をセットする。
      */
     private fun setVisibility(isChecked: Boolean) {
-        val visibility = if (isChecked) View.VISIBLE else View.INVISIBLE
-        passcode_panel.visibility = visibility
+        if (isChecked) {
+            passcode_panel.visibility = View.VISIBLE
+            cancel_button.visibility = View.INVISIBLE
+        } else {
+            passcode_panel.visibility = View.INVISIBLE
+            cancel_button.visibility = View.VISIBLE
+        }
+    }
+
+    /**
+     * MainStackActivityに遷移するアクション。
+     * passcodeはMainStackActivityで「パスコードを{passcode}に設定しました」というダイアログを出すのに使う。
+     */
+    private fun goToMainStackActivity(passcode: String? = null) {
+        val mIntent = Intent(this, MainStackActivity::class.java)
+        if (passcode != null) {
+            mIntent.putExtra(PASSCODE, passcode)
+        }
+        moveToAnotherPage(mIntent)
     }
 }
