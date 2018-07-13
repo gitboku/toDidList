@@ -33,21 +33,8 @@
         app:layout_constraintTop_toBottomOf="@+id/pass_code_set_toolbar" />
 
     <EditText
-        android:id="@+id/navigate_message"
-        android:layout_width="324dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:clickable="false"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="@string/put_4_passcode"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lock_switch" />
-
-    <EditText
         android:id="@+id/passcode_panel"
-        android:layout_width="wrap_content"
+        android:layout_width="325dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:ems="10"
@@ -55,12 +42,13 @@
         android:inputType="numberPassword"
         android:letterSpacing="1.5"
         android:maxLength="@string/passcode_digits"
+        android:singleLine="false"
         android:textAlignment="center"
-        android:textSize="24sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/navigate_message" />
+        app:layout_constraintTop_toBottomOf="@+id/lock_switch" />
 
     <Button
         android:id="@+id/cancel_button"

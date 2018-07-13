@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_pass_code_set.*
 import android.support.v7.app.AppCompatActivity
-import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
@@ -32,6 +31,10 @@ class PassCodeSetActivity : MyAppCompatActivity() {
             val editor = data.edit()
             editor.putBoolean(APP_NEED_PASSCODE, isChecked)
             editor.apply()
+
+            if (isChecked){
+                Toast.makeText(this, getString(R.string.passcode_set_error_message), Toast.LENGTH_SHORT).show()
+            }
 
             setVisibility(isChecked)
         }
@@ -74,7 +77,6 @@ class PassCodeSetActivity : MyAppCompatActivity() {
      */
     private fun setVisibility(isChecked: Boolean) {
         val visibility = if (isChecked) View.VISIBLE else View.INVISIBLE
-        navigate_message.visibility = visibility
         passcode_panel.visibility = visibility
     }
 }
