@@ -18,7 +18,6 @@ class PassCodeSetActivity : MyAppCompatActivity() {
         setContentView(R.layout.activity_pass_code_set)
 
         setSupportActionBar(pass_code_set_toolbar) // アプリ上部のToolbarを呼び出す
-        supportActionBar?.setDisplayHomeAsUpEnabled(true) // Toolbarの戻るボタンを表示
 
         // パスコードを使うかどうかのトグルを初期化する。
         // init{}に配置したらretResource()でエラーが出る。
@@ -52,6 +51,11 @@ class PassCodeSetActivity : MyAppCompatActivity() {
             }
             handled
         }
+
+        cancel_button.setOnClickListener {
+            val mIntent = Intent(this, MainStackActivity::class.java)
+            moveToAnotherPage(mIntent)
+        }
     }
 
     /**
@@ -72,24 +76,5 @@ class PassCodeSetActivity : MyAppCompatActivity() {
         val visibility = if (isChecked) View.VISIBLE else View.INVISIBLE
         navigate_message.visibility = visibility
         passcode_panel.visibility = visibility
-    }
-
-    /**
-     * Toolbarのボタンが押されたときに呼ばれるメソッド
-     */
-    override fun onOptionsItemSelected(item: MenuItem) = when(item.itemId) {
-        // 戻るボタン
-        // ※R.id.homeは自分が作ったものなので反応しない。android.R.id.homeはAndroid SDKのもの
-        android.R.id.home -> {
-            val mIntent = Intent(this, MainStackActivity::class.java)
-            moveToAnotherPage(mIntent)
-            true
-        }
-
-        else -> {
-            // If we got here, the user's action was not recognized.
-            // Invoke the superclass to handle it.
-            super.onOptionsItemSelected(item)
-        }
     }
 }
