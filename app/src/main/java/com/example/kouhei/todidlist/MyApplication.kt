@@ -3,6 +3,7 @@ package com.example.kouhei.todidlist
 import android.app.Activity
 import android.app.Application
 import android.content.ComponentCallbacks2
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 
@@ -50,10 +51,17 @@ open class MyApplication : Application(), Application.ActivityLifecycleCallbacks
      */
     override fun onActivityStarted(activity: Activity?) {
         val data = getSharedPreferences(getString(R.string.preference_file_name), AppCompatActivity.MODE_PRIVATE)
+        val isPassCodeNeed = data.getBoolean(APP_NEED_PASSCODE, false)
+        val passCode = data.getString(PASSCODE, null)
 
-        // ActivityをStartした時、アプリがHiddenかつパスコードを使うように設定されていれば、PassCodeConfirmActivityに移動する。
-        if (isAppHidden && data.getBoolean(APP_NEED_PASSCODE, false)) {
-//            activity?.startActivity()
+        // ActivityをStartした時、以下の条件を満たしていればPassCodeConfirmActivityに移動する。
+        // 　・アプリがHidden
+        // 　・パスコードを使うように設定されている
+        // 　・パスコードの桁が４桁
+        if (isAppHidden && isPassCodeNeed && passCode.length == 4) {
+            val mIntent = Intent(this, PassCodeConfirmActivity::class.java)
+            mIntent.putExtra(PASSCODE, passCode)
+            startActivity(mIntent)
         }
         isAppHidden = false
     }
