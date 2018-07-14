@@ -31,4 +31,5 @@
     <string name="passcode_set_error_message">パスコードは４桁の数字にしてください</string>
     <string name="cancel">キャンセル</string>
     <string name="back">戻る</string>
+    <string name="ok">OK</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.kouhei.todidlist
 
+import android.app.AlertDialog
 import android.arch.lifecycle.*
 import android.content.Intent
 import android.os.Bundle
@@ -20,6 +21,13 @@ class MainStackActivity : MyAppCompatActivity() {
         setContentView(R.layout.activity_main_stack)
         setSupportActionBar(main_stack_page_toolbar) // アプリ上部のToolbarを呼び出す
         nowTimeStamp = intent.getLongExtra(EXTRA_DATE, nowTimeStamp)
+
+        val passcode = intent.getStringExtra(MyApplication.PASSCODE)
+        if (passcode != null) {
+            val dialogMessage = "パスコードを " + passcode + " に設定しました"
+            val alert = AlertDialog.Builder(this)
+            alert.setMessage(dialogMessage).setPositiveButton(getString(R.string.ok), null).show()
+        }
 
         val manager = LinearLayoutManager(this)
         manager.reverseLayout = true // 日記リストを、新しいものが上にくるようにする
