@@ -5,13 +5,14 @@ import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.*
 
-const val DATE_PATTERN_TO_DATABASE = "yyyyMMdd"
+const val DATE_PATTERN_TO_DATABASE = "yyyyMMddHHmmss"
 
 val week_name = arrayOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
 
 /**
  * MainStackActivityのUIに表示する用の日付フォーマット変換
  * 拡張関数なので${string}.shapeForStackUi() のように使う。
+ * ※最初の４桁が年、続く２桁が月、その次の２桁が日として認識される。
  */
 fun String.shapeForStackUi(): String {
     val year  = this.substring(0, 4).toInt()
@@ -27,6 +28,7 @@ fun String.shapeForStackUi(): String {
 
 /**
  * EditDiaryActivityに表示する用の日付フォーマット変換機（拡張関数）
+ * ※最初の４桁が年、続く２桁が月、その次の２桁が日として認識される。
  */
 fun String.shapeForEditUi(): String {
     val year  = this.substring(0, 4).toInt()
