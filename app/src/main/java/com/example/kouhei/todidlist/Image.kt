@@ -9,6 +9,10 @@ import android.arch.persistence.room.PrimaryKey
 class Image {
 
     /**
+     * 一つの日記に０個～複数個の画像が存在する。
+     */
+
+    /**
      * 主キー。
      */
     @PrimaryKey(autoGenerate = true)
