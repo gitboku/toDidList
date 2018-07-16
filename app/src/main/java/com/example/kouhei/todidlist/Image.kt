@@ -19,9 +19,8 @@ class Image {
     var id: Int = 0
 
     /**
-     * 画像の名前。
      * 内部ストレージに保存するときもこの名前を使用する。
-     * {calendarDate}_{incrementNumber}という名前になる。
+     * "name"という名前がついてるが、実際はURIが保存される。
      */
     @ColumnInfo(name = "image_name")
     var imageName: String = ""
