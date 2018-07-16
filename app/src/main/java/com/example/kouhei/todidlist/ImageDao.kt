@@ -20,7 +20,7 @@ interface ImageDao {
      * 今のところ(2018/6/7)日記と画像は１対１だが、１対多にする改修の可能性を見越して。
      */
     @Query("SELECT * FROM image WHERE calendar_date = :calendarDate")
-    fun getImagesWithCalendarDate(calendarDate: Int): List<Image>
+    fun getImagesWithCalendarDate(calendarDate: String): List<Image>
 
     /**
      * 画像ファイルの名前を指定して、対象の画像ファイル名と日記の関係をDBからdeleteする。

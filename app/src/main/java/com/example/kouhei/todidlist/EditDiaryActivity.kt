@@ -24,7 +24,7 @@ class EditDiaryActivity : MyAppCompatActivity() {
 
     private lateinit var db: AppDatabase
     private var nowTimeStamp: Long = 0
-    private var selectDate: Int = 0
+    private lateinit var selectDate: String
     private lateinit var newBitmap: Bitmap
 
     /**
@@ -205,6 +205,7 @@ class EditDiaryActivity : MyAppCompatActivity() {
         }
 
         if (data != null && requestCode == GALLERY) {
+            // Gallery から写真を選んで戻ってきたときの動作
             val contentURI = data.data
             try {
                 // Photosから画像を取得する。

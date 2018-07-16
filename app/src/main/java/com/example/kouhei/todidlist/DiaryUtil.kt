@@ -46,22 +46,11 @@ fun String.shapeForEditUi(): String {
  * 選択している日付をInt型で、DATE_PATTERN_TO_DATABASEのフォーマットで返す。
  * 何らかの理由で失敗したら0を返す
  */
-fun getSelectDate(timestamp: Long): Int {
+fun getSelectDate(timestamp: Long): String {
     val selectDateString = getShapedTimeStamp(timestamp)
-    try {
-        // selectDateStringがnullならselectDateはnullになる
-        val selectDate: Int? = selectDateString?.toInt()
-
-        // Smart Cast to "Int" from "Int?"
-        if (selectDate != null) {
-            return selectDate
-        }
-        Log.e("myTag", "selectDate is null")
-    }catch (e: Exception) {
-        Log.e("myTag", "String? cast to int error: " + e.toString())
-    }
-
-    return 0
+    // selectDateStringがnullならselectDateはnullになる
+    // selectDate は最初の４桁が年、次の２桁が月、続く２桁が日になっているので、それより後ろは消す。
+    return selectDateString.substring(0, 8)
 }
 
 /**
@@ -69,7 +58,7 @@ fun getSelectDate(timestamp: Long): Int {
  * 引数に何も指定しなければ現在時刻で返す
  */
 fun getShapedTimeStamp(timestamp: Long = System.currentTimeMillis(),
-                       formatString: String = DATE_PATTERN_TO_DATABASE): String? {
+                       formatString: String = DATE_PATTERN_TO_DATABASE): String {
     try {
         val sdf = SimpleDateFormat(formatString)
         val netDate = Date(timestamp)

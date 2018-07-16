@@ -24,7 +24,7 @@ class MainActivity :  MyAppCompatActivity() {
         val EDIT_DIARY: String = EditDiaryActivity::class.java.simpleName
         val STACK_PAGE: String = MainStackActivity::class.java.simpleName
         var nowTimeStamp: Long = System.currentTimeMillis()
-        var selectDate = getShapedTimeStamp()!!.toInt()
+        var selectDate = getShapedTimeStamp()
     }
 
     init {
@@ -86,7 +86,7 @@ class MainActivity :  MyAppCompatActivity() {
      * textViewの日記本文と背景画像を読み込んで表示する。
      * calendarがクリックされたときに呼びだす。
      */
-    private fun textViewUpdate(db: AppDatabase, targetDate: Int) {
+    private fun textViewUpdate(db: AppDatabase, targetDate: String) {
         updateDiaryText(db, targetDate)
         runBlocking { updateDiaryImage(db, targetDate) }
     }
@@ -112,7 +112,7 @@ class MainActivity :  MyAppCompatActivity() {
     /**
      * textViewの文章を更新する
      */
-    private fun updateDiaryText(db: AppDatabase, targetDate: Int) {
+    private fun updateDiaryText(db: AppDatabase, targetDate: String) {
         val thread = launch {
             val diary = db.diaryDao().getEntityWithDate(targetDate)
             textView.text = diary?.diaryText ?: getText(R.string.diary_yet)
@@ -126,7 +126,7 @@ class MainActivity :  MyAppCompatActivity() {
      * 画像の読み込みには時間がかかる可能性があり、suspend functionにしてある。
      * よって、runBlocking{ updateDiaryImage() }のようにして使う。
      */
-    private suspend fun updateDiaryImage(db: AppDatabase, targetDate: Int) {
+    private suspend fun updateDiaryImage(db: AppDatabase, targetDate: String) {
         val loadedImageName = async {
             var nowImageName: String? = null
             // 日記の画像を内部ストレージから取得して、diaryPanelの背景にセットする。

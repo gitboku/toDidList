@@ -12,7 +12,7 @@ open class DiaryAdapter(private val myDataset: ArrayList<Diary>) :
 
     // Cached copy of Diaries
     lateinit var mDiaries: List<Diary>
-    var selectedDate: Int = 0
+    lateinit var selectedDate: String
 
     lateinit var listener: View.OnClickListener
 
