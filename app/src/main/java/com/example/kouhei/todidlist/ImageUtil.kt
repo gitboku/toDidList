@@ -1,36 +1,20 @@
 package com.example.kouhei.todidlist
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.util.Log
-import java.io.*
 import kotlin.concurrent.thread
 
 /**
- * 名前で指定されたファイルを内部ストレージから取得する。
- * imageNameかNull or Emptyだったり、ファイル読み込みに失敗したらnullを返す
+ * 日記の画像を内部ストレージから取得する。
+ * 現状(2018/06/07)では日記と画像は１対１なので、画像配列の最初を取り出す。
  */
-fun getImageFromInternalStorage(context: Context, imageName: String?): Bitmap? {
-    if (imageName.isNullOrEmpty()) {
-        return null
-    }
-
-    try {
-        return convertByteArrayToBitmap(context.openFileInput(imageName).readBytes())
-    } catch (e: FileNotFoundException) {
-        Log.e("myError", "Image File not found: " + e.toString())
+fun getImageNameFromDb(imageDao: ImageDao, selectDate: String): String? {
+    val imageList = imageDao.getImagesWithCalendarDate(selectDate)
+    if (imageList.isNotEmpty()){
+        val image = imageList.first()
+        // EditDiaryActivityの背景に画像を設定する。画像Entityがなければ何もしない。
+        return image.imageName
     }
     return null
-}
-
-/**
- * ByteArray画像をBitmap画像にデコードする。
- * 参考：https://gist.github.com/vvkirillov/6e0475a56b9b2b14cd97
- */
-fun convertByteArrayToBitmap(src: ByteArray): Bitmap
-{
-    return BitmapFactory.decodeByteArray(src, 0, src.size)
 }
 
 /**

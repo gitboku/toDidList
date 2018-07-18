@@ -108,12 +108,7 @@ class EditDiaryActivity : MyAppCompatActivity() {
         val loadedImageURI = async {
             // 日記の画像を内部ストレージから取得して、diaryPanelの背景にセットする。
             // 現状(2018/06/07)では日記と画像は１対１なので、画像配列の最初を取り出す。
-            val imageList = db.imageDao().getImagesWithCalendarDate(selectDate)
-            if (imageList.isNotEmpty()){
-                val image = imageList.first()
-                // EditDiaryActivityの背景に画像を設定する。画像Entityがなければ何もしない。
-                oldImageName = image.imageName
-            }
+            oldImageName = getImageNameFromDb(db.imageDao(), selectDate)
             return@async oldImageName
         }.await()
         if (loadedImageURI != null) {

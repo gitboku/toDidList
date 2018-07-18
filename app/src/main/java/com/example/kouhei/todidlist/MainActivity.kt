@@ -2,7 +2,9 @@ package com.example.kouhei.todidlist
 
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -10,6 +12,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.runBlocking
+import java.io.FileNotFoundException
 import kotlin.system.exitProcess
 
 const val EXTRA_DATE = "com.example.todidList.SELECTED_DATE"
@@ -41,7 +44,7 @@ class MainActivity :  MyAppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // Toolbar のタイトルを選択した日付に変更(EditPage と同じフォーマットでOK）
-        main_page_toolbar.title  = selectDate.toString().shapeForEditUi()
+        main_page_toolbar.title  = selectDate.shapeForEditUi()
         // アプリ上部のToolbarを呼び出す
         setSupportActionBar(main_page_toolbar)
 
@@ -127,19 +130,18 @@ class MainActivity :  MyAppCompatActivity() {
      * よって、runBlocking{ updateDiaryImage() }のようにして使う。
      */
     private suspend fun updateDiaryImage(db: AppDatabase, targetDate: String) {
-        val loadedImageName = async {
-            var nowImageName: String? = null
-            // 日記の画像を内部ストレージから取得して、diaryPanelの背景にセットする。
-            // 現状(2018/06/07)では日記と画像は１対１なので、画像配列の最初を取り出す。
-            val imageList = db.imageDao().getImagesWithCalendarDate(targetDate)
-            if (imageList.isNotEmpty()){
-                val image = imageList.first()
-                nowImageName = image.imageName
-            }
-            return@async nowImageName
+        val loadedImageURI = async {
+            return@async getImageNameFromDb(db.imageDao(), targetDate)
         }.await()
-        if (loadedImageName != null) {
-            main_page_layout.background = BitmapDrawable(resources, getImageFromInternalStorage(this, loadedImageName))
+        if (loadedImageURI != null) {
+            try {
+                val loadedBitmap = MediaStore.Images.Media.getBitmap(contentResolver, Uri.parse(loadedImageURI))
+                main_page_layout.background = BitmapDrawable(resources, loadedBitmap)
+            } catch (e: FileNotFoundException) {
+                main_page_layout.background = null
+                Log.e("myTag", "ファイルが削除されています。 ")
+                e.printStackTrace()
+            }
         } else {
             main_page_layout.background = null
         }
