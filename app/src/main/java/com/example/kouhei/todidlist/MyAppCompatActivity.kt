@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.app.AlertDialog
 import android.widget.Toast
 
 open class MyAppCompatActivity: AppCompatActivity() {
@@ -57,6 +56,7 @@ open class MyAppCompatActivity: AppCompatActivity() {
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
 
         // 起動したActivityの結果をonActivityResultでそれを受け取ることができる。
+        // TODO: resolveActivity() を呼び出して、インテントを処理できるアプリがあるかを確認する必要がある。
         startActivityForResult(galleryIntent, GALLERY)
     }
 
