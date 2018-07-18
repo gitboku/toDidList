@@ -41,9 +41,9 @@ class MainStackActivity : MyAppCompatActivity() {
         adapter.setOnItemClickListener(View.OnClickListener {
             val intent = Intent(applicationContext, EditDiaryActivity::class.java)
             intent.putExtra(FROM_CLASS, this.localClassName)
-            val year  = adapter.selectedDate.toString().substring(0, 4).toInt()
-            val month = adapter.selectedDate.toString().substring(4, 6).toInt() - 1 // monthはなぜか[0-11]
-            val day   = adapter.selectedDate.toString().substring(6, 8).toInt()
+            val year  = adapter.selectedDate.substring(0, 4).toInt()
+            val month = adapter.selectedDate.substring(4, 6).toInt() - 1 // monthはなぜか[0-11]
+            val day   = adapter.selectedDate.substring(6, 8).toInt()
             intent.putExtra(EXTRA_DATE, getCalendarTimeStamp(year, month, day))
             moveToAnotherPage(intent)
         })
