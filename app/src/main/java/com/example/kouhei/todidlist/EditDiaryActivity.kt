@@ -3,7 +3,6 @@ package com.example.kouhei.todidlist
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_edit_diary.*
 import android.content.Intent
-import android.os.Build
 import android.view.Menu
 import android.view.MenuItem
 import android.Manifest
@@ -11,13 +10,18 @@ import android.app.Activity
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.provider.MediaStore
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
+import android.util.Log
 import android.widget.Toast
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.runBlocking
+import java.io.FileNotFoundException
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.concurrent.thread
 
 class EditDiaryActivity : MyAppCompatActivity() {
@@ -39,12 +43,17 @@ class EditDiaryActivity : MyAppCompatActivity() {
      */
     private var oldImageName: String? = null
 
+    /**
+     * 新しく選択した画像。
+     * 日記の画像を新しく保存するときに使う。
+     */
+    private lateinit var saveBitmap: Bitmap
+
     init {
         try {
             db = AppDatabase.getInstance(this)!!
         } catch (e: Exception) {
             // もしDBを取得する段階でエラーを出したら前のページに戻る
-            Toast.makeText(this, getString(R.string.failed_to_get_DB), Toast.LENGTH_SHORT).show()
             val mIntent = getMyIntent()
             moveToAnotherPage(mIntent)
         }
@@ -96,7 +105,7 @@ class EditDiaryActivity : MyAppCompatActivity() {
         }.await() // タスクを作ると同時に実行する
 
         // coroutineは軽量スレッドとして考えることができるので、thread{}で囲む必要はない。
-        val loadedImageName = async {
+        val loadedImageURI = async {
             // 日記の画像を内部ストレージから取得して、diaryPanelの背景にセットする。
             // 現状(2018/06/07)では日記と画像は１対１なので、画像配列の最初を取り出す。
             val imageList = db.imageDao().getImagesWithCalendarDate(selectDate)
@@ -107,7 +116,15 @@ class EditDiaryActivity : MyAppCompatActivity() {
             }
             return@async oldImageName
         }.await()
-        edit_page_layout.background = BitmapDrawable(resources, getImageFromInternalStorage(this, loadedImageName))
+        if (loadedImageURI != null) {
+            try {
+                val loadedBitmap = MediaStore.Images.Media.getBitmap(contentResolver, Uri.parse(loadedImageURI))
+                edit_page_layout.background = BitmapDrawable(resources, loadedBitmap)
+            } catch (e: FileNotFoundException) {
+                Log.e("myTag", "ファイルが削除されています。 ")
+                e.printStackTrace()
+            }
+        }
     }
 
     /**
@@ -117,8 +134,7 @@ class EditDiaryActivity : MyAppCompatActivity() {
         R.id.action_save -> {
             saveDiary()
 
-            val mIntent = getMyIntent()
-            moveToAnotherPage(mIntent)
+            moveToAnotherPage(getMyIntent())
             true
         }
 
@@ -212,8 +228,9 @@ class EditDiaryActivity : MyAppCompatActivity() {
                 newBitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, contentURI)
                 Toast.makeText(this, getString(R.string.image_not_saved_yet), Toast.LENGTH_SHORT).show()
                 // bitmapDrawableに変換してEditPanelの背景に表示
-                edit_page_layout.background = BitmapDrawable(resources, newBitmap)
                 isImageChanged = true
+                edit_page_layout.background = BitmapDrawable(resources, newBitmap)
+                saveBitmap = BitmapDrawable(resources, newBitmap).bitmap
 
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -241,12 +258,13 @@ class EditDiaryActivity : MyAppCompatActivity() {
      * UpdateかInsertかはDiaryのEntityがnullかどうかで判断
      */
     private fun saveDiary() {
-        // TODO: このif文内部を実行して抜けるのに１０秒近くかかる。もはやバグの領域。。。
         if (isImageChanged) {
-            // 画像を内部ストレージに保存する
-            val imageDao = db.imageDao()
-            val newImageName = generateImageName(selectDate, oldImageName)
-            saveImage(this, newImageName, newBitmap, imageDao)
+            val timeStamp = SimpleDateFormat(DATE_PATTERN_TO_DATABASE).format(Date())
+            val imageFileName = "JPEG_" + timeStamp + ".jpg"
+            // 画像を保存
+            val imageURI = MediaStore.Images.Media.insertImage(contentResolver, saveBitmap, imageFileName, null)
+            // 画像名をDBに保存する
+            saveImageNameToDb(imageURI, db.imageDao(), selectDate) // 画像の名前をDBに保存する
         }
 
         val diaryDao = db.diaryDao()

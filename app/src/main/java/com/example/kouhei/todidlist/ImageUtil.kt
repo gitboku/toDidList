@@ -4,22 +4,8 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
-import java.io.ByteArrayOutputStream
-import java.io.FileNotFoundException
-import java.io.IOException
+import java.io.*
 import kotlin.concurrent.thread
-
-/**
- * 新しく内部ストレージに保存する画像の名前を生成する
- * imageNameは{calendarDate}_{incrementNumber}いう形をしている(e.g 20180607_0.png)。
- * imageNameがnullならまだ画像はないものと判断する。
- */
-fun generateImageName(selectDate: Int, imageName: String?): String {
-    if (imageName != null) {
-        return selectDate.toString() + "_" + imageName.substring(9).toInt().plus(1).toString()
-    }
-    return selectDate.toString() + "_0"
-}
 
 /**
  * 名前で指定されたファイルを内部ストレージから取得する。
@@ -75,19 +61,9 @@ private fun deleteImageNameFromDb(imageName: String, imageDao: ImageDao) {
 }
 
 /**
- * 画像を保存する。
- * imageNameをDBに保存するのと、BitmapをByteArrayにして内部ストレージに保存するのを両方やる。
- */
-fun saveImage(context: Context, newImageName: String, newBitmap: Bitmap, imageDao: ImageDao) {
-    saveImageToInternalStorage(context, newImageName, newBitmap)
-    saveImageNameToDb(newImageName, imageDao)
-}
-
-/**
  * imageNameをDBに保存する。
  */
-private fun saveImageNameToDb(newImageName: String, imageDao: ImageDao) {
-    val targetDate = newImageName.substring(0, 8).toInt()
+fun saveImageNameToDb(newImageName: String, imageDao: ImageDao, targetDate: String) {
     thread {
         val imageEntityList = imageDao.getImagesWithCalendarDate(targetDate)
         if (imageEntityList.isEmpty()) {
@@ -101,46 +77,6 @@ private fun saveImageNameToDb(newImageName: String, imageDao: ImageDao) {
             val imageEntity = imageEntityList.first()
             imageEntity.imageName = newImageName
             imageDao.update(imageEntity)
-        }
-    }
-}
-
-/**
- * 渡されたBitmap画像を、日記の画像として内部ストレージに保存する。
- * 保存された画像と日記Entityとの関連付けはDBのImageテーブルで行う予定。
- * 参考：https://developer.android.com/training/data-storage/files
- */
-private fun saveImageToInternalStorage(context: Context, imageName: String, bitmap: Bitmap) {
-    try {
-        // use: ブロック実行後に自動でclose()してくれる。
-        context.openFileOutput(imageName, Context.MODE_PRIVATE).use {
-            // it: Kotlinのラムダ式で、引数を指定しなかったときのデフォルト引数名
-            it.write(convertBitmapToByteArray(bitmap))
-        }
-    } catch (e: FileNotFoundException) {
-        Log.e("myError", "ファイルが見つかりませんでした。\n" + e.toString())
-    } catch (e: IOException) {
-        Log.e("myError", "write()でエラーが発生しました。\n" + e.toString())
-    }
-}
-
-/**
- * ビットマップ画像をByteArrayに変換する
- * 参考：https://gist.github.com/vvkirillov/6e0475a56b9b2b14cd97
- */
-fun convertBitmapToByteArray(bitmap: Bitmap, quality: Int = 100, compressFormat: Bitmap.CompressFormat = Bitmap.CompressFormat.PNG): ByteArray? {
-    var baos: ByteArrayOutputStream? = null
-    try {
-        baos = ByteArrayOutputStream()
-        bitmap.compress(compressFormat, quality, baos)
-        return baos.toByteArray()
-    } finally {
-        if (baos != null) {
-            try {
-                baos.close()
-            } catch (e: IOException) {
-                Log.e("myError", "ByteArrayOutputStream was not closed: " + e.toString())
-            }
         }
     }
 }
