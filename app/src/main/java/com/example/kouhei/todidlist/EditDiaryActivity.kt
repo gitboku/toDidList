@@ -74,7 +74,7 @@ class EditDiaryActivity : MyAppCompatActivity() {
         selectDate = getSelectDate(nowTimeStamp)
 
         // Toolbarのタイトルを日付にする
-        edit_page_toolbar.title  = selectDate.toString().shapeForEditUi()
+        edit_page_toolbar.title  = selectDate.shapeForEditUi()
 
         // アプリ上部のToolbarを呼び出す
         setSupportActionBar(edit_page_toolbar)
