@@ -145,7 +145,7 @@ class EditDiaryActivity : MyAppCompatActivity() {
         // EditPanelに画像が表示されるが、saveはまだされない
         // 画像をsaveするのはR.id.action_saveが押されたとき。
         R.id.action_image -> {
-            selectPicturesFromExternalStorage()
+            selectPicturesFromGallery()
             true
         }
 
@@ -162,7 +162,7 @@ class EditDiaryActivity : MyAppCompatActivity() {
      * 外部ストレージにアクセスする許可がなければ、許可を求める。
      * ユーザーが拒否すれば、このアプリで画像は扱えない。
      */
-    private fun selectPicturesFromExternalStorage() {
+    private fun selectPicturesFromGallery() {
         // Android 6, API 23以上でパーミッションの確認が必要だが、そもそもAPI 22 以下はターゲットにしていない。
         // https://akira-watson.com/android/external-storage-image.html
         val permission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
