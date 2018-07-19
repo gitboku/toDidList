@@ -221,12 +221,12 @@ class EditDiaryActivity : MyAppCompatActivity() {
             try {
                 // Photosから画像を取得する。
                 newBitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, contentURI)
-                Toast.makeText(this, getString(R.string.image_not_saved_yet), Toast.LENGTH_SHORT).show()
                 // bitmapDrawableに変換してEditPanelの背景に表示
                 isImageChanged = true
                 edit_page_layout.background = BitmapDrawable(resources, newBitmap)
                 saveBitmap = BitmapDrawable(resources, newBitmap).bitmap
 
+                Toast.makeText(this, getString(R.string.image_not_saved_yet), Toast.LENGTH_SHORT).show()
             } catch (e: IOException) {
                 e.printStackTrace()
                 Toast.makeText(this, getString(R.string.failed_get_image), Toast.LENGTH_SHORT).show()
