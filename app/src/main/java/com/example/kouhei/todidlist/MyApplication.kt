@@ -1,10 +1,12 @@
 package com.example.kouhei.todidlist
 
+import android.Manifest
 import android.app.Activity
 import android.app.Application
 import android.content.ComponentCallbacks2
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 
 /**
@@ -20,6 +22,12 @@ open class MyApplication : Application(), Application.ActivityLifecycleCallbacks
 
         // パスコードのPreferenceのキー
         var PASSCODE = "passcode"
+
+        /**
+         * 画像を読み込む権限があるかを判定するフラグ
+         * 0: Permission granted
+         */
+        var isGrantedReadStorage = 0
     }
 
     private var isAppHidden = true
@@ -53,6 +61,9 @@ open class MyApplication : Application(), Application.ActivityLifecycleCallbacks
         val data = getSharedPreferences(getString(R.string.preference_file_name), AppCompatActivity.MODE_PRIVATE)
         val isPassCodeNeed = data.getBoolean(APP_NEED_PASSCODE, false)
         val passCode = data.getString(PASSCODE, null)
+
+        // 画像を読み込む権限の可否情報を取得
+        isGrantedReadStorage = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
 
         // ActivityをStartした時、以下の条件を満たしていればPassCodeConfirmActivityに移動する。
         // 　・アプリがHidden

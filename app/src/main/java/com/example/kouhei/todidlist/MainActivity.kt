@@ -1,6 +1,7 @@
 package com.example.kouhei.todidlist
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -8,6 +9,8 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
+import com.example.kouhei.todidlist.MyApplication.Companion.isGrantedReadStorage
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
@@ -133,7 +136,7 @@ class MainActivity :  MyAppCompatActivity() {
         val loadedImageURI = async {
             return@async getImageNameFromDb(db.imageDao(), targetDate)
         }.await()
-        if (loadedImageURI != null) {
+        if (loadedImageURI != null && isGrantedReadStorage == PackageManager.PERMISSION_GRANTED) {
             try {
                 val loadedBitmap = MediaStore.Images.Media.getBitmap(contentResolver, Uri.parse(loadedImageURI))
                 main_page_layout.background = BitmapDrawable(resources, loadedBitmap)
@@ -142,6 +145,9 @@ class MainActivity :  MyAppCompatActivity() {
                 Log.e("myTag", "ファイルが削除されています。 ")
                 e.printStackTrace()
             }
+        } else if (isGrantedReadStorage != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, getString(R.string.not_granted_read_storage), Toast.LENGTH_SHORT).show()
+            main_page_layout.background = null
         } else {
             main_page_layout.background = null
         }

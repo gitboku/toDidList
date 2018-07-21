@@ -16,6 +16,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.widget.Toast
+import com.example.kouhei.todidlist.MyApplication.Companion.isGrantedReadStorage
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.runBlocking
 import java.io.FileNotFoundException
@@ -105,12 +106,17 @@ class EditDiaryActivity : MyAppCompatActivity() {
         }.await() // タスクを作ると同時に実行する
 
         // coroutineは軽量スレッドとして考えることができるので、thread{}で囲む必要はない。
-        val loadedImageURI = async {
-            // 日記の画像を内部ストレージから取得して、diaryPanelの背景にセットする。
-            // 現状(2018/06/07)では日記と画像は１対１なので、画像配列の最初を取り出す。
-            oldImageName = getImageNameFromDb(db.imageDao(), selectDate)
-            return@async oldImageName
-        }.await()
+        val loadedImageURI = if (isGrantedReadStorage == PackageManager.PERMISSION_GRANTED) {
+            async {
+                // 日記の画像を内部ストレージから取得して、diaryPanelの背景にセットする。
+                // 現状(2018/06/07)では日記と画像は１対１なので、画像配列の最初を取り出す。
+                oldImageName = getImageNameFromDb(db.imageDao(), selectDate)
+                return@async oldImageName
+            }.await()
+        } else {
+            Toast.makeText(this, getString(R.string.not_granted_read_storage), Toast.LENGTH_SHORT).show()
+            null
+        }
         if (loadedImageURI != null) {
             try {
                 val loadedBitmap = MediaStore.Images.Media.getBitmap(contentResolver, Uri.parse(loadedImageURI))
