@@ -70,7 +70,7 @@ class MainActivity :  MyAppCompatActivity() {
             selectDate = getSelectDate(nowTimeStamp)
 
             // Toolbar のタイトルを選択した日付に変更(EditPage と同じフォーマットでOK）
-            main_page_toolbar.title  = selectDate.toString().shapeForEditUi()
+            main_page_toolbar.title  = selectDate.shapeForEditUi()
 
             textViewUpdate(db, selectDate)
         }

@@ -46,7 +46,7 @@ open class DiaryAdapter(private val myDataset: ArrayList<Diary>) :
     // onCreateViewHolder で作成したリストアイテムにデータを紐づける
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // myDataset[position]をRecyclerViewの一要素に入れる
-        holder.diaryDate.text = myDataset[position].calendarDate.toString().shapeForStackUi()
+        holder.diaryDate.text = myDataset[position].calendarDate.shapeForStackUi()
         holder.diaryText.text = myDataset[position].diaryText.toString()
     }
 
