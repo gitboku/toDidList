@@ -12,9 +12,11 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.provider.MediaStore
+import android.app.DatePickerDialog.OnDateSetListener
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.util.Log
+import android.widget.DatePicker
 import android.widget.Toast
 import com.example.kouhei.todidlist.MyApplication.Companion.isGrantedReadStorage
 import kotlinx.coroutines.experimental.async
@@ -25,7 +27,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.concurrent.thread
 
-class EditDiaryActivity : MyAppCompatActivity() {
+class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
 
     private lateinit var db: AppDatabase
     private var nowTimeStamp: Long = 0
@@ -155,11 +157,35 @@ class EditDiaryActivity : MyAppCompatActivity() {
             true
         }
 
+        // 日付変更ボタン
+        R.id.action_date -> {
+            showCalendarPanel()
+            true
+        }
+
         else -> {
             // If we got here, the user's action was not recognized.
             // Invoke the superclass to handle it.
             super.onOptionsItemSelected(item)
         }
+    }
+
+    /**
+     * 日記の日付を選択するCalendarView を表示する
+     * 参考： https://akira-watson.com/android/datepicker-timepicker.html
+     */
+    private fun showCalendarPanel() {
+        val datePickerFragment = DatePickerFragment()
+        datePickerFragment.show(supportFragmentManager, "datePick")
+    }
+
+    /**
+     * OnDateSetListener インターフェースのメソッド。
+     * DateDialogFragment の結果を受け取る
+     * 参考： https://akira-watson.com/android/datepicker-timepicker.html
+     */
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        edit_page_toolbar.title = getSelectDate(getCalendarTimeStamp(year, month, dayOfMonth)).shapeForEditUi()
     }
 
     /**
