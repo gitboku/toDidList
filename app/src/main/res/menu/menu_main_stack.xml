@@ -2,7 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!--Android Studio で見ると、"icon" の行に鍵マークが表示されないが、アプリでは表示される。-->
     <item
         android:id="@+id/set_passcode"
         android:icon="@drawable/ic_key_white_24dp"
