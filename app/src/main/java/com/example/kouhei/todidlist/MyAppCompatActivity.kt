@@ -57,7 +57,7 @@ open class MyAppCompatActivity: AppCompatActivity() {
 
         // 起動したActivityの結果をonActivityResultでそれを受け取ることができる。
         // TODO: resolveActivity() を呼び出して、インテントを処理できるアプリがあるかを確認する必要がある。
-        startActivityForResult(galleryIntent, GALLERY)
+        startActivityForResult(Intent.createChooser(galleryIntent, null), GALLERY)
     }
 
     /**
