@@ -23,7 +23,7 @@ fun String.shapeForStackUi(): String {
     calendar.set(year, month - 1, day)
     val dayOfWeek = week_name[calendar.get(Calendar.DAY_OF_WEEK) - 1]
 
-    return month.toString() + "/" + day.toString() + "\n" + year.toString() + "\n(" + dayOfWeek + ")"
+    return year.toString() + "/" + month.toString() + "/" + day.toString() + " (" + dayOfWeek + ")"
 }
 
 /**
