@@ -3,9 +3,10 @@ package com.example.kouhei.todidlist
 import android.app.AlertDialog
 import android.arch.lifecycle.*
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.*
+import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -29,12 +30,15 @@ class MainStackActivity : MyAppCompatActivity() {
             alert.setMessage(dialogMessage).setPositiveButton(getString(R.string.ok), null).show()
         }
 
-        val manager = LinearLayoutManager(this)
-        manager.reverseLayout = true // 日記リストを、新しいものが上にくるようにする
+        val manager = GridLayoutManager(this, 2)
+//        manager.reverseLayout = true // 日記リストを、新しいものが上にくるようにする
         diary_recycler_view.layoutManager = manager
 
         val adapter = DiaryAdapter(diaryList)
         diary_recycler_view.adapter = adapter
+
+        diary_recycler_view.addItemDecoration(GridSpacingItemDecoration(2, dpToPx(10), true))
+        diary_recycler_view.itemAnimator = DefaultItemAnimator()
 
         // 参考：https://qiita.com/so-ma1221/items/d1b84bf764bf82fe1ac3
         // DiaryAdapterで定義したsetOnItemClickListener()を呼ぶ
@@ -49,7 +53,7 @@ class MainStackActivity : MyAppCompatActivity() {
         })
 
         // abstract ItemDecorationを継承したクラス(この場合はDividerItemDecoration)で、Decoratorを作成する
-        diary_recycler_view.addItemDecoration(DividerItemDecoration(diary_recycler_view.context, LinearLayoutManager(this).orientation))
+//        diary_recycler_view.addItemDecoration(DividerItemDecoration(diary_recycler_view.context, LinearLayoutManager(this).orientation))
 
         // たとえActivityがdestroyされても、ViewModelは保持される
         val mDiaryViewModel = ViewModelProviders.of(this).get(DiaryViewModel::class.java)
@@ -101,6 +105,37 @@ class MainStackActivity : MyAppCompatActivity() {
             // Invoke the superclass to handle it.
             super.onOptionsItemSelected(item)
         }
+    }
+
+    /**
+     * Decorator: マージンを設定する
+     * https://www.androidhive.info/2016/05/android-working-with-card-view-and-recycler-view/
+     */
+    class GridSpacingItemDecoration(initSpanCount: Int, initSpacing: Int, initIncludedEdge: Boolean): RecyclerView.ItemDecoration() {
+        var spanCount = initSpanCount
+        var spacing = initSpacing
+        var includeEdge = initIncludedEdge
+
+        override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+            val position = parent.getChildAdapterPosition(view)
+            val column = position % spanCount // item column
+
+            if (includeEdge) {
+                outRect.left = spacing - column * spacing / spanCount
+                outRect.right = (column + 1) * spacing / spanCount
+                if (position < spanCount) outRect.top = spacing // this is top edge
+                outRect.bottom = spacing
+            } else {
+                outRect.left = column * spacing / spanCount
+                outRect.right = spacing - (column + 1) * spacing / spanCount
+                if (position >= spanCount) outRect.top = spacing // item top
+            }
+        }
+    }
+
+    private fun dpToPx(dp: Int): Int {
+        val r = resources
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), r.displayMetrics))
     }
 
     /**

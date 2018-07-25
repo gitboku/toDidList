@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import kotlinx.android.synthetic.main.diary_list_item.view.*
 
@@ -53,8 +54,9 @@ open class DiaryAdapter(private val myDataset: ArrayList<Diary>) :
     override fun getItemCount() = myDataset.size
 
     // データを紐づけるのは onBindViewHolder() がやる
-    class ViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
-        var diaryDate = itemView?.diary_date as TextView
-        var diaryText = itemView?.diary_text as TextView
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var diaryImage = itemView.diary_image
+        var diaryDate = itemView.diary_date
+        var diaryText = itemView.diary_text
     }
 }
