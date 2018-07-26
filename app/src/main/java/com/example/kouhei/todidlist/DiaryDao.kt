@@ -10,7 +10,7 @@ interface DiaryDao{
     // このクラスがDAOなのではなく、@DaoアノテーションをつけることでRoomが自動的にDAOを生成する
 
     // List<T>を返すこともできるが、LiveData<>でラップすることにより通知を得ることができる
-    @Query("SELECT * FROM diary")
+    @Query("SELECT * FROM diary ORDER BY calendar_date DESC")
     fun getAllDiaries(): LiveData<List<Diary>>
 
     /**
