@@ -1,7 +1,6 @@
 package com.example.kouhei.todidlist
 
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_edit_diary.*
 import android.content.Intent
 import android.view.Menu
 import android.view.MenuItem
@@ -18,7 +17,9 @@ import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.widget.DatePicker
 import android.widget.Toast
+import com.example.kouhei.todidlist.MyApplication.Companion.SELECTED_DATE
 import com.example.kouhei.todidlist.MyApplication.Companion.isGrantedReadStorage
+import kotlinx.android.synthetic.main.activity_edit_diary.*
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.runBlocking
 import java.io.FileNotFoundException
@@ -64,7 +65,6 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
 
     companion object {
         // 将来的に何かで使うかもしれないので一応置いておく。
-        val MAIN_PAGE: String = MainActivity::class.java.simpleName
         val STACK_PAGE: String = MainStackActivity::class.java.simpleName
     }
 
@@ -73,7 +73,7 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
         setContentView(R.layout.activity_edit_diary)
 
         // kotlinではgetIntent()は"intent"でOK
-        nowTimeStamp = intent.getLongExtra(EXTRA_DATE, 0)
+        nowTimeStamp = intent.getLongExtra(SELECTED_DATE, 0)
         selectDate = getSelectDate(nowTimeStamp)
 
         // Toolbarのタイトルを日付にする
@@ -267,14 +267,8 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
     }
 
     private fun getMyIntent(): Intent {
-        // 遷移元に戻るように、Intentの第二引数(Class<?> cls)を動的に生成
-        val cls = when(intent.getStringExtra(FROM_CLASS)) {
-            STACK_PAGE -> MainStackActivity::class.java
-            else -> MainActivity::class.java
-        }
-        val intent = Intent(this, cls)
-        intent.putExtra(EXTRA_DATE, nowTimeStamp) // MainPageから来たintentをそのまま返す
-        intent.putExtra(FROM_CLASS, this.localClassName)
+        val intent = Intent(this, MainStackActivity::class.java)
+        intent.putExtra(SELECTED_DATE, nowTimeStamp) // MainPageから来たintentをそのまま返す
 
         return intent
     }

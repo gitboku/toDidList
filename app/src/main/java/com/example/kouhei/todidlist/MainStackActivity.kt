@@ -10,6 +10,7 @@ import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import com.example.kouhei.todidlist.MyApplication.Companion.SELECTED_DATE
 import kotlinx.android.synthetic.main.activity_main_stack.*
 
 
@@ -21,7 +22,7 @@ class MainStackActivity : MyAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_stack)
         setSupportActionBar(main_stack_page_toolbar) // アプリ上部のToolbarを呼び出す
-        nowTimeStamp = intent.getLongExtra(EXTRA_DATE, nowTimeStamp)
+        nowTimeStamp = intent.getLongExtra(SELECTED_DATE, nowTimeStamp)
 
         val passcode = intent.getStringExtra(MyApplication.PASSCODE)
         if (passcode != null) {
@@ -44,11 +45,10 @@ class MainStackActivity : MyAppCompatActivity() {
         // DiaryAdapterで定義したsetOnItemClickListener()を呼ぶ
         adapter.setOnItemClickListener(View.OnClickListener {
             val intent = Intent(applicationContext, EditDiaryActivity::class.java)
-            intent.putExtra(FROM_CLASS, this.localClassName)
             val year  = adapter.selectedDate.substring(0, 4).toInt()
             val month = adapter.selectedDate.substring(4, 6).toInt() - 1 // monthはなぜか[0-11]
             val day   = adapter.selectedDate.substring(6, 8).toInt()
-            intent.putExtra(EXTRA_DATE, getCalendarTimeStamp(year, month, day))
+            intent.putExtra(SELECTED_DATE, getCalendarTimeStamp(year, month, day))
             moveToAnotherPage(intent)
         })
 
@@ -88,8 +88,7 @@ class MainStackActivity : MyAppCompatActivity() {
         R.id.add_diary -> {
             // MainActivityに戻るときは、MainPageから来たintentをそのまま返す
             val intent = Intent(this, EditDiaryActivity::class.java)
-            intent.putExtra(EXTRA_DATE, nowTimeStamp)
-            intent.putExtra(FROM_CLASS, this.localClassName)
+            intent.putExtra(SELECTED_DATE, nowTimeStamp)
             moveToAnotherPage(intent)
             true
         }

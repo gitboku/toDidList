@@ -28,6 +28,11 @@ open class MyApplication : Application(), Application.ActivityLifecycleCallbacks
          * 0: Permission granted
          */
         var isGrantedReadStorage = 0
+
+        /**
+         * インテントに日付を渡すときのキーとなる文字列
+         */
+        val SELECTED_DATE = "com.example.todidList.SELECTED_DATE"
     }
 
     private var isAppHidden = true
