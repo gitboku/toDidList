@@ -85,9 +85,9 @@ class MainStackActivity : MyAppCompatActivity() {
      * Toolbarのアイテムのどれかをクリックしたとき、システムがこのメソッドを呼び出す。
      */
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.action_move_to_calendar_page -> {
+        R.id.add_diary -> {
             // MainActivityに戻るときは、MainPageから来たintentをそのまま返す
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, EditDiaryActivity::class.java)
             intent.putExtra(EXTRA_DATE, nowTimeStamp)
             intent.putExtra(FROM_CLASS, this.localClassName)
             moveToAnotherPage(intent)

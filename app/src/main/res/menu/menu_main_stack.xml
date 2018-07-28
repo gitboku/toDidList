@@ -15,8 +15,8 @@
         android:title="@string/search_button" />
 
     <item
-        android:id="@+id/action_move_to_calendar_page"
-        android:icon="@drawable/ic_date_range_white_24dp"
+        android:id="@+id/add_diary"
+        android:icon="@drawable/ic_add_white_24dp"
         android:title="@string/action_save_button"
         app:showAsAction="always" />
 
