@@ -229,11 +229,22 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
     private fun showPictureDialog() {
         val pictureDialog = AlertDialog.Builder(this)
         pictureDialog.setTitle(getString(R.string.where_image))
-        // pictureDialogItemsの中から一つ選ぶToastが表示される
-        // 写真を選ぶ選択肢を追加できる。
-        val pictureDialogItems = arrayOf(
-                getString(R.string.choose_image_from_gallery),
-                getString(R.string.delete_image))
+
+        // pictureDialogItems の中から一つ選ぶダイアログが表示される
+        // MutableList<> にしようとしたらsetItems のタイミングでCastエラーが出た。
+        val pictureDialogItems = if (edit_page_layout.background == null) {
+            // 写真がないときは「画像を選ぶ」だけ。
+            arrayOf(getString(R.string.choose_image_from_gallery))
+        } else {
+            // 写真があれば「削除」「エクスポート」もある。
+            arrayOf(getString(R.string.choose_image_from_gallery),
+                    getString(R.string.delete_image),
+                    getString(R.string.store_to_other_app))
+        }
+
+        /* 各選択肢にアクションの内容を追記する。
+         when の順番はダイアログの選択肢の順番に依存しているので、
+          pictureDialogItems の順番を変えたらwhen の順番も変えねばならない。 */
         pictureDialog.setItems(pictureDialogItems) { dialog, which ->
             when (which) {
                 0 -> {
@@ -243,6 +254,10 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
                     // 背景も消す。
                     edit_page_layout.background = null
                     newImageUri = null
+                    isImageChanged = true
+                }
+                2 -> {
+
                 }
             }
         }
