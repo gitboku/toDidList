@@ -13,7 +13,7 @@
     <string name="add_image">add image</string>
     <string name="request_permission_msg">Photosにアクセスする許可がなければ日記に写真を追加することができません。</string>
     <string name="permission_denied_msg">Photosにアクセスする許可が得られなかったので、写真は利用できません。</string>
-    <string name="activity_canceled">ActivityがCancelされました</string>
+    <string name="activity_canceled">写真選びはCancelされました</string>
     <string name="image_not_saved_yet">まだ写真の変更はsaveされていません</string>
     <string name="failed_get_image">写真データの取得に失敗しました</string>
     <string name="choose_image_from_gallery">Gallaryから</string>
