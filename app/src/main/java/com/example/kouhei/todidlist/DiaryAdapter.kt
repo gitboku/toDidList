@@ -12,6 +12,7 @@ open class DiaryAdapter(private val myDataset: ArrayList<Diary>) :
     // Cached copy of Diaries
     lateinit var mDiaries: List<Diary>
     lateinit var selectedDate: String
+    var diaryId: Int? = null
 
     lateinit var listener: View.OnClickListener
 
@@ -34,7 +35,9 @@ open class DiaryAdapter(private val myDataset: ArrayList<Diary>) :
         val viewHolder = ViewHolder(diaryRow)
 
         diaryRow.setOnClickListener {
+            // CardViewがタップされたとき、「どの日記がタップされたか」はdiary_id で判別する。
             selectedDate = mDiaries[viewHolder.adapterPosition].diaryDate
+            diaryId = mDiaries[viewHolder.adapterPosition].diaryId
             listener.onClick(diaryRow)
         }
 

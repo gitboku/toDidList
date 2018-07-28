@@ -33,6 +33,11 @@ open class MyApplication : Application(), Application.ActivityLifecycleCallbacks
          * インテントに日付を渡すときのキーとなる文字列
          */
         val SELECTED_DATE = "com.example.todidList.SELECTED_DATE"
+
+        /**
+         * インテントに日記のIDを渡すときのキーとなる文字列
+         */
+        val SELECTED_DIARY_ID = "com.example.todidList.SELELCTED_DIARY_ID"
     }
 
     private var isAppHidden = true

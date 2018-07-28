@@ -18,6 +18,7 @@ class Diary {
      * PrimaryKey is Non-null
      */
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "diary_id")
     var diaryId: Int = 0
 
     // ColumnInfoアノテーションをつけることで詳細な設定ができる

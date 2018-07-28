@@ -18,10 +18,8 @@ import android.util.Log
 import android.widget.DatePicker
 import android.widget.Toast
 import com.example.kouhei.todidlist.MyApplication.Companion.SELECTED_DATE
-import com.example.kouhei.todidlist.MyApplication.Companion.isGrantedReadStorage
+import com.example.kouhei.todidlist.MyApplication.Companion.SELECTED_DIARY_ID
 import kotlinx.android.synthetic.main.activity_edit_diary.*
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.runBlocking
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -30,10 +28,23 @@ import kotlin.concurrent.thread
 
 class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
 
+    private val DEFAULT_DIARY_ID = -1
+    private var diaryId: Int = DEFAULT_DIARY_ID
+
     private lateinit var db: AppDatabase
     private var nowTimeStamp: Long = 0
     private lateinit var selectDate: String
     private lateinit var newBitmap: Bitmap
+
+    /**
+     * 新しくsaveされる画像のURI
+     */
+    private var newImageUri: String? = null
+
+    /**
+     * 既存の日記のimage_uri
+     */
+    private var oldImageUri: String? = null
 
     /**
      * 日記の画像が変更されたかどうかを示す。
@@ -42,20 +53,28 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
     private var isImageChanged = false
 
     /**
-     * 現在日記に紐づいた画像の名前。
-     * 内部ストレージから画像を読み込んだり、新しい画像の名前を決めるときに使用する。
-     */
-    private var oldImageName: String? = null
-
-    /**
      * 新しく選択した画像。
      * 日記の画像を新しく保存するときに使う。
      */
     private lateinit var saveBitmap: Bitmap
 
+    /**
+     * 日記編集ページで操作される日記エンティティ
+     */
+    private lateinit var diary: Diary
+    private var isNewDiary = false
+
+    /**
+     * diaryエンティティのDAO(Data Access Object)
+     * insertやupdateはこれを用いる。
+     */
+    private lateinit var diaryDao: DiaryDao
+
     init {
         try {
             db = AppDatabase.getInstance(this)!!
+            diaryDao = db.diaryDao()
+
         } catch (e: Exception) {
             // もしDBを取得する段階でエラーを出したら前のページに戻る
             val mIntent = getMyIntent()
@@ -71,6 +90,18 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
         nowTimeStamp = intent.getLongExtra(SELECTED_DATE, 0)
         selectDate = getSelectDate(nowTimeStamp)
 
+        // DBから選択し、結果がNull(新規の日記)なら新しいDiary エンティティを使用する
+        diaryId = intent.getIntExtra(SELECTED_DIARY_ID, DEFAULT_DIARY_ID)
+        if (diaryId != DEFAULT_DIARY_ID) {
+            thread {
+                diary = diaryDao.selectDiary(diaryId)
+                oldImageUri = diary.imageUri
+                isNewDiary = false
+            }
+        } else {
+            isNewDiary = true
+        }
+
         // Toolbarのタイトルを日付にする
         edit_page_toolbar.title  = selectDate.shapeForEditUi()
 
@@ -81,49 +112,31 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // 選択してる日付の日記Entityと内部ストレージの画像を取得し、日記本文を表示する
-        runBlocking { awaitLoadDiaryAndImage() }
+        if (!isNewDiary) {
+            loadDiaryAndImage(diary)
+        }
     }
 
     /**
      * EditDiaryActivityを開始したとき、日記の本文と背景画像を取得して表示する。
      */
-    private suspend fun awaitLoadDiaryAndImage() {
-        async {
-            // 日記の法文を取得して、diaryPanelにセットする。
-            val diary = db.diaryDao().getEntityWithDate(selectDate)
-            // Diary.diaryTextはnullである場合がある。
-            if (diary != null){
-                diaryPanel.setText(diary.diaryText)
-            } else {
-                // デフォルトメッセージをTextView.textに入れると、ユーザが何も書かずに保存したとき
-                // 「日記はありません。」という日記ができてしまうので、プレースホルダーにいれる。
-                // が、よく考えたらEditDiaryActivityにプレースホルダーは必要ない。
-                // diaryPanel.hint = getString(R.string.diary_yet)
-            }
-        }.await() // タスクを作ると同時に実行する
+    private fun loadDiaryAndImage(existingDiary: Diary) {
+        // 日記本文を表示する
+        diaryPanel.setText(existingDiary.diaryText)
 
-        // coroutineは軽量スレッドとして考えることができるので、thread{}で囲む必要はない。
-        val loadedImageURI = if (isGrantedReadStorage == PackageManager.PERMISSION_GRANTED) {
-            async {
-                // 日記の画像を内部ストレージから取得して、diaryPanelの背景にセットする。
-                // 現状(2018/06/07)では日記と画像は１対１なので、画像配列の最初を取り出す。
-                // TODO diary.image_uri を返す。
-//                oldImageName = getImageNameFromDb(db.imageDao(), selectDate)
-                return@async oldImageName
-            }.await()
-        } else {
-            Toast.makeText(this, getString(R.string.not_granted_read_storage), Toast.LENGTH_SHORT).show()
-            null
-        }
-        if (loadedImageURI != null) {
+        val imageURI = existingDiary.imageUri
+        if (imageURI != null) {
+            oldImageUri = imageURI
             try {
                 // TODO Glide を使用して画像を表示する。
-                val loadedBitmap = MediaStore.Images.Media.getBitmap(contentResolver, Uri.parse(loadedImageURI))
+                val loadedBitmap = MediaStore.Images.Media.getBitmap(contentResolver, Uri.parse(imageURI))
                 edit_page_layout.background = BitmapDrawable(resources, loadedBitmap)
             } catch (e: FileNotFoundException) {
                 Log.e("myTag", "ファイルが削除されています。 ")
                 e.printStackTrace()
             }
+        } else {
+            oldImageUri = null
         }
     }
 
@@ -138,17 +151,20 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
             true
         }
 
-        // 戻るボタン
-        // ※R.id.homeは自分が作ったものなので反応しない。android.R.id.homeはAndroid SDKのもの
+        /* 戻るボタン
+         ※R.id.homeは自分が作ったものなので反応しない。android.R.id.homeはAndroid SDKのもの
+         */
         android.R.id.home -> {
             val mIntent = getMyIntent()
             moveToAnotherPage(mIntent)
             true
         }
 
-        // 画像を外部ストレージから選ぶボタン
-        // EditPanelに画像が表示されるが、saveはまだされない
-        // 画像をsaveするのはR.id.action_saveが押されたとき。
+        /*
+        画像を外部ストレージから選ぶボタン
+        EditPanelに画像が表示されるが、saveはまだされない
+        画像をsaveするのはR.id.action_saveが押されたとき。
+        */
         R.id.action_image -> {
             selectPicturesFromGallery()
             true
@@ -182,7 +198,10 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
      * 参考： https://akira-watson.com/android/datepicker-timepicker.html
      */
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        edit_page_toolbar.title = getSelectDate(getCalendarTimeStamp(year, month, dayOfMonth)).shapeForEditUi()
+        // カレンダーダイアログで選んだ日付をセットする(この値をdiary.diary_dateにsaveする)
+        selectDate = getSelectDate(getCalendarTimeStamp(year, month, dayOfMonth))
+        // 成型して、タイトル部分に表示
+        edit_page_toolbar.title = selectDate.shapeForEditUi()
     }
 
     /**
@@ -221,10 +240,9 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
                     choosePhotoFromGallery()
                 }
                 1 -> {
-                    // TODO 画像を削除した時の動作を入れる
                     // 背景も消す。
                     edit_page_layout.background = null
-                    Toast.makeText(this, getString(R.string.image_deleted), Toast.LENGTH_SHORT).show()
+                    newImageUri = null
                 }
             }
         }
@@ -237,8 +255,10 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        // RESULT_OK = -1, RESULT_CANCELED = 0
-        // Galleryに行っても写真を選ばずに戻ってきた。
+        /*
+         Galleryに行っても写真を選ばずに戻ってきた。
+        RESULT_OK = -1, RESULT_CANCELED = 0
+          */
         if (resultCode == Activity.RESULT_CANCELED) {
             Toast.makeText(this, getString(R.string.activity_canceled), Toast.LENGTH_SHORT).show()
             return
@@ -246,7 +266,8 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
 
         if (data != null && requestCode == GALLERY) {
             // Gallery から写真を選んで戻ってきたときの動作
-            val contentURI = data.data
+
+            val contentURI = data.data // 他のフォトアプリ上に保存されている画像のURL
             try {
                 // Photosから画像を取得する。
                 newBitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, contentURI)
@@ -276,28 +297,44 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
      * UpdateかInsertかはDiaryのEntityがnullかどうかで判断
      */
     private fun saveDiary() {
-        val diaryDao = db.diaryDao()
         thread {
-            val diaryEntity = diaryDao.getEntityWithDate(selectDate)
-
-            // 初めて日記を保存するときは、DBにDiaryレコードはないのでnullが返ってきている。
-            if (diaryEntity != null){
-                diaryDao.updateDiaryWithDate(diaryPanel.text.toString(), selectDate)
-            } else {
+            if (isNewDiary) {
                 val newDiary = Diary()
                 newDiary.diaryText = diaryPanel.text.toString()
                 newDiary.diaryDate = selectDate
-
-                // もし画像が変更されていれば、URIもupdate対象に含める。
-                // TODO 画像を削除した時の動作を入れる
-                if (isImageChanged) {
-                    val timeStamp = SimpleDateFormat(DATE_PATTERN_TO_DATABASE).format(Date())
-                    val imageFileName = "JPEG_" + timeStamp + ".jpg"
-                    newDiary.imageUri  = MediaStore.Images.Media.insertImage(contentResolver, saveBitmap, imageFileName, null)
-                }
+                newDiary.imageUri = saveAndGetImageUri()
 
                 diaryDao.insert(newDiary)
+            } else {
+                diary.diaryDate = selectDate
+                diary.diaryText = diaryPanel.text.toString()
+                diary.imageUri  = saveAndGetImageUri()
+
+                diaryDao.update(diary)
             }
+        }
+    }
+
+    /**
+     * 日記をinsertしたりupdateしたりするときのdiary.image_uri に入れるべきURI文字列を返す。
+     */
+    private fun saveAndGetImageUri(): String? {
+        return if (isImageChanged) {
+            if (newImageUri != null) {
+                // 画像が変更されたときの挙動
+                val timeStamp = SimpleDateFormat(DATE_PATTERN_TO_DATABASE).format(Date())
+                val imageFileName = "JPEG_" + timeStamp + ".jpg"
+                val savedUri = MediaStore.Images.Media.insertImage(contentResolver, saveBitmap, imageFileName, null)
+                return savedUri
+            } else {
+                // 画像が削除されたときの挙動
+                // TODO 外部ストレージから画像を削除した時の動作を入れる
+                return null
+            }
+        } else {
+            // 画像に変更がなかった場合は古いURIをそのまま返す。
+            // もともと画像がなかったときは、oldImageUri にはnullが入っている。
+            oldImageUri
         }
     }
 

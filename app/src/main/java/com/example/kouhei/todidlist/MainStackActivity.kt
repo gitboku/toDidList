@@ -11,6 +11,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.example.kouhei.todidlist.MyApplication.Companion.SELECTED_DATE
+import com.example.kouhei.todidlist.MyApplication.Companion.SELECTED_DIARY_ID
 import kotlinx.android.synthetic.main.activity_main_stack.*
 
 
@@ -49,6 +50,7 @@ class MainStackActivity : MyAppCompatActivity() {
             val month = adapter.selectedDate.substring(4, 6).toInt() - 1 // monthはなぜか[0-11]
             val day   = adapter.selectedDate.substring(6, 8).toInt()
             intent.putExtra(SELECTED_DATE, getCalendarTimeStamp(year, month, day))
+            intent.putExtra(SELECTED_DIARY_ID, adapter.diaryId)
             moveToAnotherPage(intent)
         })
 

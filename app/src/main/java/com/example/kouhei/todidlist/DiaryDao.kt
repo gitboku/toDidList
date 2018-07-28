@@ -13,14 +13,8 @@ interface DiaryDao{
     @Query("SELECT * FROM diary ORDER BY diary_date DESC")
     fun getAllDiaries(): LiveData<List<Diary>>
 
-    /**
-     * MainActivityで選択してる日付のEntityを取得
-     */
-    @Query("SELECT * FROM diary WHERE diary_date = :selectDate")
-    fun getEntityWithDate(selectDate: String): Diary?
-
-    @Query("UPDATE diary SET diary_text = :diaryText WHERE diary_date = :diaryDate")
-    fun updateDiaryWithDate(diaryText: String, diaryDate: String)
+    @Query("SELECT * FROM diary WHERE diary_id = :diaryId")
+    fun selectDiary(diaryId: Int): Diary
 
     @Update
     fun update(diary: Diary)
