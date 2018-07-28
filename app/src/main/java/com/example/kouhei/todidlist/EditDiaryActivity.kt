@@ -112,7 +112,8 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
             async {
                 // 日記の画像を内部ストレージから取得して、diaryPanelの背景にセットする。
                 // 現状(2018/06/07)では日記と画像は１対１なので、画像配列の最初を取り出す。
-                oldImageName = getImageNameFromDb(db.imageDao(), selectDate)
+                // TODO diary.image_uri を返す。
+//                oldImageName = getImageNameFromDb(db.imageDao(), selectDate)
                 return@async oldImageName
             }.await()
         } else {
@@ -121,6 +122,7 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
         }
         if (loadedImageURI != null) {
             try {
+                // TODO Glide を使用して画像を表示する。
                 val loadedBitmap = MediaStore.Images.Media.getBitmap(contentResolver, Uri.parse(loadedImageURI))
                 edit_page_layout.background = BitmapDrawable(resources, loadedBitmap)
             } catch (e: FileNotFoundException) {
@@ -224,7 +226,7 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
                     choosePhotoFromGallery()
                 }
                 1 -> {
-                    deleteImage(this, oldImageName, db.imageDao())
+                    // TODO 画像を削除した時の動作を入れる
                     // 背景も消す。
                     edit_page_layout.background = null
                     Toast.makeText(this, getString(R.string.image_deleted), Toast.LENGTH_SHORT).show()
@@ -279,15 +281,6 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
      * UpdateかInsertかはDiaryのEntityがnullかどうかで判断
      */
     private fun saveDiary() {
-        if (isImageChanged) {
-            val timeStamp = SimpleDateFormat(DATE_PATTERN_TO_DATABASE).format(Date())
-            val imageFileName = "JPEG_" + timeStamp + ".jpg"
-            // 画像を保存
-            val imageURI = MediaStore.Images.Media.insertImage(contentResolver, saveBitmap, imageFileName, null)
-            // 画像名をDBに保存する
-            saveImageNameToDb(imageURI, db.imageDao(), selectDate) // 画像の名前をDBに保存する
-        }
-
         val diaryDao = db.diaryDao()
         thread {
             val diaryEntity = diaryDao.getEntityWithDate(selectDate)
@@ -298,7 +291,16 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
             } else {
                 val newDiary = Diary()
                 newDiary.diaryText = diaryPanel.text.toString()
-                newDiary.calendarDate = selectDate
+                newDiary.diaryDate = selectDate
+
+                // もし画像が変更されていれば、URIもupdate対象に含める。
+                // TODO 画像を削除した時の動作を入れる
+                if (isImageChanged) {
+                    val timeStamp = SimpleDateFormat(DATE_PATTERN_TO_DATABASE).format(Date())
+                    val imageFileName = "JPEG_" + timeStamp + ".jpg"
+                    newDiary.imageUri  = MediaStore.Images.Media.insertImage(contentResolver, saveBitmap, imageFileName, null)
+                }
+
                 diaryDao.insert(newDiary)
             }
         }

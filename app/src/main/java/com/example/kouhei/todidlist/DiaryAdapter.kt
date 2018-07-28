@@ -4,8 +4,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import kotlinx.android.synthetic.main.diary_list_item.view.*
 
 open class DiaryAdapter(private val myDataset: ArrayList<Diary>) :
@@ -36,7 +34,7 @@ open class DiaryAdapter(private val myDataset: ArrayList<Diary>) :
         val viewHolder = ViewHolder(diaryRow)
 
         diaryRow.setOnClickListener {
-            selectedDate = mDiaries[viewHolder.adapterPosition].calendarDate
+            selectedDate = mDiaries[viewHolder.adapterPosition].diaryDate
             listener.onClick(diaryRow)
         }
 
@@ -47,7 +45,7 @@ open class DiaryAdapter(private val myDataset: ArrayList<Diary>) :
     // onCreateViewHolder で作成したリストアイテムにデータを紐づける
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // myDataset[position]をRecyclerViewの一要素に入れる
-        holder.diaryDate.text = myDataset[position].calendarDate.shapeForStackUi()
+        holder.diaryDate.text = myDataset[position].diaryDate.shapeForStackUi()
         holder.diaryText.text = myDataset[position].diaryText.toString()
     }
 

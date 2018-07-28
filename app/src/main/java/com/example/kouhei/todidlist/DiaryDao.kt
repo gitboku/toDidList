@@ -10,17 +10,17 @@ interface DiaryDao{
     // このクラスがDAOなのではなく、@DaoアノテーションをつけることでRoomが自動的にDAOを生成する
 
     // List<T>を返すこともできるが、LiveData<>でラップすることにより通知を得ることができる
-    @Query("SELECT * FROM diary ORDER BY calendar_date DESC")
+    @Query("SELECT * FROM diary ORDER BY diary_date DESC")
     fun getAllDiaries(): LiveData<List<Diary>>
 
     /**
      * MainActivityで選択してる日付のEntityを取得
      */
-    @Query("SELECT * FROM diary WHERE calendar_date = :selectDate")
+    @Query("SELECT * FROM diary WHERE diary_date = :selectDate")
     fun getEntityWithDate(selectDate: String): Diary?
 
-    @Query("UPDATE diary SET diary_text = :diaryText WHERE calendar_date = :calendarDate")
-    fun updateDiaryWithDate(diaryText: String, calendarDate: String)
+    @Query("UPDATE diary SET diary_text = :diaryText WHERE diary_date = :diaryDate")
+    fun updateDiaryWithDate(diaryText: String, diaryDate: String)
 
     @Update
     fun update(diary: Diary)

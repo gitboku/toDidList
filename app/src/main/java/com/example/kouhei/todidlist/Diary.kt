@@ -18,7 +18,7 @@ class Diary {
      * PrimaryKey is Non-null
      */
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0
+    var diaryId: Int = 0
 
     // ColumnInfoアノテーションをつけることで詳細な設定ができる
     // name属性は後でSQLを書く時のカラム名として使う。デフォルトのカラム名はプロパティ名と同じ
@@ -28,6 +28,10 @@ class Diary {
     // 日記の日付
     //CalendarView.getDate() gets the selected date in milliseconds since January 1, 1970 00:00:00 in getDefault() time zone.
     // DATE_PATTERN_TO_DATABASEのフォーマットで保存されている
-    @ColumnInfo(name = "calendar_date")
-    var calendarDate: String = ""
+    @ColumnInfo(name = "diary_date")
+    var diaryDate: String = ""
+
+    // 日記の画像のURI
+    @ColumnInfo(name = "image_uri")
+    var imageUri: String? = null
 }
