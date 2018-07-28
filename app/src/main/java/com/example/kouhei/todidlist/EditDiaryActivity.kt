@@ -63,11 +63,6 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
         }
     }
 
-    companion object {
-        // 将来的に何かで使うかもしれないので一応置いておく。
-        val STACK_PAGE: String = MainStackActivity::class.java.simpleName
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_diary)
