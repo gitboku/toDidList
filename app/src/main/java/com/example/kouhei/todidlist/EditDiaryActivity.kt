@@ -335,7 +335,7 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
      */
     private fun saveAndGetImageUri(): String? {
         return if (isImageChanged) {
-            if (newImageUri != null) {
+            if (edit_page_layout.background != null) {
                 // 画像が変更されたときの挙動
                 val timeStamp = SimpleDateFormat(DATE_PATTERN_TO_DATABASE).format(Date())
                 val imageFileName = "JPEG_" + timeStamp + ".jpg"
