@@ -35,10 +35,14 @@ open class DiaryAdapter(private val myDataset: ArrayList<Diary>) :
         val viewHolder = ViewHolder(diaryRow)
 
         diaryRow.setOnClickListener {
-            // CardViewがタップされたとき、「どの日記がタップされたか」はdiary_id で判別する。
-            selectedDate = mDiaries[viewHolder.adapterPosition].diaryDate
-            diaryId = mDiaries[viewHolder.adapterPosition].diaryId
-            listener.onClick(diaryRow)
+            try {
+                // CardViewがタップされたとき、「どの日記がタップされたか」はdiary_id で判別する。
+                selectedDate = mDiaries[viewHolder.adapterPosition].diaryDate
+                diaryId = mDiaries[viewHolder.adapterPosition].diaryId
+                listener.onClick(diaryRow)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
 
         return viewHolder
