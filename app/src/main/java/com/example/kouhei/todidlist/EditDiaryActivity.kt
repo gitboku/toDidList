@@ -62,7 +62,7 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
      * 日記編集ページで操作される日記エンティティ
      */
     private lateinit var diary: Diary
-    private var isNewDiary = false
+    private var isNewDiary = true
 
     /**
      * diaryエンティティのDAO(Data Access Object)
