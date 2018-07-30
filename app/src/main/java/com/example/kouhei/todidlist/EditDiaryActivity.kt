@@ -237,10 +237,9 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
             // 写真がないときは「画像を選ぶ」だけ。
             arrayOf(getString(R.string.choose_image_from_gallery))
         } else {
-            // 写真があれば「削除」「エクスポート」もある。
+            // 写真があれば「削除」もある。
             arrayOf(getString(R.string.choose_image_from_gallery),
-                    getString(R.string.delete_image),
-                    getString(R.string.store_to_other_app))
+                    getString(R.string.delete_image))
         }
 
         /* 各選択肢にアクションの内容を追記する。
@@ -256,9 +255,6 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
                     edit_page_layout.background = null
                     newImageUri = null
                     isImageChanged = true
-                }
-                2 -> {
-
                 }
             }
         }

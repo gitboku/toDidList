@@ -35,6 +35,5 @@
     <string name="confirm_pass_code">パスコードを入力してください</string>
     <string name="not_granted_read_storage">権限がないので画像を読み込めません</string>
     <string name="change_diary_date">change diary date</string>
-    <string name="store_to_other_app">他のアプリに写真を保存</string>
     <string name="picture_cannot_read">写真が削除、または移動されているため読み込めません。</string>
 </resources>
