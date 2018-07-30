@@ -124,20 +124,17 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
         // 日記本文を表示する
         diaryPanel.setText(existingDiary.diaryText)
 
-        val imageURI = existingDiary.imageUri
-        if (imageURI != null) {
-            oldImageUri = imageURI
+        oldImageUri = existingDiary.imageUri
+        if (oldImageUri != null) {
             try {
                 // TODO Glide を使用して画像を表示する。
-                val loadedBitmap = MediaStore.Images.Media.getBitmap(contentResolver, Uri.parse(imageURI))
+                val loadedBitmap = MediaStore.Images.Media.getBitmap(contentResolver, Uri.parse(oldImageUri))
                 edit_page_layout.background = BitmapDrawable(resources, loadedBitmap)
             } catch (e: FileNotFoundException) {
                 Log.e("myTag", getString(R.string.picture_cannot_read))
                 Toast.makeText(this, getString(R.string.picture_cannot_read), Toast.LENGTH_LONG).show()
                 e.printStackTrace()
             }
-        } else {
-            oldImageUri = null
         }
     }
 
