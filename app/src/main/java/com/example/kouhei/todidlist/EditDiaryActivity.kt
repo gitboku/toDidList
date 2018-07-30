@@ -37,7 +37,7 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
     private lateinit var newBitmap: Bitmap
 
     /**
-     * 新しくsaveされる画像のURI
+     * 新しくsaveされる写真のURI
      */
     private var newImageUri: String? = null
 
@@ -47,14 +47,14 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
     private var oldImageUri: String? = null
 
     /**
-     * 日記の画像が変更されたかどうかを示す。
-     * falseなら、saveImage()の画像更新部分は飛ばす。
+     * 日記の写真が変更されたかどうかを示す。
+     * falseなら、saveImage()の写真更新部分は飛ばす。
      */
     private var isImageChanged = false
 
     /**
-     * 新しく選択した画像。
-     * 日記の画像を新しく保存するときに使う。
+     * 新しく選択した写真。
+     * 日記の写真を新しく保存するときに使う。
      */
     private lateinit var saveBitmap: Bitmap
 
@@ -111,14 +111,14 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
         // 戻るボタンを表示
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        // 選択してる日付の日記Entityと内部ストレージの画像を取得し、日記本文を表示する
+        // 選択してる日付の日記Entityと内部ストレージの写真を取得し、日記本文を表示する
         if (!isNewDiary) {
             loadDiaryAndImage(diary)
         }
     }
 
     /**
-     * EditDiaryActivityを開始したとき、日記の本文と背景画像を取得して表示する。
+     * EditDiaryActivityを開始したとき、日記の本文と背景写真を取得して表示する。
      */
     private fun loadDiaryAndImage(existingDiary: Diary) {
         // 日記本文を表示する
@@ -127,7 +127,7 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
         oldImageUri = existingDiary.imageUri
         if (oldImageUri != null) {
             try {
-                // TODO Glide を使用して画像を表示する。
+                // TODO Glide を使用して写真を表示する。
                 val loadedBitmap = MediaStore.Images.Media.getBitmap(contentResolver, Uri.parse(oldImageUri))
                 edit_page_layout.background = BitmapDrawable(resources, loadedBitmap)
             } catch (e: FileNotFoundException) {
@@ -142,6 +142,7 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
      * Toolbarのアイテムのどれかをクリックしたとき、システムがこのメソッドを呼び出す。
      */
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        /* 保存ボタン */
         R.id.action_save -> {
             saveDiary()
 
@@ -149,7 +150,7 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
             true
         }
 
-        /* 戻るボタン
+        /* 保存しないで戻るボタン
          ※R.id.homeは自分が作ったものなので反応しない。android.R.id.homeはAndroid SDKのもの
          */
         android.R.id.home -> {
@@ -159,16 +160,16 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
         }
 
         /*
-        画像を外部ストレージから選ぶボタン
-        EditPanelに画像が表示されるが、saveはまだされない
-        画像をsaveするのはR.id.action_saveが押されたとき。
+        写真を外部ストレージから選ぶボタン
+        EditPanelに写真が表示されるが、saveはまだされない
+        写真をsaveするのはR.id.action_saveが押されたとき。
         */
         R.id.action_image -> {
             selectPicturesFromGallery()
             true
         }
 
-        // 日付変更ボタン
+        // 日記の日付変更ボタン
         R.id.action_date -> {
             showCalendarPanel()
             true
@@ -203,17 +204,17 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
     }
 
     /**
-     * 外部ストレージにある画像一覧を表示する。
-     * ユーザはその中から画像を一つ選び、選んだ画像がEditPanelに表示される（まだsaveはされない）
+     * 外部ストレージにある写真一覧を表示する。
+     * ユーザはその中から写真を一つ選び、選んだ写真がEditPanelに表示される（まだsaveはされない）
      * 外部ストレージにアクセスする許可がなければ、許可を求める。
-     * ユーザーが拒否すれば、このアプリで画像は扱えない。
+     * ユーザーが拒否すれば、このアプリで写真は扱えない。
      */
     private fun selectPicturesFromGallery() {
         // Android 6, API 23以上でパーミッションの確認が必要だが、そもそもAPI 22 以下はターゲットにしていない。
         // https://akira-watson.com/android/external-storage-image.html
         val permission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         if (permission == PackageManager.PERMISSION_GRANTED) {
-            // すでに許可されているなら、ExternalStorageから画像を選ばせる
+            // すでに許可されているなら、ExternalStorageから写真を選ばせる
             showPictureDialog()
         } else {
             // 許可されていなければ、許可を求める
@@ -222,6 +223,8 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
     }
 
     /**
+     * 「写真を選ぶ」ボタンを押したときに、フォトアプリにアクセスする権限があれば呼ばれるメソッド。
+     * 「どこから写真を選ぶか」のダイアログが表示される。
      * https://demonuts.com/pick-image-gallery-camera-android/
      */
     private fun showPictureDialog() {
@@ -231,7 +234,7 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
         // pictureDialogItems の中から一つ選ぶダイアログが表示される
         // MutableList<> にしようとしたらsetItems のタイミングでCastエラーが出た。
         val pictureDialogItems = if (edit_page_layout.background == null) {
-            // 写真がないときは「画像を選ぶ」だけ。
+            // 写真がないときは「写真を選ぶ」だけ。
             arrayOf(getString(R.string.choose_image_from_gallery))
         } else {
             // 写真があれば「削除」もある。
@@ -259,6 +262,8 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
     }
 
     /**
+     * フォトアプリから戻ってきたときに呼ばれるメソッド。
+     * 写真を背景に表示したり、「写真が変更された」フラグを立てたりする
      * setResultで必要なデータを渡しておけば起動元のアクティビティのonActivityResultでそれを受け取ることができる。
      */
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -276,9 +281,9 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
         if (data != null && requestCode == GALLERY) {
             // Gallery から写真を選んで戻ってきたときの動作
 
-            val contentURI = data.data // 他のフォトアプリ上に保存されている画像のURL
+            val contentURI = data.data // 他のフォトアプリ上に保存されている写真のURL
             try {
-                // Photosから画像を取得する。
+                // Photosから写真を取得する。
                 newBitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, contentURI)
                 // bitmapDrawableに変換してEditPanelの背景に表示
                 isImageChanged = true
@@ -302,7 +307,7 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
 
     /**
      * 日記をsaveする
-     * 画像もここでsaveする
+     * 写真もここでsaveする
      * UpdateかInsertかはDiaryのEntityがnullかどうかで判断
      */
     private fun saveDiary() {
@@ -330,19 +335,19 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
     private fun saveAndGetImageUri(): String? {
         return if (isImageChanged) {
             if (edit_page_layout.background != null) {
-                // 画像が変更されたときの挙動
+                // 写真が変更されたときの挙動
                 val timeStamp = SimpleDateFormat(DATE_PATTERN_TO_DATABASE).format(Date())
                 val imageFileName = "JPEG_" + timeStamp + ".jpg"
                 val savedUri = MediaStore.Images.Media.insertImage(contentResolver, saveBitmap, imageFileName, null)
                 return savedUri
             } else {
-                // 画像が削除されたときの挙動
-                // TODO 外部ストレージから画像を削除した時の動作を入れる
+                // 写真が削除されたときの挙動
+                // TODO 外部ストレージから写真を削除した時の動作を入れる
                 return null
             }
         } else {
-            // 画像に変更がなかった場合は古いURIをそのまま返す。
-            // もともと画像がなかったときは、oldImageUri にはnullが入っている。
+            // 写真に変更がなかった場合は古いURIをそのまま返す。
+            // もともと写真がなかったときは、oldImageUri にはnullが入っている。
             oldImageUri
         }
     }
