@@ -36,4 +36,5 @@
     <string name="not_granted_read_storage">権限がないので画像を読み込めません</string>
     <string name="change_diary_date">change diary date</string>
     <string name="picture_cannot_read">写真が削除、または移動されているため読み込めません。</string>
+    <string name="cannot_found_appropriate_app">適切なアプリが見つかりません</string>
 </resources>

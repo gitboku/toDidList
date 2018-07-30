@@ -56,8 +56,13 @@ open class MyAppCompatActivity: AppCompatActivity() {
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
 
         // 起動したActivityの結果をonActivityResultでそれを受け取ることができる。
-        // TODO: resolveActivity() を呼び出して、インテントを処理できるアプリがあるかを確認する必要がある。
-        startActivityForResult(Intent.createChooser(galleryIntent, null), GALLERY)
+        // resolveActivity() を呼び出して、インテントを処理できるアプリがあるかを確認する必要がある。
+        val intent = Intent.createChooser(galleryIntent, null)
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivityForResult(intent, GALLERY)
+        } else {
+            Toast.makeText(this, getString(R.string.cannot_found_appropriate_app), Toast.LENGTH_SHORT).show()
+        }
     }
 
     /**
