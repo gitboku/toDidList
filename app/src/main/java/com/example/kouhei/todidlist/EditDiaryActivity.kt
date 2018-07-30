@@ -7,7 +7,6 @@ import android.view.MenuItem
 import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.provider.MediaStore
@@ -20,10 +19,6 @@ import android.widget.Toast
 import com.example.kouhei.todidlist.MyApplication.Companion.SELECTED_DATE
 import com.example.kouhei.todidlist.MyApplication.Companion.SELECTED_DIARY_ID
 import kotlinx.android.synthetic.main.activity_edit_diary.*
-import java.io.FileNotFoundException
-import java.io.IOException
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.concurrent.thread
 
 class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
@@ -34,10 +29,9 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
     private lateinit var db: AppDatabase
     private var nowTimeStamp: Long = 0
     private lateinit var selectDate: String
-    private lateinit var newBitmap: Bitmap
 
     /**
-     * 新しくsaveされる写真のURI
+     * 新しくsaveされる画像のURI
      */
     private var newImageUri: String? = null
 
@@ -47,16 +41,12 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
     private var oldImageUri: String? = null
 
     /**
-     * 日記の写真が変更されたかどうかを示す。
-     * falseなら、saveImage()の写真更新部分は飛ばす。
+     * 画像が削除されたのかどうかを示すフラグ
+     * 'newUri == null && oldUri != null'の場合に考えられる以下の２パターンを判別するのに使う
+     * 　・古い画像を削除した。
+     * 　・画像は変更しなかった。
      */
-    private var isImageChanged = false
-
-    /**
-     * 新しく選択した写真。
-     * 日記の写真を新しく保存するときに使う。
-     */
-    private lateinit var saveBitmap: Bitmap
+    private var isImageDelete: Boolean = false
 
     /**
      * 日記編集ページで操作される日記エンティティ
@@ -111,14 +101,14 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
         // 戻るボタンを表示
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        // 選択してる日付の日記Entityと内部ストレージの写真を取得し、日記本文を表示する
+        // 選択してる日付の日記Entityと内部ストレージの画像を取得し、日記本文を表示する
         if (!isNewDiary) {
             loadDiaryAndImage(diary)
         }
     }
 
     /**
-     * EditDiaryActivityを開始したとき、日記の本文と背景写真を取得して表示する。
+     * EditDiaryActivityを開始したとき、日記の本文と背景画像を取得して表示する。
      */
     private fun loadDiaryAndImage(existingDiary: Diary) {
         // 日記本文を表示する
@@ -127,10 +117,8 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
         oldImageUri = existingDiary.imageUri
         if (oldImageUri != null) {
             try {
-                // TODO Glide を使用して写真を表示する。
-                val loadedBitmap = MediaStore.Images.Media.getBitmap(contentResolver, Uri.parse(oldImageUri))
-                edit_page_layout.background = BitmapDrawable(resources, loadedBitmap)
-            } catch (e: FileNotFoundException) {
+                updateBackgroundImage(oldImageUri!!)
+            } catch (e: Exception) {
                 Log.e("myTag", getString(R.string.picture_cannot_read))
                 Toast.makeText(this, getString(R.string.picture_cannot_read), Toast.LENGTH_LONG).show()
                 e.printStackTrace()
@@ -160,9 +148,9 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
         }
 
         /*
-        写真を外部ストレージから選ぶボタン
-        EditPanelに写真が表示されるが、saveはまだされない
-        写真をsaveするのはR.id.action_saveが押されたとき。
+        画像を外部ストレージから選ぶボタン
+        EditPanelに画像が表示されるが、saveはまだされない
+        画像をsaveするのはR.id.action_saveが押されたとき。
         */
         R.id.action_image -> {
             selectPicturesFromGallery()
@@ -204,17 +192,17 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
     }
 
     /**
-     * 外部ストレージにある写真一覧を表示する。
-     * ユーザはその中から写真を一つ選び、選んだ写真がEditPanelに表示される（まだsaveはされない）
+     * 外部ストレージにある画像一覧を表示する。
+     * ユーザはその中から画像を一つ選び、選んだ画像がEditPanelに表示される（まだsaveはされない）
      * 外部ストレージにアクセスする許可がなければ、許可を求める。
-     * ユーザーが拒否すれば、このアプリで写真は扱えない。
+     * ユーザーが拒否すれば、このアプリで画像は扱えない。
      */
     private fun selectPicturesFromGallery() {
         // Android 6, API 23以上でパーミッションの確認が必要だが、そもそもAPI 22 以下はターゲットにしていない。
         // https://akira-watson.com/android/external-storage-image.html
         val permission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         if (permission == PackageManager.PERMISSION_GRANTED) {
-            // すでに許可されているなら、ExternalStorageから写真を選ばせる
+            // すでに許可されているなら、ExternalStorageから画像を選ばせる
             showPictureDialog()
         } else {
             // 許可されていなければ、許可を求める
@@ -223,8 +211,8 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
     }
 
     /**
-     * 「写真を選ぶ」ボタンを押したときに、フォトアプリにアクセスする権限があれば呼ばれるメソッド。
-     * 「どこから写真を選ぶか」のダイアログが表示される。
+     * 「画像を選ぶ」ボタンを押したときに、フォトアプリにアクセスする権限があれば呼ばれるメソッド。
+     * 「どこから画像を選ぶか」のダイアログが表示される。
      * https://demonuts.com/pick-image-gallery-camera-android/
      */
     private fun showPictureDialog() {
@@ -234,10 +222,10 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
         // pictureDialogItems の中から一つ選ぶダイアログが表示される
         // MutableList<> にしようとしたらsetItems のタイミングでCastエラーが出た。
         val pictureDialogItems = if (edit_page_layout.background == null) {
-            // 写真がないときは「写真を選ぶ」だけ。
+            // 画像がないときは「画像を選ぶ」だけ。
             arrayOf(getString(R.string.choose_image_from_gallery))
         } else {
-            // 写真があれば「削除」もある。
+            // 画像があれば「削除」もある。
             arrayOf(getString(R.string.choose_image_from_gallery),
                     getString(R.string.delete_image))
         }
@@ -254,7 +242,7 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
                     // 背景も消す。
                     edit_page_layout.background = null
                     newImageUri = null
-                    isImageChanged = true
+                    isImageDelete = true
                 }
             }
         }
@@ -263,14 +251,14 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
 
     /**
      * フォトアプリから戻ってきたときに呼ばれるメソッド。
-     * 写真を背景に表示したり、「写真が変更された」フラグを立てたりする
+     * 画像を背景に表示したり、「画像が変更された」フラグを立てたりする
      * setResultで必要なデータを渡しておけば起動元のアクティビティのonActivityResultでそれを受け取ることができる。
      */
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         /*
-         Galleryに行っても写真を選ばずに戻ってきた。
+         Galleryに行っても画像を選ばずに戻ってきた。
         RESULT_OK = -1, RESULT_CANCELED = 0
           */
         if (resultCode == Activity.RESULT_CANCELED) {
@@ -279,23 +267,28 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
         }
 
         if (data != null && requestCode == GALLERY) {
-            // Gallery から写真を選んで戻ってきたときの動作
-
-            val contentURI = data.data // 他のフォトアプリ上に保存されている写真のURL
+            // Gallery から画像を選んで戻ってきたときの動作
+            newImageUri = data.data.toString() // 他のフォトアプリ上に保存されている画像のURL
             try {
-                // Photosから写真を取得する。
-                newBitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, contentURI)
-                // bitmapDrawableに変換してEditPanelの背景に表示
-                isImageChanged = true
-                edit_page_layout.background = BitmapDrawable(resources, newBitmap)
-                saveBitmap = BitmapDrawable(resources, newBitmap).bitmap
-
+                updateBackgroundImage(newImageUri!!)
+                // ロジック上必要ないけど念のために更新する
+                // updateBackgroundImage()が終わる前に更新してはいけない
+                isImageDelete = false
                 Toast.makeText(this, getString(R.string.image_not_saved_yet), Toast.LENGTH_SHORT).show()
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 e.printStackTrace()
                 Toast.makeText(this, getString(R.string.failed_get_image), Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    /**
+     * 背景の画像を表示する。
+     */
+    private fun updateBackgroundImage(uriString: String) {
+        // TODO Glide を使用して画像を表示する。
+        val loadedBitmap = MediaStore.Images.Media.getBitmap(contentResolver, Uri.parse(uriString))
+        edit_page_layout.background = BitmapDrawable(resources, loadedBitmap)
     }
 
     private fun getMyIntent(): Intent {
@@ -307,7 +300,7 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
 
     /**
      * 日記をsaveする
-     * 写真もここでsaveする
+     * 画像もここでsaveする
      * UpdateかInsertかはDiaryのEntityがnullかどうかで判断
      */
     private fun saveDiary() {
@@ -316,13 +309,13 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
                 val newDiary = Diary()
                 newDiary.diaryText = diaryPanel.text.toString()
                 newDiary.diaryDate = selectDate
-                newDiary.imageUri = saveAndGetImageUri()
+                newDiary.imageUri = getSaveUri()
 
                 diaryDao.insert(newDiary)
             } else {
                 diary.diaryDate = selectDate
                 diary.diaryText = diaryPanel.text.toString()
-                diary.imageUri  = saveAndGetImageUri()
+                diary.imageUri  = getSaveUri()
 
                 diaryDao.update(diary)
             }
@@ -332,23 +325,24 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
     /**
      * 日記をinsertしたりupdateしたりするときのdiary.image_uri に入れるべきURI文字列を返す。
      */
-    private fun saveAndGetImageUri(): String? {
-        return if (isImageChanged) {
-            if (edit_page_layout.background != null) {
-                // 写真が変更されたときの挙動
-                val timeStamp = SimpleDateFormat(DATE_PATTERN_TO_DATABASE).format(Date())
-                val imageFileName = "JPEG_" + timeStamp + ".jpg"
-                val savedUri = MediaStore.Images.Media.insertImage(contentResolver, saveBitmap, imageFileName, null)
-                return savedUri
-            } else {
-                // 写真が削除されたときの挙動
-                // TODO 外部ストレージから写真を削除した時の動作を入れる
-                return null
-            }
+    private fun getSaveUri(): String? {
+        return if (newImageUri != null) {
+            // 画像が変更されていれば、新しいURIを返す。
+            newImageUri
         } else {
-            // 写真に変更がなかった場合は古いURIをそのまま返す。
-            // もともと写真がなかったときは、oldImageUri にはnullが入っている。
-            oldImageUri
+            if (oldImageUri == null) {
+                // もともと画像はなかった場合
+                null
+            } else {
+                // 'newUri == null && oldUri != null'の場合に考えられる以下の２パターンがある
+                if (isImageDelete) {
+                    // 画像を削除した
+                    null
+                } else {
+                    // 画像は変更しなかった
+                    oldImageUri
+                }
+            }
         }
     }
 
