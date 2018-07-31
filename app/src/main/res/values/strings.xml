@@ -16,8 +16,8 @@
     <string name="activity_canceled">写真選びはCancelされました</string>
     <string name="image_not_saved_yet">まだ写真の変更はsaveされていません</string>
     <string name="failed_get_image">写真データの取得に失敗しました</string>
-    <string name="choose_image_from_gallery">Gallaryから</string>
-    <string name="where_image">どこから写真を取得しますか？</string>
+    <string name="choose_image_from_gallery">写真を選ぶ</string>
+    <string name="where_image">アクションを選択してください</string>
     <string name="failed_to_make_imageDao">画像オブジェクトの作成に失敗したので、画像は保存されませんでした。</string>
     <string name="failed_to_get_DB">データベースを取得できなかったので、日記を編集できません。</string>
     <string name="delete_image">写真を削除する</string>

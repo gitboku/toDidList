@@ -19,6 +19,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <!-- 画像を表示する場所 -->
             <ImageView
                 android:id="@+id/diary_image"
                 android:layout_width="match_parent"
@@ -50,7 +51,4 @@
 
 
     </android.support.v7.widget.CardView>
-
-
-    <!-- 画像を表示する場所 -->
 </android.support.constraint.ConstraintLayout>
