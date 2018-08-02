@@ -268,7 +268,7 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
 
         if (data != null && requestCode == GALLERY) {
             // Gallery から画像を選んで戻ってきたときの動作
-            newImageUri = data.data.toString() // 他のフォトアプリ上に保存されている画像のURL
+            newImageUri = data.dataString // 他のフォトアプリ上に保存されている画像のURL
             try {
                 updateBackgroundImage(newImageUri!!)
                 // ロジック上必要ないけど念のために更新する
