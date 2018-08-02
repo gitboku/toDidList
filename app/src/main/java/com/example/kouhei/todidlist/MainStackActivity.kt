@@ -33,7 +33,6 @@ class MainStackActivity : MyAppCompatActivity() {
         }
 
         val manager = GridLayoutManager(this, 2)
-//        manager.reverseLayout = true // 日記リストを、新しいものが上にくるようにする
         diary_recycler_view.layoutManager = manager
 
         val adapter = DiaryAdapter(diaryList)
@@ -53,9 +52,6 @@ class MainStackActivity : MyAppCompatActivity() {
             intent.putExtra(SELECTED_DIARY_ID, adapter.diaryId)
             moveToAnotherPage(intent)
         })
-
-        // abstract ItemDecorationを継承したクラス(この場合はDividerItemDecoration)で、Decoratorを作成する
-//        diary_recycler_view.addItemDecoration(DividerItemDecoration(diary_recycler_view.context, LinearLayoutManager(this).orientation))
 
         // たとえActivityがdestroyされても、ViewModelは保持される
         val mDiaryViewModel = ViewModelProviders.of(this).get(DiaryViewModel::class.java)
