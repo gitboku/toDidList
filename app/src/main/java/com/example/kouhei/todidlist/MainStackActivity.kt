@@ -65,7 +65,7 @@ class MainStackActivity : MyAppCompatActivity() {
                 addDiary(adapter.mDiaries)
 
                 // MainStackActivityを表示したとき、RecyclerViewが一番上に移動しているようにする
-                manager.scrollToPosition(adapter.itemCount - 1)
+                manager.scrollToPosition(adapter.itemCount)
             }
         })
     }
