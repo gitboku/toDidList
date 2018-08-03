@@ -35,7 +35,7 @@ class MainStackActivity : MyAppCompatActivity() {
         val manager = GridLayoutManager(this, 2)
         diary_recycler_view.layoutManager = manager
 
-        val adapter = DiaryAdapter(diaryList)
+        val adapter = DiaryAdapter(this, diaryList)
         diary_recycler_view.adapter = adapter
 
         diary_recycler_view.addItemDecoration(GridSpacingItemDecoration(2, dpToPx(10), true))

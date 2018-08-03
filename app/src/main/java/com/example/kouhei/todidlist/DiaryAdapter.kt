@@ -1,12 +1,15 @@
 package com.example.kouhei.todidlist
 
+import android.content.Context
+import android.net.Uri
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.diary_list_item.view.*
 
-open class DiaryAdapter(private val myDataset: ArrayList<Diary>) :
+open class DiaryAdapter(private val context: Context, private val myDataset: ArrayList<Diary>) :
         RecyclerView.Adapter<DiaryAdapter.ViewHolder>() {
 
     // Cached copy of Diaries
@@ -52,6 +55,12 @@ open class DiaryAdapter(private val myDataset: ArrayList<Diary>) :
     // onCreateViewHolder で作成したリストアイテムにデータを紐づける
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // myDataset[position]をRecyclerViewの一要素に入れる
+        // load()はnullableだが、Uri.parse()はnon-null
+        val uriString = myDataset[position].imageUri
+        val uri = if (uriString != null) Uri.parse(uriString) else null
+
+        // 上から順に画像、日付、本文をCardViewに表示
+        Glide.with(context).load(uri).into(holder.diaryImage)
         holder.diaryDate.text = myDataset[position].diaryDate.shapeForStackUi()
         holder.diaryText.text = myDataset[position].diaryText.toString()
     }
