@@ -24,11 +24,16 @@
 
     <EditText
         android:id="@+id/diaryPanel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/MyEditTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:gravity="top"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="8dp"
         android:textSize="@dimen/diary_text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
