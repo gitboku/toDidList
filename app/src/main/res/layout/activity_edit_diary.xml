@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/edit_page_layout"
@@ -9,18 +8,17 @@
     android:orientation="vertical"
     tools:context="com.example.kouhei.todidlist.EditDiaryActivity">
 
-    <android.support.v7.widget.Toolbar
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/edit_page_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:elevation="4dp"
         android:background="@color/colorPrimary"
-        app:titleTextColor="@color/colorToolbarBottun"
+        android:elevation="4dp"
         android:theme="@style/MyAppTheme"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
 
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"/>
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:titleTextColor="@color/colorToolbarBottun" />
 
     <EditText
         android:id="@+id/diaryPanel"
