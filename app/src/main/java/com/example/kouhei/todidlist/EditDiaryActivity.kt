@@ -14,7 +14,9 @@ import android.app.DatePickerDialog.OnDateSetListener
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.util.Log
+import android.view.ViewGroup
 import android.widget.DatePicker
+import android.widget.EditText
 import android.widget.Toast
 import com.example.kouhei.todidlist.MyApplication.Companion.SELECTED_DATE
 import com.example.kouhei.todidlist.MyApplication.Companion.SELECTED_DIARY_ID
@@ -25,6 +27,9 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
 
     private val DEFAULT_DIARY_ID = -1
     private var diaryId: Int = DEFAULT_DIARY_ID
+
+    private val closedLineMax = 2   // 本文を閉じたときの最大行数
+    private val openedLineMax = 100 // 本文を開いたときの最大行数
 
     private lateinit var db: AppDatabase
     private var nowTimeStamp: Long = 0
@@ -101,10 +106,33 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
         // 戻るボタンを表示
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        // 日記本文を表示するViewがタップされたときの動作
+        // TODO: use animation
+        diaryPanel.setOnClickListener {
+            // EditTextの現在の状態は最大行数で判断する
+            if (diaryPanel.maxLines == closedLineMax) {
+                // 閉じていたら開く
+                changeViewStatus(diaryPanel, ViewGroup.LayoutParams.MATCH_PARENT, openedLineMax)
+            } else {
+                // 開いていたら閉じる
+                changeViewStatus(diaryPanel, ViewGroup.LayoutParams.WRAP_CONTENT, closedLineMax)
+            }
+        }
+
         // 選択してる日付の日記Entityと内部ストレージの画像を取得し、日記本文を表示する
         if (!isNewDiary) {
             loadDiaryAndImage(diary)
         }
+    }
+
+    /**
+     * EditTextの、以下のステータスを変更する
+     * ・layoutPrams.height
+     * ・maxLines
+     */
+    private fun changeViewStatus(view: EditText, height: Int, maxLine: Int) {
+        view.layoutParams.height = height
+        view.maxLines = maxLine
     }
 
     /**
