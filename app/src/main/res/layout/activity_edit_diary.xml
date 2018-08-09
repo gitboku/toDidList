@@ -5,6 +5,7 @@
     android:id="@+id/edit_page_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/background_dark"
     android:orientation="vertical"
     tools:context="com.example.kouhei.todidlist.EditDiaryActivity">
 
@@ -33,12 +34,13 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:gravity="top"
-            android:maxLines="2"
             android:hint="@string/diary_yet"
+            android:maxLines="2"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:paddingTop="8dp"
             android:scrollbars="vertical"
+            android:textColorHint="@android:color/white"
             android:textSize="@dimen/diary_text_size"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
