@@ -60,7 +60,11 @@ open class DiaryAdapter(private val context: Context, private val myDataset: Arr
         val uri = if (uriString != null) Uri.parse(uriString) else null
 
         // 上から順に画像、日付、本文をCardViewに表示
-        Glide.with(context).load(uri).into(holder.diaryImage)
+        if (uri != null) {
+            Glide.with(context).load(uri).into(holder.diaryImage)
+        } else {
+            holder.diaryImage.setImageResource(R.drawable.no_image_501)
+        }
         holder.diaryDate.text = myDataset[position].diaryDate.shapeForStackUi()
         holder.diaryText.text = myDataset[position].diaryText.toString()
     }
