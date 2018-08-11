@@ -249,7 +249,7 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
 
         // pictureDialogItems の中から一つ選ぶダイアログが表示される
         // MutableList<> にしようとしたらsetItems のタイミングでCastエラーが出た。
-        val pictureDialogItems = if (edit_page_layout.background == null) {
+        val pictureDialogItems = if (diaryImage.drawable == null) {
             // 画像がないときは「画像を選ぶ」だけ。
             arrayOf(getString(R.string.choose_image_from_gallery))
         } else {
@@ -268,7 +268,7 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
                 }
                 1 -> {
                     // 背景も消す。
-                    edit_page_layout.background = null
+                    diaryImage.setImageBitmap(null)
                     newImageUri = null
                     isImageDelete = true
                 }
@@ -314,9 +314,7 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
      * 背景の画像を表示する。
      */
     private fun updateBackgroundImage(uriString: String) {
-        // TODO Glide を使用して画像を表示する。
-        val loadedBitmap = MediaStore.Images.Media.getBitmap(contentResolver, Uri.parse(uriString))
-        edit_page_layout.background = BitmapDrawable(resources, loadedBitmap)
+        Glide.with(this).load(Uri.parse(uriString)).into(diaryImage)
     }
 
     private fun getMyIntent(): Intent {
