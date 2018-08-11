@@ -147,7 +147,9 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
                 updateBackgroundImage(oldImageUri!!)
             } catch (e: Exception) {
                 Log.e("myTag", getString(R.string.picture_cannot_read))
-                Toast.makeText(this, getString(R.string.picture_cannot_read), Toast.LENGTH_LONG).show()
+                val dialogMessage = getString(R.string.picture_cannot_read)
+                val alert = android.app.AlertDialog.Builder(this)
+                alert.setMessage(dialogMessage).setPositiveButton(getString(R.string.ok), null).show()
                 e.printStackTrace()
             }
         }
