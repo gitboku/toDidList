@@ -7,9 +7,7 @@ import android.view.MenuItem
 import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageManager
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
-import android.provider.MediaStore
 import android.app.DatePickerDialog.OnDateSetListener
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
@@ -18,6 +16,7 @@ import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.Toast
+import com.bumptech.glide.Glide
 import com.example.kouhei.todidlist.MyApplication.Companion.SELECTED_DATE
 import com.example.kouhei.todidlist.MyApplication.Companion.SELECTED_DIARY_ID
 import kotlinx.android.synthetic.main.activity_edit_diary.*
