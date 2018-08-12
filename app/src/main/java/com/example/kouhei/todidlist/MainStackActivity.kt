@@ -84,7 +84,8 @@ class MainStackActivity : MyAppCompatActivity() {
      */
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.add_diary -> {
-            // MainActivityに戻るときは、MainPageから来たintentをそのまま返す
+            // 新しい日記作成のため、日記編集画面に遷移する。
+            // CardViewをタップしたときはadapter.setOnItemClickListener()から遷移する
             val intent = Intent(this, EditDiaryActivity::class.java)
             intent.putExtra(SELECTED_DATE, nowTimeStamp)
             moveToAnotherPage(intent)
