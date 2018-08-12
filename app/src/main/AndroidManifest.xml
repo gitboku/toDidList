@@ -30,20 +30,14 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity
-            android:name=".MainActivity"
-            android:screenOrientation="portrait" />
+        <!--日記編集画面-->
         <activity
             android:name=".EditDiaryActivity"
             android:label="@string/title_activity_edit_diary"
             android:screenOrientation="portrait">
-
-            <!-- 親ActivityにMainActivityを指定することで、戻るボタンがアプリバーに追加される -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
         </activity>
 
+        <!--日記一覧画面-->
         <activity
             android:name=".MainStackActivity"
             android:screenOrientation="portrait">
@@ -59,11 +53,14 @@
 
         </activity>
 
+        <!--パスワード設定画面-->
         <activity android:name=".PassCodeSetActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainStackActivity" />
         </activity>
+
+        <!--パスワード入力画面-->
         <activity android:name=".PassCodeConfirmActivity"></activity>
     </application>
 
