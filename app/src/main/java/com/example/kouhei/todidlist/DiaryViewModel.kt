@@ -30,7 +30,8 @@ class DiaryViewModel(application: Application): AndroidViewModel(application) {
         if (searchText == null || searchText == "") {
             mDiaryLiveData = diaryDao.getAllDiaries()
         } else {
-            mDiaryLiveData = diaryDao.searchDiaries(searchText)
+            val searchTextForQuery = '%' + searchText + '%' // 部分一致にするため
+            mDiaryLiveData = diaryDao.searchDiaries(searchTextForQuery)
         }
 
         return mDiaryLiveData!!
