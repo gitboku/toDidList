@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
+import android.util.TypedValue
 import android.widget.Toast
 
 open class MyAppCompatActivity: AppCompatActivity() {
@@ -15,6 +16,11 @@ open class MyAppCompatActivity: AppCompatActivity() {
     // パーミッションを求めるダイアログにユーザーが応答したとき、
     // requestLocationPermission()が渡してonRequestPermissionsResult()が受け取る合言葉
     private val READ_PERMISSION_REQUEST_CODE = 1000
+
+    fun dpToPx(dp: Int): Int {
+        val r = resources
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), r.displayMetrics))
+    }
 
     /**
      * ユーザーに対しパーミッションを求める
