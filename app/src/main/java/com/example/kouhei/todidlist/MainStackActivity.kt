@@ -1,14 +1,10 @@
 package com.example.kouhei.todidlist
 
 import android.app.AlertDialog
-import android.app.SearchManager
 import android.arch.lifecycle.*
-import android.content.Context
 import android.content.Intent
-import android.graphics.Rect
 import android.os.Bundle
 import android.support.v7.widget.*
-import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -32,13 +28,6 @@ class MainStackActivity : MyAppCompatActivity() {
             val dialogMessage = "パスコードを " + passcode + " に設定しました"
             val alert = AlertDialog.Builder(this)
             alert.setMessage(dialogMessage).setPositiveButton(getString(R.string.ok), null).show()
-        }
-
-        // 受け取ったインテントがsearch画面からのものなら、検索を行う
-        // https://developer.android.com/guide/topics/search/search-dialog#ReceivingTheQuery
-        if (Intent.ACTION_SEARCH.equals(intent)) {
-            val query = intent.getStringExtra(SearchManager.QUERY)
-            // TODO: search function
         }
 
         val manager = GridLayoutManager(this, 2)
@@ -92,6 +81,15 @@ class MainStackActivity : MyAppCompatActivity() {
      * Toolbarのアイテムのどれかをクリックしたとき、システムがこのメソッドを呼び出す。
      */
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        // 検索ボタン
+        // SearchViewのvisible <-> invisibleを行う
+        R.id.search_button -> {
+            val intent = Intent(this, SearchActivity::class.java)
+            intent.putExtra(SELECTED_DATE, nowTimeStamp)
+            moveToAnotherPage(intent)
+            true
+        }
+
         R.id.add_diary -> {
             // 新しい日記作成のため、日記編集画面に遷移する。
             // CardViewをタップしたときはadapter.setOnItemClickListener()から遷移する
@@ -119,15 +117,6 @@ class MainStackActivity : MyAppCompatActivity() {
      */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main_stack, menu)
-
-        // 検索フォームの設定
-        // https://developer.android.com/guide/topics/search/search-dialog#ConfiguringWidget
-        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        val searchView = menu.findItem(R.id.search_menu_search_view).actionView as SearchView
-
-        // setSearchableInfo()を呼び出して、それをSearchableInfoに渡すことで、SearchViewを実行可能にする
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
-        searchView.setIconifiedByDefault(false) // 検索フォームをアイコン化してはならない
         return true
     }
 }
