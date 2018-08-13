@@ -13,6 +13,12 @@ interface DiaryDao{
     @Query("SELECT * FROM diary ORDER BY diary_date DESC")
     fun getAllDiaries(): LiveData<List<Diary>>
 
+    /**
+     * 日記を検索するときに使用する
+     */
+    @Query("SELECT * FROM diary WHERE diary_text LIKE :searchText ORDER BY diary_date DESC")
+    fun searchDiaries(searchText: String): LiveData<List<Diary>>
+
     @Query("SELECT * FROM diary WHERE diary_id = :diaryId")
     fun selectDiary(diaryId: Int): Diary
 
