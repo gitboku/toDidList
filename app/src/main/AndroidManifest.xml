@@ -30,38 +30,46 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <!--日記編集画面-->
+        <!-- 日記編集画面 -->
         <activity
             android:name=".EditDiaryActivity"
             android:label="@string/title_activity_edit_diary"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"/>
 
-        <!--日記一覧画面-->
+        <!-- 日記一覧画面 -->
         <activity
             android:name=".MainStackActivity"
             android:screenOrientation="portrait">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.SEARCH" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-            <meta-data android:name="android.app.searchable"
-                android:resource="@xml/searchable"/>
-
         </activity>
 
-        <!--パスワード設定画面-->
+        <!-- パスワード設定画面 -->
         <activity android:name=".PassCodeSetActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainStackActivity" />
         </activity>
 
-        <!--パスワード入力画面-->
-        <activity android:name=".PassCodeConfirmActivity"></activity>
+        <!-- パスワード入力画面 -->
+        <activity android:name=".PassCodeConfirmActivity" />
+
+        <!--日記検索画面-->
+        <activity android:name=".SearchActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH"/>
+            </intent-filter>
+            <!--親アクティビティを指定して戻るボタンを出す-->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainStackActivity"/>
+            <!--検索設定を適用-->
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
     </application>
 
 </manifest>
