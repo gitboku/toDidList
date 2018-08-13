@@ -50,12 +50,23 @@ class SearchActivity : MyAppCompatActivity() {
             intent.putExtra(MyApplication.SELECTED_DIARY_ID, adapter.diaryId)
             moveToAnotherPage(intent)
         })
+    }
 
-        // 受け取ったインテントがsearch画面からのものなら、検索を行う
-        // https://developer.android.com/guide/topics/search/search-dialog#ReceivingTheQuery
-        if (Intent.ACTION_SEARCH.equals(intent)) {
-            val query = intent.getStringExtra(SearchManager.QUERY)
-            // TODO: search function
+    /**
+     * 検索フォームリスナー
+     * 参考：https://qiita.com/ryokosuge/items/186c525e0744903ee8ce
+     */
+    private val onQueryTextListener = object : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(searchWord: String): Boolean {
+            // SubmitボタンorEnterKeyを押されたら呼び出されるメソッド
+            myLogging("searchWord = " + searchWord)
+            return true
+        }
+
+        override fun onQueryTextChange(newText: String): Boolean {
+            // 入力される度に呼び出される
+            myLogging("newText = " + newText)
+            return false
         }
     }
 
@@ -88,6 +99,8 @@ class SearchActivity : MyAppCompatActivity() {
         // setSearchableInfo()を呼び出して、それをSearchableInfoに渡すことで、SearchViewを実行可能にする
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
         searchView.setIconifiedByDefault(false) // 検索フォームをアイコン化してはならない
+
+        searchView.setOnQueryTextListener(onQueryTextListener)
         return true
     }
 }
