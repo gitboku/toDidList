@@ -2,6 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <!--普段はinvisible、search_buttonを押すとvisible-->
+    <item
+        android:id="@+id/search_menu_search_view"
+        android:layout_width="wrap_content"
+        android:title="@string/search_menu_search_text"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        android:visible="false" />
+
+    <item
+        android:id="@+id/search_button"
+        android:icon="@drawable/ic_search_white_24dp"
+        android:title="@string/search_button"
+        app:showAsAction="always"/>
+
     <item
         android:id="@+id/set_passcode"
         android:icon="@drawable/ic_key_white_24dp"
@@ -9,15 +23,9 @@
         app:showAsAction="always"/>
 
     <item
-        android:id="@+id/search_button"
-        android:icon="@drawable/ic_search_white_24dp"
-        app:showAsAction="always"
-        android:title="@string/search_button" />
-
-    <item
         android:id="@+id/add_diary"
         android:icon="@drawable/ic_add_white_24dp"
         android:title="@string/action_save_button"
-        app:showAsAction="always" />
+        app:showAsAction="always"/>
 
 </menu>

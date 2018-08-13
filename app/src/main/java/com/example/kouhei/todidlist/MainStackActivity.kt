@@ -1,7 +1,9 @@
 package com.example.kouhei.todidlist
 
 import android.app.AlertDialog
+import android.app.SearchManager
 import android.arch.lifecycle.*
+import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
@@ -30,6 +32,13 @@ class MainStackActivity : MyAppCompatActivity() {
             val dialogMessage = "パスコードを " + passcode + " に設定しました"
             val alert = AlertDialog.Builder(this)
             alert.setMessage(dialogMessage).setPositiveButton(getString(R.string.ok), null).show()
+        }
+
+        // 受け取ったインテントがsearch画面からのものなら、検索を行う
+        // https://developer.android.com/guide/topics/search/search-dialog#ReceivingTheQuery
+        if (Intent.ACTION_SEARCH.equals(intent)) {
+            val query = intent.getStringExtra(SearchManager.QUERY)
+            // TODO: search function
         }
 
         val manager = GridLayoutManager(this, 2)
@@ -141,6 +150,15 @@ class MainStackActivity : MyAppCompatActivity() {
      */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main_stack, menu)
+
+        // 検索フォームの設定
+        // https://developer.android.com/guide/topics/search/search-dialog#ConfiguringWidget
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchView = menu.findItem(R.id.search_menu_search_view).actionView as SearchView
+
+        // setSearchableInfo()を呼び出して、それをSearchableInfoに渡すことで、SearchViewを実行可能にする
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        searchView.setIconifiedByDefault(false) // 検索フォームをアイコン化してはならない
         return true
     }
 }
