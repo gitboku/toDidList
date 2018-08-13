@@ -21,4 +21,18 @@ class DiaryViewModel(application: Application): AndroidViewModel(application) {
         // Castに失敗するとNullPointerExceptionを投げる
         return mDiaryLiveData!! // !!
     }
+
+    /**
+     * 日記検索
+     * 検索文字列がnullもしくは空ならすべての日記を返す
+     */
+    fun searchDiaries(diaryDao: DiaryDao, searchText: String?): LiveData<List<Diary>> {
+        if (searchText == null || searchText == "") {
+            mDiaryLiveData = diaryDao.getAllDiaries()
+        } else {
+            mDiaryLiveData = diaryDao.searchDiaries(searchText)
+        }
+
+        return mDiaryLiveData!!
+    }
 }
