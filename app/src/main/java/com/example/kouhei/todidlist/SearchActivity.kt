@@ -74,8 +74,6 @@ class SearchActivity : MyAppCompatActivity() {
             }
         }
 
-
-
     /**
      * Toolbarにアイコンを表示する
      */
