@@ -1,10 +1,12 @@
 package com.example.kouhei.todidlist
 
 import android.Manifest
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.GridLayoutManager
 import android.util.TypedValue
 import android.widget.Toast
 
@@ -16,6 +18,35 @@ open class MyAppCompatActivity: AppCompatActivity() {
     // パーミッションを求めるダイアログにユーザーが応答したとき、
     // requestLocationPermission()が渡してonRequestPermissionsResult()が受け取る合言葉
     private val READ_PERMISSION_REQUEST_CODE = 1000
+
+    /**
+     * CardViewで表示される日記のリスト
+     */
+    var diaryList: ArrayList<Diary> = ArrayList()
+
+    /**
+     * RecyclerViewのレイアウトマネージャー
+     */
+    val manager = GridLayoutManager(this, 2)
+
+    /**
+     * RecyclerViewとListを紐づけるアダプター
+     */
+    val adapter = DiaryAdapter(this, diaryList)
+
+    /**
+     * RecyclerViewの日記リストのモデル
+     */
+    var mDiaryViewModel: DiaryViewModel? = null
+
+    /**
+     * RecyclerViewに表示するべき要素をdiaryTextListに追加する
+     */
+    fun addDiary(diaryList: List<Diary>) {
+        diaryList.forEach { diary ->
+            this.diaryList.add(diary)
+        }
+    }
 
     fun dpToPx(dp: Int): Int {
         val r = resources

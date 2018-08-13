@@ -14,7 +14,6 @@ import kotlinx.android.synthetic.main.activity_main_stack.*
 
 
 class MainStackActivity : MyAppCompatActivity() {
-    private var diaryList: ArrayList<Diary> = ArrayList()
     var nowTimeStamp = System.currentTimeMillis()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,10 +29,9 @@ class MainStackActivity : MyAppCompatActivity() {
             alert.setMessage(dialogMessage).setPositiveButton(getString(R.string.ok), null).show()
         }
 
-        val manager = GridLayoutManager(this, 2)
-        diary_recycler_view.layoutManager = manager
+        mDiaryViewModel = ViewModelProviders.of(this).get(DiaryViewModel::class.java)
 
-        val adapter = DiaryAdapter(this, diaryList)
+        diary_recycler_view.layoutManager = manager
         diary_recycler_view.adapter = adapter
 
         diary_recycler_view.addItemDecoration(GridSpacingItemDecoration(2, dpToPx(10), true))
@@ -51,13 +49,10 @@ class MainStackActivity : MyAppCompatActivity() {
             moveToAnotherPage(intent)
         })
 
-        // たとえActivityがdestroyされても、ViewModelは保持される
-        val mDiaryViewModel = ViewModelProviders.of(this).get(DiaryViewModel::class.java)
-
         // RecyclerViewにDiaryデータを表示する
         // ObserverにはonChanged一つしかインターフェースがないので、SAM変換によりコードを省略できる。
         val db = AppDatabase.getInstance(this)
-        mDiaryViewModel.getAllDiaries(db!!.diaryDao()).observe(this, Observer<List<Diary>> { mDiaryLiveData ->
+        mDiaryViewModel?.getAllDiaries(db!!.diaryDao())?.observe(this, Observer<List<Diary>> { mDiaryLiveData ->
             if (mDiaryLiveData != null) {
                 adapter.setDiaries(mDiaryLiveData)
                 addDiary(adapter.mDiaries)
@@ -66,15 +61,6 @@ class MainStackActivity : MyAppCompatActivity() {
                 manager.scrollToPosition(adapter.itemCount)
             }
         })
-    }
-
-    /**
-     * RecyclerViewに表示するべき要素をdiaryTextListに追加する
-     */
-    private fun addDiary(diaryList: List<Diary>) {
-        diaryList.forEach { diary ->
-            this.diaryList.add(diary)
-        }
     }
 
     /**

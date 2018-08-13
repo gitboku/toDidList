@@ -1,11 +1,13 @@
 package com.example.kouhei.todidlist
 
 import android.app.SearchManager
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ProcessLifecycleOwner
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
@@ -16,7 +18,13 @@ import com.example.kouhei.todidlist.MyApplication.Companion.SELECTED_DATE
 class SearchActivity : MyAppCompatActivity() {
 
     private var nowTimeStamp = 0
-    private var diaryList: ArrayList<Diary> = ArrayList()
+    private var db: AppDatabase? = null
+    private var diaryDao: DiaryDao?
+
+    init {
+        db = AppDatabase.getInstance(this)
+        diaryDao = db?.diaryDao()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,10 +38,9 @@ class SearchActivity : MyAppCompatActivity() {
 
         nowTimeStamp = intent.getIntExtra(SELECTED_DATE, 0)
 
-        val manager = GridLayoutManager(this, 2)
-        search_recycler_view.layoutManager = manager
+        mDiaryViewModel = ViewModelProviders.of(this).get(DiaryViewModel::class.java)
 
-        val adapter = DiaryAdapter(this, diaryList)
+        search_recycler_view.layoutManager = manager
         search_recycler_view.adapter = adapter
 
         search_recycler_view.addItemDecoration(GridSpacingItemDecoration(2, dpToPx(10), true))
@@ -57,15 +64,23 @@ class SearchActivity : MyAppCompatActivity() {
      * 参考：https://qiita.com/ryokosuge/items/186c525e0744903ee8ce
      */
     private val onQueryTextListener = object : SearchView.OnQueryTextListener {
+        // SubmitボタンorEnterKeyを押されたら呼び出されるメソッド
         override fun onQueryTextSubmit(searchWord: String): Boolean {
-            // SubmitボタンorEnterKeyを押されたら呼び出されるメソッド
-            myLogging("searchWord = " + searchWord)
+            diaryList.clear() // 検索する前に、前の検索結果をclearする
+            mDiaryViewModel?.searchDiaries(db!!.diaryDao(), searchWord)?.observe(ProcessLifecycleOwner.get(), Observer<List<Diary>> { mDiaryLiveData ->
+                if (mDiaryLiveData != null) {
+                    adapter.setDiaries(mDiaryLiveData)
+                    addDiary(adapter.mDiaries)
+
+                    // MainStackActivityを表示したとき、RecyclerViewが一番上に移動しているようにする
+                    manager.scrollToPosition(adapter.itemCount)
+                }
+            })
             return true
         }
 
+        // 入力される度に呼び出されるメソッド
         override fun onQueryTextChange(newText: String): Boolean {
-            // 入力される度に呼び出される
-            myLogging("newText = " + newText)
             return false
         }
     }
