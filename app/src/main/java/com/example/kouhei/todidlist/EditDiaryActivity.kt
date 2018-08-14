@@ -294,6 +294,10 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
                     diaryImage.setImageBitmap(null)
                     newImageUri = null
                     isImageDelete = true
+
+                    // 背景色を白に戻す
+                    diaryImage.setBackgroundColor(ContextCompat.getColor(this, R.color.ImageViewWhite))
+                    edit_page_layout.setBackgroundColor(ContextCompat.getColor(this, R.color.ImageViewWhite))
                 }
             }
         }
@@ -335,9 +339,14 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
 
     /**
      * 背景の画像を表示する。
+     * 背景色も黒くする
      */
     private fun updateBackgroundImage(uriString: String) {
         Glide.with(this).load(Uri.parse(uriString)).into(diaryImage)
+
+        // 背景色を黒にする
+        diaryImage.setBackgroundColor(ContextCompat.getColor(this, R.color.ImageViewBlack))
+        edit_page_layout.setBackgroundColor(ContextCompat.getColor(this, R.color.ImageViewBlack))
     }
 
     private fun getMyIntent(): Intent {
