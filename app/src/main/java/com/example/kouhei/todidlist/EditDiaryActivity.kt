@@ -12,6 +12,7 @@ import android.app.DatePickerDialog.OnDateSetListener
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.util.Log
+import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.EditText
@@ -118,9 +119,30 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
             }
         }
 
+        // ImageViewの部分をタップしたら、画面が全画面で見えるようにほかのViewを隠す
+        diaryImage.setOnClickListener {
+            toggleViewVisibility()
+        }
+
         // 選択してる日付の日記Entityと内部ストレージの画像を取得し、日記本文を表示する
         if (!isNewDiary) {
             loadDiaryAndImage(diary)
+        }
+    }
+
+    /**
+     * status barとToolbarとEditTextがvisibilityを入れ替える
+     */
+    private fun toggleViewVisibility() {
+        // EditText
+        diaryPanel.visibility = if (diaryPanel.visibility == View.VISIBLE) View.INVISIBLE else View.VISIBLE
+        // Toolbar
+        edit_page_toolbar.visibility = if (edit_page_toolbar.visibility == View.VISIBLE) View.INVISIBLE else View.VISIBLE
+        // status bar
+        window.decorView.systemUiVisibility = if (window.decorView.systemUiVisibility == View.SYSTEM_UI_FLAG_VISIBLE) {
+            View.SYSTEM_UI_FLAG_FULLSCREEN
+        } else {
+            View.SYSTEM_UI_FLAG_VISIBLE
         }
     }
 
