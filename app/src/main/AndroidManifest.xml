@@ -49,17 +49,20 @@
         </activity>
 
         <!-- パスワード設定画面 -->
-        <activity android:name=".PassCodeSetActivity">
+        <activity android:name=".PassCodeSetActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainStackActivity" />
         </activity>
 
         <!-- パスワード入力画面 -->
-        <activity android:name=".PassCodeConfirmActivity" />
+        <activity android:name=".PassCodeConfirmActivity"
+            android:screenOrientation="portrait" />
 
         <!--日記検索画面-->
-        <activity android:name=".SearchActivity">
+        <activity android:name=".SearchActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH"/>
             </intent-filter>
