@@ -40,4 +40,5 @@
     <string name="search_hint">検索ワード</string>
     <string name="app_label">検索フォーム</string>
     <string name="search_menu_search_text">検索フォーム</string>
+    <string name="description_image_view">日記画像</string>
 </resources>

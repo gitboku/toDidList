@@ -28,6 +28,7 @@
             android:id="@+id/diaryImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:contentDescription="@string/description_image_view"
             android:scaleType="centerCrop" />
 
         <EditText
@@ -35,6 +36,7 @@
             style="@style/MyEditTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
