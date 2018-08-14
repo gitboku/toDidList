@@ -94,9 +94,8 @@ open class MyAppCompatActivity: AppCompatActivity() {
 
         // 起動したActivityの結果をonActivityResultでそれを受け取ることができる。
         // resolveActivity() を呼び出して、インテントを処理できるアプリがあるかを確認する必要がある。
-        val intent = Intent.createChooser(galleryIntent, null)
-        if (intent.resolveActivity(packageManager) != null) {
-            startActivityForResult(intent, GALLERY)
+        if (galleryIntent.resolveActivity(packageManager) != null) {
+            startActivityForResult(galleryIntent, GALLERY)
         } else {
             Toast.makeText(this, getString(R.string.cannot_found_appropriate_app), Toast.LENGTH_SHORT).show()
         }
