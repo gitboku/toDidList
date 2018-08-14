@@ -31,9 +31,11 @@
         </provider>
 
         <!-- 日記編集画面 -->
+        <!--windowSoftInputMode: ソフトウェアキーボードの扱いの設定-->
         <activity
             android:name=".EditDiaryActivity"
             android:label="@string/title_activity_edit_diary"
+            android:windowSoftInputMode="stateVisible|adjustPan"
             android:screenOrientation="portrait"/>
 
         <!-- 日記一覧画面 -->
