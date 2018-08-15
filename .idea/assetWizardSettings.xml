@@ -57,6 +57,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
+                                                <entry key="scalingPercent" value="71" />
                                                 <entry key="trimmed" value="true" />
                                               </map>
                                             </option>
@@ -90,9 +91,11 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
-                                      <entry key="backgroundColor" value="ffffff" />
+                                      <entry key="backgroundColor" value="4caf50" />
                                       <entry key="backgroundImage" value="C:\Users\kouhei\OneDrive\myKotlin\toDidList2\toDidList\app\src\main\res\drawable\ic_launcher_background.xml" />
-                                      <entry key="foregroundImage" value="C:\Users\kouhei\ic_launcher_2.png" />
+                                      <entry key="foregroundImage" value="C:\Users\kouhei\Downloads\notebook(1).png" />
+                                      <entry key="legacyIconShape" value="CIRCLE" />
+                                      <entry key="webIconShape" value="CIRCLE" />
                                     </map>
                                   </option>
                                 </PersistentState>
