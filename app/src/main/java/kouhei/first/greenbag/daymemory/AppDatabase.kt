@@ -1,8 +1,8 @@
-package com.example.kouhei.todidlist
+package kouhei.first.greenbag.daymemory
 
 import android.arch.persistence.room.*
 
-@Database(entities = [Diary::class], version = 1) // Kotlin 1.2からは arrayOf(com.example.kouhei.todidlist.Diary::class)の代わりに[com.example.kouhei.todidlist.Diary::class]と書ける
+@Database(entities = [Diary::class], version = 1) // Kotlin 1.2からは arrayOf(kouhei.first.greenbag.daymemory.Diary::class)の代わりに[kouhei.first.greenbag.daymemory.Diary::class]と書ける
 abstract class AppDatabase : RoomDatabase() {
 
     // DAOを取得する。

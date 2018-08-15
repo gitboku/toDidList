@@ -1,4 +1,4 @@
-package com.example.kouhei.todidlist
+package kouhei.first.greenbag.daymemory
 
 import android.app.DatePickerDialog
 import android.app.Dialog

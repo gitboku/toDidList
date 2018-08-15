@@ -1,10 +1,10 @@
-package com.example.kouhei.todidlist
+package kouhei.first.greenbag.daymemory
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import com.example.kouhei.todidlist.MyApplication.Companion.PASSCODE
+import kouhei.first.greenbag.daymemory.MyApplication.Companion.PASSCODE
 import kotlinx.android.synthetic.main.activity_pass_code_confirm.*
 
 class PassCodeConfirmActivity : MyAppCompatActivity() {

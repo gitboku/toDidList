@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.kouhei.todidlist">
+    package="kouhei.first.greenbag.daymemory">
 
     <!--
     外部ストレージを使うため、以下二つのパーミッションチェックを追加する
@@ -22,7 +22,7 @@
         tools:replace="android:icon">
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.example.kouhei.todidlist.fileprovider"
+            android:authorities="kouhei.first.greenbag.daymemory.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

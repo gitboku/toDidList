@@ -1,4 +1,4 @@
-package com.example.kouhei.todidlist
+package kouhei.first.greenbag.daymemory
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle

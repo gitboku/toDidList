@@ -1,4 +1,4 @@
-package com.example.kouhei.todidlist
+package kouhei.first.greenbag.daymemory
 
 import org.junit.Test
 

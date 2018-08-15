@@ -1,4 +1,4 @@
-package com.example.kouhei.todidlist
+package kouhei.first.greenbag.daymemory
 
 import android.app.AlertDialog
 import android.arch.lifecycle.*
@@ -8,8 +8,8 @@ import android.support.v7.widget.*
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import com.example.kouhei.todidlist.MyApplication.Companion.SELECTED_DATE
-import com.example.kouhei.todidlist.MyApplication.Companion.SELECTED_DIARY_ID
+import kouhei.first.greenbag.daymemory.MyApplication.Companion.SELECTED_DATE
+import kouhei.first.greenbag.daymemory.MyApplication.Companion.SELECTED_DIARY_ID
 import kotlinx.android.synthetic.main.activity_main_stack.*
 
 

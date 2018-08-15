@@ -1,4 +1,4 @@
-package com.example.kouhei.todidlist
+package kouhei.first.greenbag.daymemory
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,8 +7,8 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
-import com.example.kouhei.todidlist.MyApplication.Companion.APP_NEED_PASSCODE
-import com.example.kouhei.todidlist.MyApplication.Companion.PASSCODE
+import kouhei.first.greenbag.daymemory.MyApplication.Companion.APP_NEED_PASSCODE
+import kouhei.first.greenbag.daymemory.MyApplication.Companion.PASSCODE
 
 class PassCodeSetActivity : MyAppCompatActivity() {
 

@@ -1,4 +1,4 @@
-package com.example.kouhei.todidlist
+package kouhei.first.greenbag.daymemory
 
 import android.app.SearchManager
 import android.arch.lifecycle.Observer
@@ -13,7 +13,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import kotlinx.android.synthetic.main.activity_search.*
-import com.example.kouhei.todidlist.MyApplication.Companion.SELECTED_DATE
+import kouhei.first.greenbag.daymemory.MyApplication.Companion.SELECTED_DATE
 
 class SearchActivity : MyAppCompatActivity() {
 

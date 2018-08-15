@@ -1,4 +1,4 @@
-package com.example.kouhei.todidlist
+package kouhei.first.greenbag.daymemory
 
 import android.graphics.Rect
 import android.support.v7.widget.RecyclerView

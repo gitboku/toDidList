@@ -1,4 +1,4 @@
-package com.example.kouhei.todidlist
+package kouhei.first.greenbag.daymemory
 
 import android.os.Bundle
 import android.content.Intent
@@ -18,8 +18,8 @@ import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.Toast
 import com.bumptech.glide.Glide
-import com.example.kouhei.todidlist.MyApplication.Companion.SELECTED_DATE
-import com.example.kouhei.todidlist.MyApplication.Companion.SELECTED_DIARY_ID
+import kouhei.first.greenbag.daymemory.MyApplication.Companion.SELECTED_DATE
+import kouhei.first.greenbag.daymemory.MyApplication.Companion.SELECTED_DIARY_ID
 import kotlinx.android.synthetic.main.activity_edit_diary.*
 import kotlin.concurrent.thread
 
