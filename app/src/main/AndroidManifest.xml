@@ -31,12 +31,12 @@
         </provider>
 
         <!-- 日記編集画面 -->
-        <!--windowSoftInputMode: ソフトウェアキーボードの扱いの設定-->
+        <!-- windowSoftInputMode: ソフトウェアキーボードの扱いの設定 -->
         <activity
             android:name=".EditDiaryActivity"
             android:label="@string/title_activity_edit_diary"
-            android:windowSoftInputMode="stateVisible|adjustPan"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
 
         <!-- 日記一覧画面 -->
         <activity
@@ -44,12 +44,14 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <!-- パスワード設定画面 -->
-        <activity android:name=".PassCodeSetActivity"
+        <activity
+            android:name=".PassCodeSetActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -57,23 +59,33 @@
         </activity>
 
         <!-- パスワード入力画面 -->
-        <activity android:name=".PassCodeConfirmActivity"
+        <activity
+            android:name=".PassCodeConfirmActivity"
             android:screenOrientation="portrait" />
 
-        <!--日記検索画面-->
-        <activity android:name=".SearchActivity"
+        <!-- 日記検索画面 -->
+        <activity
+            android:name=".SearchActivity"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.SEARCH"/>
+                <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-            <!--親アクティビティを指定して戻るボタンを出す-->
+            <!-- 親アクティビティを指定して戻るボタンを出す -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainStackActivity"/>
-            <!--検索設定を適用-->
+                android:value=".MainStackActivity" />
+            <!-- 検索設定を適用 -->
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
+        </activity>
+
+        <!--「アプリについて」画面-->
+        <activity android:name=".AboutActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainStackActivity" />
         </activity>
     </application>
 
