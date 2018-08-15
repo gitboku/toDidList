@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="acknowledgements">謝辞</string>
+    <string name="thanks">当アプリをご利用いただき、ありがとうございます。</string>
+    <string name="about_icon">アプリアイコンについて</string>
+    <string name="icon_make_jp">当アプリのアイコンは Freepik により作成されました。</string>
+    <string name="icon_make_en">Icon made by Freepik from www.flaticon.com</string>
+</resources>
