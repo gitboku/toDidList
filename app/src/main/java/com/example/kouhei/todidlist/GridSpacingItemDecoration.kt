@@ -7,7 +7,6 @@ import android.view.View
 
 /**
  * Decorator: マージンを設定する
- * https://www.androidhive.info/2016/05/android-working-with-card-view-and-recycler-view/
  */
 class GridSpacingItemDecoration(initSpanCount: Int, initSpacing: Int, initIncludedEdge: Boolean): RecyclerView.ItemDecoration() {
     var spanCount = initSpanCount

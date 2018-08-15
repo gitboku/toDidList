@@ -254,7 +254,7 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
         val permission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         if (permission == PackageManager.PERMISSION_GRANTED) {
             // すでに許可されているなら、ExternalStorageから画像を選ばせる
-            showPictureDialog()
+            showGalleryChooser()
         } else {
             // 許可されていなければ、許可を求める
             requestLocationPermission()
@@ -264,11 +264,10 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
     /**
      * 「画像を選ぶ」ボタンを押したときに、フォトアプリにアクセスする権限があれば呼ばれるメソッド。
      * 「どこから画像を選ぶか」のダイアログが表示される。
-     * https://demonuts.com/pick-image-gallery-camera-android/
      */
-    private fun showPictureDialog() {
-        val pictureDialog = AlertDialog.Builder(this)
-        pictureDialog.setTitle(getString(R.string.where_image))
+    private fun showGalleryChooser() {
+        val alertDialog = AlertDialog.Builder(this)
+        alertDialog.setTitle(getString(R.string.where_image))
 
         // pictureDialogItems の中から一つ選ぶダイアログが表示される
         // MutableList<> にしようとしたらsetItems のタイミングでCastエラーが出た。
@@ -284,7 +283,7 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
         /* 各選択肢にアクションの内容を追記する。
          when の順番はダイアログの選択肢の順番に依存しているので、
           pictureDialogItems の順番を変えたらwhen の順番も変えねばならない。 */
-        pictureDialog.setItems(pictureDialogItems) { dialog, which ->
+        alertDialog.setItems(pictureDialogItems) { dialog, which ->
             when (which) {
                 0 -> {
                     choosePhotoFromGallery()
@@ -301,7 +300,7 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
                 }
             }
         }
-        pictureDialog.show()
+        alertDialog.show()
     }
 
     /**
