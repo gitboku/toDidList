@@ -91,6 +91,12 @@ class MainStackActivity : MyAppCompatActivity() {
             true
         }
 
+        R.id.about_app -> {
+            val intent = Intent(this, AboutActivity::class.java)
+            moveToAnotherPage(intent)
+            true
+        }
+
         else -> {
             // If we got here, the user's action was not recognized.
             // Invoke the superclass to handle it.
