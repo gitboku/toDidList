@@ -23,7 +23,7 @@
     <string name="delete_image">写真を削除する</string>
     <string name="no_image_deleted">画像ファイル名が存在しないので、削除処理は行われませんでした。</string>
     <string name="image_deleted">写真が削除されました。\nこの処理はsaveされています。</string>
-    <string name="set_key">set_key</string>
+    <string name="set_key">パスコード設定</string>
     <string name="preference_file_name">UserData</string>
     <string name="use_passcode">パスコードロック</string>
     <string name="passcode_decide">決定</string>
@@ -41,4 +41,5 @@
     <string name="app_label">検索フォーム</string>
     <string name="search_menu_search_text">検索フォーム</string>
     <string name="description_image_view">日記画像</string>
+    <string name="about_app">アプリについて</string>
 </resources>
