@@ -7,6 +7,9 @@ import android.os.Bundle
 import android.support.v7.widget.*
 import android.view.Menu
 import android.view.MenuItem
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import android.view.View
 import kouhei.first.greenbag.daymemory.MyApplication.Companion.SELECTED_DATE
 import kouhei.first.greenbag.daymemory.MyApplication.Companion.SELECTED_DIARY_ID
@@ -15,6 +18,8 @@ import kotlinx.android.synthetic.main.activity_main_stack.*
 
 class MainStackActivity : MyAppCompatActivity() {
     var nowTimeStamp = System.currentTimeMillis()
+
+    lateinit var mAdView : AdView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +66,17 @@ class MainStackActivity : MyAppCompatActivity() {
                 manager.scrollToPosition(adapter.itemCount)
             }
         })
+
+        // adMobの初期化
+        MobileAds.initialize(this, "ca-app-pub-1943070234595436~7952643228")
+
+        // 広告を呼び出す
+        mAdView = findViewById(R.id.adView)
+        val adRequest = AdRequest.Builder()
+                // .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build()
+
+        mAdView.loadAd(adRequest)
     }
 
     /**
@@ -110,5 +126,20 @@ class MainStackActivity : MyAppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main_stack, menu)
         return true
+    }
+
+    override fun onPause() {
+        mAdView.pause()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        mAdView.resume()
+        super.onResume()
+    }
+
+    override fun onDestroy() {
+        mAdView.destroy()
+        super.onDestroy()
     }
 }
