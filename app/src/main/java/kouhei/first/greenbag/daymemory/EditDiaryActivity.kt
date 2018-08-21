@@ -21,6 +21,10 @@ import com.bumptech.glide.Glide
 import kouhei.first.greenbag.daymemory.MyApplication.Companion.SELECTED_DATE
 import kouhei.first.greenbag.daymemory.MyApplication.Companion.SELECTED_DIARY_ID
 import kotlinx.android.synthetic.main.activity_edit_diary.*
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.launch
 import kotlin.concurrent.thread
 
 class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
@@ -88,11 +92,11 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
         // DBから選択し、結果がNull(新規の日記)なら新しいDiary エンティティを使用する
         diaryId = intent.getIntExtra(SELECTED_DIARY_ID, DEFAULT_DIARY_ID)
         if (diaryId != DEFAULT_DIARY_ID) {
-            thread {
-                diary = diaryDao.selectDiary(diaryId)
-                oldImageUri = diary.imageUri
-                isNewDiary = false
-            }
+            launch { selectDiaryFromDb(diaryDao, diaryId).await().let {
+                // 選択してる日付の日記Entityと内部ストレージの画像を取得し、日記本文を表示する
+                loadDiaryAndImage(it)
+            }}
+            isNewDiary = false
         } else {
             isNewDiary = true
         }
@@ -123,11 +127,12 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
         diaryImage.setOnClickListener {
             toggleViewVisibility()
         }
+    }
 
-        // 選択してる日付の日記Entityと内部ストレージの画像を取得し、日記本文を表示する
-        if (!isNewDiary) {
-            loadDiaryAndImage(diary)
-        }
+    private fun selectDiaryFromDb(diaryDao: DiaryDao, diaryId: Int): Deferred<Diary> = async(CommonPool) {
+        diary = diaryDao.selectDiary(diaryId)
+        oldImageUri = diary.imageUri
+        return@async diary
     }
 
     /**
