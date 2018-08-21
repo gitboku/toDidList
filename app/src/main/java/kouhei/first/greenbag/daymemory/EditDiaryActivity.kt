@@ -11,7 +11,6 @@ import android.net.Uri
 import android.app.DatePickerDialog.OnDateSetListener
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
@@ -21,10 +20,8 @@ import com.bumptech.glide.Glide
 import kouhei.first.greenbag.daymemory.MyApplication.Companion.SELECTED_DATE
 import kouhei.first.greenbag.daymemory.MyApplication.Companion.SELECTED_DIARY_ID
 import kotlinx.android.synthetic.main.activity_edit_diary.*
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.Deferred
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.*
+import kotlinx.coroutines.experimental.android.UI
 import kotlin.concurrent.thread
 
 class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
@@ -92,10 +89,11 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
         // DBから選択し、結果がNull(新規の日記)なら新しいDiary エンティティを使用する
         diaryId = intent.getIntExtra(SELECTED_DIARY_ID, DEFAULT_DIARY_ID)
         if (diaryId != DEFAULT_DIARY_ID) {
-            launch { selectDiaryFromDb(diaryDao, diaryId).await().let {
-                // 選択してる日付の日記Entityと内部ストレージの画像を取得し、日記本文を表示する
-                loadDiaryAndImage(it)
-            }}
+            runBlocking(CommonPool) {
+                diary = diaryDao.selectDiary(diaryId)
+            }
+            oldImageUri = diary.imageUri
+            loadDiaryAndImage(diary)
             isNewDiary = false
         } else {
             isNewDiary = true
@@ -127,12 +125,6 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
         diaryImage.setOnClickListener {
             toggleViewVisibility()
         }
-    }
-
-    private fun selectDiaryFromDb(diaryDao: DiaryDao, diaryId: Int): Deferred<Diary> = async(CommonPool) {
-        diary = diaryDao.selectDiary(diaryId)
-        oldImageUri = diary.imageUri
-        return@async diary
     }
 
     /**
@@ -169,16 +161,9 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
         diaryPanel.setText(existingDiary.diaryText)
 
         oldImageUri = existingDiary.imageUri
-        if (oldImageUri != null) {
-            try {
-                updateBackgroundImage(oldImageUri!!)
-            } catch (e: Exception) {
-                Log.e("myTag", getString(R.string.picture_cannot_read))
-                val dialogMessage = getString(R.string.picture_cannot_read)
-                val alert = android.app.AlertDialog.Builder(this)
-                alert.setMessage(dialogMessage).setPositiveButton(getString(R.string.ok), null).show()
-                e.printStackTrace()
-            }
+        val uri = if (oldImageUri != null) Uri.parse(oldImageUri) else null
+        if (uri != null) {
+            updateBackgroundImage(uri)
         }
     }
 
@@ -328,16 +313,14 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
         if (data != null && requestCode == GALLERY) {
             // Gallery から画像を選んで戻ってきたときの動作
             newImageUri = data.dataString // 他のフォトアプリ上に保存されている画像のURL
-            try {
-                updateBackgroundImage(newImageUri!!)
-                // ロジック上必要ないけど念のために更新する
-                // updateBackgroundImage()が終わる前に更新してはいけない
-                isImageDelete = false
-                Toast.makeText(this, getString(R.string.image_not_saved_yet), Toast.LENGTH_SHORT).show()
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Toast.makeText(this, getString(R.string.failed_get_image), Toast.LENGTH_SHORT).show()
+            val uri = if (newImageUri != null) Uri.parse(newImageUri) else null
+            if (uri != null) {
+                updateBackgroundImage(uri)
             }
+            // ロジック上必要ないけど念のために更新する
+            // updateBackgroundImage()が終わる前に更新してはいけない
+            isImageDelete = false
+            Toast.makeText(this, getString(R.string.image_not_saved_yet), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -345,8 +328,8 @@ class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
      * 背景の画像を表示する。
      * 背景色も黒くする
      */
-    private fun updateBackgroundImage(uriString: String) {
-        Glide.with(this).load(Uri.parse(uriString)).into(diaryImage)
+    private fun updateBackgroundImage(uri: Uri) {
+        Glide.with(this).load(uri).into(diaryImage)
 
         // 背景色を黒にする
         diaryImage.setBackgroundColor(ContextCompat.getColor(this, R.color.ImageViewBlack))
