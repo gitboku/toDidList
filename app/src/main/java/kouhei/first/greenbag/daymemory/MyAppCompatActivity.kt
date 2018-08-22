@@ -61,9 +61,15 @@ open class MyAppCompatActivity: AppCompatActivity() {
         // アプリがパーミッションを既にリクエストしていて、ユーザーがそのパーミッションを拒否した場合、このメソッドは true を返します。
         // https://developer.android.com/training/permissions/requesting
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            /*
+            ACTION_PICKでリクエストを投げると、写真の選択後にプロバイダのきょが得られる。
+            それを別のcontextで処理しようとするとシステムはセキュリティ例外をスローする
+            https://stackoverflow.com/questions/38301605/reading-com-google-android-apps-photos-contentprovider-mediacontentprovider-requ
+             */
             ActivityCompat.requestPermissions(
                     this,
-                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            "com.google.android.apps.photos.contentprovider.impl.MediaContentProvider"),
                     READ_PERMISSION_REQUEST_CODE)
         } else {
             Toast.makeText(this, getString(R.string.request_permission_msg), Toast.LENGTH_SHORT).show()
