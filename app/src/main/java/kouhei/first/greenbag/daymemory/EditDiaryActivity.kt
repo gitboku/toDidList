@@ -21,7 +21,6 @@ import kouhei.first.greenbag.daymemory.MyApplication.Companion.SELECTED_DATE
 import kouhei.first.greenbag.daymemory.MyApplication.Companion.SELECTED_DIARY_ID
 import kotlinx.android.synthetic.main.activity_edit_diary.*
 import kotlinx.coroutines.experimental.*
-import kotlinx.coroutines.experimental.android.UI
 import kotlin.concurrent.thread
 
 class EditDiaryActivity : MyAppCompatActivity(), OnDateSetListener {
